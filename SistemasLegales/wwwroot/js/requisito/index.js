@@ -15,6 +15,12 @@
         });
     };
 
+    this.eventoResponsableGestSeg = function () {
+        $("#IdProyecto").on("change", function (e) {
+            partialViewListadoTabla();
+        });
+    };
+
     this.eventoFechaAnno = function () {
         MiApp.DatePicker.fnCallbackChangeDatepicker = function () {
             partialViewListadoTabla();

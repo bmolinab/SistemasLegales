@@ -36,6 +36,13 @@ namespace SistemasLegales.Models.Entidades
         public int IdProceso { get; set; }
         public virtual Proceso Proceso { get; set; }
 
+        [Display(Name = "Proyecto")]
+        [Required(ErrorMessage = "Debe seleccionar el {0}.")]
+        [Range(1, double.MaxValue, ErrorMessage = "Debe seleccionar el {0}.")]
+        public int? IdProyecto { get; set; }
+        public virtual Proyecto Proyecto { get; set; }
+
+
         [Display(Name = "Dueño del proceso")]
         [Required(ErrorMessage = "Debe seleccionar el {0}.")]
         [Range(1, double.MaxValue, ErrorMessage = "Debe seleccionar el {0}.")]

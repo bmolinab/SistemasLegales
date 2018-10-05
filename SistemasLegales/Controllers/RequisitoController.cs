@@ -36,7 +36,8 @@ namespace SistemasLegales.Controllers
                     .Include(c => c.Documento)
                     .Include(c => c.Ciudad)
                     .Include(c => c.Proceso)
-                    .OrderBy(c => c.IdDocumento).ThenBy(c=> c.Documento.IdRequisitoLegal).ThenBy(c=> c.Documento.RequisitoLegal.IdOrganismoControl).ThenBy(c => c.IdCiudad).ThenBy(c => c.IdProceso).ToListAsync();
+                    .Include(c => c.Proyecto)
+                    .OrderBy(c => c.IdDocumento).ThenBy(c=> c.Documento.IdRequisitoLegal).ThenBy(c=> c.Documento.RequisitoLegal.IdOrganismoControl).ThenBy(c => c.IdCiudad).ThenBy(c => c.IdProceso).ThenBy(c=>c.IdProyecto).ToListAsync();
         }
 
         [Authorize(Policy = "GerenciaGestion")]
@@ -52,6 +53,10 @@ namespace SistemasLegales.Controllers
                 var listadoActores = await db.Actor.OrderBy(c => c.Nombres).ToListAsync();
                 listadoActores.Insert(0, new Actor { IdActor = -1, Nombres = "Todos" });
                 ViewData["Actor"] = new SelectList(listadoActores, "IdActor", "Nombres");
+
+                var listadoProyectos = await db.Proyecto.OrderBy(c => c.Nombre).ToListAsync();
+                listadoProyectos.Insert(0, new Proyecto { IdProyecto = -1, Nombre = "Todos" });
+                ViewData["Proyecto"] = new SelectList(listadoProyectos, "IdProyecto", "Nombre");
             }
             catch (Exception)
             {
@@ -68,6 +73,7 @@ namespace SistemasLegales.Controllers
                 ViewBag.accion = id == null ? "Crear" : "Editar";
                 ViewData["Ciudad"] = new SelectList(await db.Ciudad.OrderBy(c => c.Nombre).ToListAsync(), "IdCiudad", "Nombre");
                 ViewData["Proceso"] = new SelectList(await db.Proceso.OrderBy(c => c.Nombre).ToListAsync(), "IdProceso", "Nombre");
+                ViewData["Proyecto"] = new SelectList(await db.Proyecto.OrderBy(c => c.Nombre).ToListAsync(), "IdProyecto", "Nombre");
                 ViewData["Actor"] = new SelectList(await db.Actor.OrderBy(c => c.Nombres).ToListAsync(), "IdActor", "Nombres");
                 ViewData["Status"] = new SelectList(await db.Status.ToListAsync(), "IdStatus", "Nombre");
 
@@ -112,6 +118,7 @@ namespace SistemasLegales.Controllers
                             IdDocumento = requisito.IdDocumento,
                             IdCiudad = requisito.IdCiudad,
                             IdProceso = requisito.IdProceso,
+                            IdProyecto= requisito.IdProyecto,
                             IdActorDuennoProceso = requisito.IdActorDuennoProceso,
                             IdActorResponsableGestSeg = requisito.IdActorResponsableGestSeg,
                             IdActorCustodioDocumento = requisito.IdActorCustodioDocumento,
@@ -132,6 +139,7 @@ namespace SistemasLegales.Controllers
                         requisitoActualizar.IdDocumento = requisito.IdDocumento;
                         requisitoActualizar.IdCiudad = requisito.IdCiudad;
                         requisitoActualizar.IdProceso = requisito.IdProceso;
+                        requisitoActualizar.IdProyecto = requisito.IdProyecto;
                         requisitoActualizar.IdActorDuennoProceso = requisito.IdActorDuennoProceso;
                         requisitoActualizar.IdActorResponsableGestSeg = requisito.IdActorResponsableGestSeg;
                         requisitoActualizar.IdActorCustodioDocumento = requisito.IdActorCustodioDocumento;
@@ -167,6 +175,7 @@ namespace SistemasLegales.Controllers
                 ViewData["Documento"] = await ObtenerSelectListDocumento(requisito?.Documento?.IdRequisitoLegal ?? -1);
                 ViewData["Ciudad"] = new SelectList(await db.Ciudad.OrderBy(c => c.Nombre).ToListAsync(), "IdCiudad", "Nombre");
                 ViewData["Proceso"] = new SelectList(await db.Proceso.OrderBy(c => c.Nombre).ToListAsync(), "IdProceso", "Nombre");
+                ViewData["Proyecto"] = new SelectList(await db.Proyecto.OrderBy(c => c.Nombre).ToListAsync(), "IdProyecto", "Nombre");
                 ViewData["Actor"] = new SelectList(await db.Actor.OrderBy(c => c.Nombres).ToListAsync(), "IdActor", "Nombres");
                 ViewData["Status"] = new SelectList(await db.Status.ToListAsync(), "IdStatus", "Nombre");
                 return this.VistaError(requisito, $"{Mensaje.Error}|{Mensaje.ModeloInvalido}");
@@ -189,6 +198,7 @@ namespace SistemasLegales.Controllers
                             .Include(c => c.Documento)
                             .Include(c => c.Ciudad)
                             .Include(c => c.Proceso)
+                            .Include(c=> c.Proyecto)
                             .Include(c => c.ActorDuennoProceso)
                             .Include(c => c.ActorResponsableGestSeg)
                             .Include(c => c.ActorCustodioDocumento)
@@ -244,6 +254,9 @@ namespace SistemasLegales.Controllers
 
                 if (requisito.IdActorResponsableGestSeg != -1)
                     lista = lista.Where(c => c.IdActorResponsableGestSeg == requisito.IdActorResponsableGestSeg).ToList();
+
+                if (requisito.IdProyecto != -1)
+                    lista = lista.Where(c => c.IdProyecto == requisito.IdProyecto).ToList();
 
                 if (requisito.Anno != null)
                     lista = lista.Where(c => c.FechaCumplimiento.Year == requisito.Anno).ToList();

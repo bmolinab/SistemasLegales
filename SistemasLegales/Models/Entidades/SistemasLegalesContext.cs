@@ -14,6 +14,7 @@ namespace SistemasLegales.Models.Entidades
         public virtual DbSet<DocumentoRequisito> DocumentoRequisito { get; set; }
         public virtual DbSet<OrganismoControl> OrganismoControl { get; set; }
         public virtual DbSet<Proceso> Proceso { get; set; }
+        public virtual DbSet<Proyecto> Proyecto { get; set; }
         public virtual DbSet<RequisitoLegal> RequisitoLegal { get; set; }
         public virtual DbSet<Status> Status { get; set; }
 
@@ -90,6 +91,11 @@ namespace SistemasLegales.Models.Entidades
                     .HasForeignKey(d => d.IdProceso)
                     .HasConstraintName("FK_AdminRequisitoLegal_Proceso");
 
+                entity.HasOne(d => d.Proyecto)
+                   .WithMany(p => p.Requisito)
+                   .HasForeignKey(d => d.IdProyecto)
+                   .HasConstraintName("FK_Requisito_Proyecto");
+
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.AdminRequisitoLegal)
                     .HasForeignKey(d => d.IdStatus)
@@ -157,6 +163,14 @@ namespace SistemasLegales.Models.Entidades
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasColumnType("varchar(200)");
+            });
+
+            modelBuilder.Entity<Proyecto>(entity =>
+            {
+                entity.HasKey(e => e.IdProyecto)
+                    .HasName("PK_Proyecto");
+
+                entity.Property(e => e.Nombre).HasColumnType("varchar(250)");
             });
 
             modelBuilder.Entity<RequisitoLegal>(entity =>
