@@ -1,0 +1,227 @@
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <title>Sistemas legales</title>
+
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/node-waves/waves.min.css" rel="stylesheet" />
+    <link href="~/lib/animate-css/animate.min.css" rel="stylesheet" />
+    <link href="~/lib/spinkit/spinkit.min.css" rel="stylesheet" />
+
+    <link href="~/lib/toastr-notification/toastr.min.css" rel="stylesheet" />
+
+    @RenderSection("CSS", required: false)
+
+    <link href="~/lib/assets/css/style.min.css" rel="stylesheet" />
+    <link href="~/lib/assets/css/layout.min.css" rel="stylesheet" />
+    <link href="~/lib/assets/css/themes/main_theme.min.css" rel="stylesheet" />
+
+    <link href="~/lib/waitMe/waitMe.min.css" rel="stylesheet" />
+    <link href="~/css/site.min.css" rel="stylesheet" />
+</head>
+<body class="theme-blue light layout-fixed">
+    <div class="wrapper">
+        <div class="page-loader-wrapper">
+            <div class="loader">
+                <div class="sk-wave">
+                    <div class="sk-rect sk-rect1 bg-cyan"></div>
+                    <div class="sk-rect sk-rect2 bg-cyan"></div>
+                    <div class="sk-rect sk-rect3 bg-cyan"></div>
+                    <div class="sk-rect sk-rect4 bg-cyan"></div>
+                    <div class="sk-rect sk-rect5 bg-cyan"></div>
+                </div>
+                <p>Cargando...</p>
+            </div>
+        </div>
+        <header class="topnavbar-wrapper">
+            <nav role="navigation" class="navbar topnavbar">
+                <div class="navbar-header">
+                    <a asp-action="Index" asp-controller="Principal" class="navbar-brand">
+                        <div class="brand-logo">
+                            <img src="~/images/logo ideal.jpg" alt="Admin Logo" class="img-responsive logoposition" />
+                        </div>
+                        <div class="brand-logo-collapsed">
+                            <img src="~/images/logosimple.png" alt="Admin Logo" class="img-responsive" />
+                        </div>
+                    </a>
+                </div>
+                <div class="nav-wrapper">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#" data-trigger-resize="" data-toggle-state="aside-collapsed" class="hidden-xs">
+                                <em class="material-icons">menu</em>
+                            </a>
+                            <a href="#" data-toggle-state="aside-toggled" data-no-persist="true" class="visible-xs sidebar-toggle">
+                                <em class="material-icons">menu</em>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a asp-action="ChangePassword" asp-controller="Manage">
+                                <em class="material-icons">lock_open</em>
+                                <span style="position:relative;bottom:5px;">Cambiar contrase&ntilde;a</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Logout" asp-controller="Account">
+                                <em class="material-icons">exit_to_app</em>
+                                <span style="position:relative;bottom:5px;">Salir</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="aside">
+            <div class="aside-inner">
+                <nav data-sidebar-anyclick-close="" class="sidebar">
+                    <ul class="nav menu">
+                        <li class="nav-heading ">
+                            <span>SISTEMA</span>
+                        </li>
+                        <li class="">
+                            <a asp-action="Index" asp-controller="Principal" title="Principal">
+                                <em class="material-icons">dashboard</em>
+                                <span>Principal</span>
+                            </a>
+                        </li>
+
+                        @{ 
+                            if (User.IsInRole(Perfiles.Gestor))
+                            {
+                                <li class="nav-heading ">
+                                    <span>ADMINISTRACIÓN</span>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Requisito" title="Gestión de requisitos">
+                                        <span>Gestión de requisitos</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-heading ">
+                                    <span>MANTENIMIENTO</span>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="OrganismoControl" title="Organismos de control">
+                                        <span>Organismos de control</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="RequisitoLegal" title="Requisitos legales">
+                                        <span>Requisitos legales</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Ciudad" title="Ciudades">
+                                        <span>Ciudades</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Proceso" title="Procesos">
+                                        <span>Procesos</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Actor" title="Actores">
+                                        <span>Actores</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Documento" title="Documentos">
+                                        <span>Documentos</span>
+                                    </a>
+                                </li>
+                            }
+
+                            if (User.IsInRole(Perfiles.Gerencia))
+                            {
+                                <li class="nav-heading ">
+                                    <span>GESTIÓN GERENCIAL</span>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Requisito" title="Estado de requisitos">
+                                        <span>Estado de requisitos</span>
+                                    </a>
+                                </li>
+                            }
+
+                            if (User.IsInRole(Perfiles.Administrador))
+                            {
+                                <li class="nav-heading ">
+                                    <span>USUARIOS</span>
+                                </li>
+                                <li>
+                                    <a asp-action="Users" asp-controller="Account" title="Gestión de usuarios">
+                                        <span>Gestión de usuarios</span>
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <section>
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <div class="page-header">
+                        <h2>@ViewData["Titulo"]</h2>
+                        <ol class="breadcrumb">
+                            <li><a asp-action="Index" asp-controller="Principal">Principal</a></li>
+                            @RenderSection("Migas", required: false)
+                        </ol>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card" id="divCard">
+                                <div class="card-header">
+                                    <h2>
+                                        @ViewData["Subtitulo"]
+                                    </h2>
+                                </div>
+                                <div class="body table-responsive" id="bodyTemplate">
+                                    @RenderBody()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <span>&copy; 2018 - Sistemas legales</span>
+        </footer>
+        <span class="hide" id="spanMensaje">@TempData["Mensaje"]</span>
+    </div>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/lib/modernizr/modernizr.custom.js"></script>
+    <script src="~/lib/screenfull/dist/screenfull.min.js"></script>
+    <script src="~/lib/jQuery-Storage-API/jquery.storageapi.js"></script>
+    <script src="~/lib/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/lib/node-waves/waves.min.js"></script>
+    <script src="~/js/app/miApp.min.js"></script>
+
+    <script src="~/lib/toastr-notification/toastr.min.js"></script>
+    <script src="~/js/toastr/mensajes.min.js"></script>
+
+    <script src="~/lib/ladda/spin.min.js"></script>
+    <script src="~/lib/ladda/ladda.min.js"></script>
+
+    <script src='~/lib/waitMe/waitMe.min.js'></script>
+    <script src="~/js/waitMe/waitMe.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <script src="~/lib/assets/js/demo.min.js"></script>
+    <script src="~/lib/assets/js/layout.min.js"></script>
+    <script src="~/js/app/site.min.js"></script>
+</body>
+</html>

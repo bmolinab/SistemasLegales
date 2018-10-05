@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Titulo"] = "ERROR";
+
+}
+@section Migas{
+    <li class="active">Error</li>
+}
+
+<div class="error error_four">
+    <div class="error-box">
+        <div class="error-message" style="color:#924c4a !important;">
+            Ha ocurrido un error mientras se procesaba su solicitud.
+        </div>
+        <div class="error-bottom">
+            <a asp-controller="Principal" asp-action="Index" class="btn btn-primary waves-effect">
+                <i class="material-icons">exit_to_app</i> IR A PRINCIPAL
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/principal/principal.min.js"></script>
+}

@@ -1,0 +1,54 @@
+@model IEnumerable<Requisito>
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Titulo"] = User.IsInRole(Perfiles.Gestor) ? "GESTI\u00D3N DE REQUISITOS" : "ESTADO DE REQUISITOS";
+    ViewData["Subtitulo"] = "LISTADO";
+
+}
+@section Migas{
+    <li><a asp-action="Index">Requisitos</a></li>
+    <li class="active">Listado</li>
+}
+@section CSS{
+    @{await Html.RenderPartialAsync("_DatatablesCSSPartial");}
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/lib/boootstrap-datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" />
+}
+
+@{
+    if (User.IsInRole(Perfiles.Gestor))
+    {
+        <div class="row">
+            <div class="col-lg-2 col-sm-4 col-xs-12">
+                <a asp-action="Gestionar" class="btn btn-primary waves-effect">NUEVO</a>
+            </div>
+        </div>
+    }
+}
+
+@{await Html.RenderPartialAsync("_VistaFiltradoRequisito", Model.FirstOrDefault());}
+
+<div id="divTablaListado">
+    @{await Html.RenderPartialAsync("_Listado", Model);}
+</div>
+
+@{
+    if (User.IsInRole(Perfiles.Gestor))
+    {
+        await Html.RenderPartialAsync("_Eliminar");
+    }
+}
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_DatatablesJSPartial");}
+    @{await Html.RenderPartialAsync("_BootboxPartial");}
+    @{ await Html.RenderPartialAsync("_DatepickerPartial"); }
+    @{ await Html.RenderPartialAsync("_SelectPartial"); }
+    <script src="~/js/jqueryDatatables/jqueryDatatables.min.js"></script>
+    <script>
+        var urlListadoResult = "@Url.Action("ListadoResult")";
+    </script>
+    <script src="~/js/requisito/index.min.js"></script>
+}

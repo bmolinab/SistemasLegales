@@ -1,0 +1,60 @@
+@model RequisitoLegal
+@{
+    ViewData["Titulo"] = "REQUISITOS LEGALES";
+    ViewData["Subtitulo"] = ViewData["accion"];
+
+}
+@section Migas{
+    <li><a asp-action="Index">Requisitos legales</a></li>
+    <li class="active">@ViewData["accion"]</li>
+}
+@section CSS{
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+}
+
+<form asp-action="Gestionar" class="form-horizontal" novalidate="novalidate">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @{
+        if (Model != null)
+        {
+            <input type="hidden" asp-for="IdRequisitoLegal" />
+        }
+    }
+    <div class="row">
+        <div class="col-md-3 col-xs-4 form-control-label">
+            <label asp-for="IdOrganismoControl"></label>
+        </div>
+        <div class="col-md-5 col-xs-8">
+            <div class="form-group">
+                <select asp-for="IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
+                <span asp-validation-for="IdOrganismoControl" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 col-xs-4 form-control-label">
+            <label asp-for="Nombre"></label>
+        </div>
+        <div class="col-md-5 col-xs-8">
+            <div class="form-group">
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-3 col-xs-offset-4">
+            <button type="submit" class="btn btn-primary ladda-button" data-style="expand-left" id="btn-guardar">
+                <span class="ladda-label" id="laddaSpanGuardar">ACEPTAR</span>
+            </button>
+            <a asp-action="Index" class="btn btn-default">CANCELAR</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_SelectPartial"); }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

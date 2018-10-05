@@ -1,0 +1,69 @@
+@model IEnumerable<Requisito>
+
+<div class="table-responsive">
+    <table id="datatable-responsive" class="table table-striped table-bordered nowrap dataTable" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Documento.RequisitoLegal.IdOrganismoControl)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Documento.IdRequisitoLegal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().IdDocumento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().IdCiudad)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().IdProceso)
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th>
+                    Opciones
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Documento.RequisitoLegal.OrganismoControl.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Documento.RequisitoLegal.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Documento.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ciudad.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Proceso.Nombre)
+                        </td>
+                        <td>
+                            @{await Html.RenderPartialAsync("_Badge", item);}
+                        </td>
+                        <td>
+                            <a asp-action="Detalles" asp-route-id="@item.IdRequisito">Detalles</a>
+                            @{
+                                if (User.IsInRole(Perfiles.Gestor))
+                                {
+                                    <span> | </span>
+                                    <a asp-action="Gestionar" asp-route-id="@item.IdRequisito">Editar</a><span> | </span>
+                                    <a href="javascript:void(0);" class="btnEliminar" id="@item.IdRequisito" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Requisito... ?">Eliminar</a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

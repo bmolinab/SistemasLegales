@@ -1,0 +1,76 @@
+@model IEnumerable<Proceso>
+@{
+    ViewData["Titulo"] = "PROCESOS";
+    ViewData["Subtitulo"] = "LISTADO";
+
+}
+@section Migas{
+    <li><a asp-action="Index">Procesos</a></li>
+    <li class="active">Listado</li>
+}
+@section CSS{
+    @{await Html.RenderPartialAsync("_DatatablesCSSPartial");}
+}
+
+@{
+    if (User.IsInRole(Perfiles.Gestor))
+    {
+        <div class="row">
+            <div class="col-lg-2 col-sm-4 col-xs-12">
+                <a asp-action="Gestionar" class="btn btn-primary waves-effect">NUEVO</a>
+            </div>
+        </div>
+    }
+}
+<div class="table-responsive">
+    <table id="datatable-responsive" class="table table-striped table-bordered nowrap dataTable" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Nombre)
+                </th>
+                @{
+                    if (User.IsInRole(Perfiles.Gestor))
+                    {
+                        <th>
+                            Opciones
+                        </th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        @{
+                            if (User.IsInRole(Perfiles.Gestor))
+                            {
+                                <td>
+                                    <a asp-action="Gestionar" asp-route-id="@item.IdProceso">Editar</a> |
+                                    <a href="javascript:void(0);" class="btnEliminar" id="@item.IdProceso" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Proceso... ?">Eliminar</a>
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@{
+    if (User.IsInRole(Perfiles.Gestor))
+    {
+        await Html.RenderPartialAsync("_Eliminar");
+    }
+}
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_DatatablesJSPartial");}
+    @{await Html.RenderPartialAsync("_BootboxPartial");}
+    <script src="~/js/jqueryDatatables/jqueryDatatables.min.js"></script>
+}

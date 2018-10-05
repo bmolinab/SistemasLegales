@@ -1,0 +1,8 @@
+@{ 
+    string valorAuxiliar = ViewBag.ValorAuxiliar;
+}
+<form asp-action="Eliminar" class="hide" id="formEliminar">
+    @Html.Hidden("id")
+    @Html.Hidden("valorAuxiliar", valorAuxiliar)
+    <button type="submit" class="btn btn-primary" id="btn-eliminar">Aceptar</button>
+</form>

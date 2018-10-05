@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Titulo"] = "ACCESO DENEGADO";
+
+}
+@section Migas{
+    <li class="active">Acceso denegado</li>
+}
+
+<div class="error error_four">
+    <div class="error-box">
+        <div class="error-message" style="color:#924c4a !important;">
+            ¡Acceso Denegado! Usted no tiene acceso a este recurso.
+        </div>
+        <div class="error-bottom">
+            <a asp-controller="Principal" asp-action="Index" class="btn btn-primary waves-effect">
+                <i class="material-icons">exit_to_app</i> IR A PRINCIPAL
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/principal/principal.min.js"></script>
+}

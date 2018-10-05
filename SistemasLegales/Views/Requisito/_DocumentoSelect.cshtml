@@ -1,0 +1,10 @@
+@model Requisito
+<div class="col-sm-3">
+    <div class="form-group">
+        <div class="input-group margin-bottom-0">
+            <label asp-for="IdDocumento"></label>
+            <select asp-for="IdDocumento" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Documento"></select>
+        </div>
+        <span asp-validation-for="IdDocumento" class="text-danger"></span>
+    </div>
+</div>

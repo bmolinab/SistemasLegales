@@ -1,0 +1,93 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Identity
+@using SistemasLegales.Models
+
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <title>Sistemas legales</title>
+
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/node-waves/waves.min.css" rel="stylesheet" />
+    <link href="~/lib/animate-css/animate.min.css" rel="stylesheet" />
+    <link href="~/lib/assets/css/style.min.css" rel="stylesheet" />
+    <link href="~/css/site.min.css" rel="stylesheet" />
+    <link href="~/lib/toastr-notification/toastr.min.css" rel="stylesheet" />
+</head>
+
+<body class="login-page">
+    <div class="login-box">
+        <div class="card">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="login-logo padding-top-15">
+                            <img src="~/images/logo ideal.png" alt="" class="img-responsive align-center" />
+                            <p>Sistemas legales</p>
+                        </div>
+                    </div>
+                </div>
+                <form asp-controller="Account" asp-action="Login" method="post" id="log_in" novalidate="novalidate">
+                    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+                    <div class="input-group addon-line">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line">
+                            <input asp-for="UserName" class="form-control" placeholder="Usuario" />
+                        </div>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="input-group addon-line">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
+                        <div class="form-line">
+                            <input asp-for="Password" class="form-control" placeholder="Contraseña" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 p-t-5">
+                            <input type="checkbox" asp-for="RememberMe" class="filled-in chk-col-blue" />
+                            <label asp-for="RememberMe"></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-block btn-primary ladda-button" id="btn-guardar">
+                        <span class="ladda-label">ENTRAR</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <span class="hide" id="spanMensaje">@TempData["Mensaje"]</span>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/lib/node-waves/waves.min.js"></script>
+    <script src="~/js/app/miApp.min.js"></script>
+
+    <script src="~/lib/ladda/spin.min.js"></script>
+    <script src="~/lib/ladda/ladda.min.js"></script>
+
+    <script src="~/lib/toastr-notification/toastr.min.js"></script>
+    <script src="~/js/toastr/mensajes.min.js"></script>
+
+    <script src="~/lib/assets/js/demo.min.js"></script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/app/site.min.js"></script>
+</body>
+</html>
