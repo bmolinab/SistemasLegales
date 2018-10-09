@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <Folder Include="Views\OrganismoControl\" />
-    <Folder Include="wwwroot\Requisitos\" />
+     <Folder Include="wwwroot\Requisitos\" />
   </ItemGroup>
 
 </Project>

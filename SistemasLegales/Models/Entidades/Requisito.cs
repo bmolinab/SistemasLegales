@@ -42,14 +42,13 @@ namespace SistemasLegales.Models.Entidades
         public int? IdProyecto { get; set; }
         public virtual Proyecto Proyecto { get; set; }
 
-
         [Display(Name = "Dueño del proceso")]
         [Required(ErrorMessage = "Debe seleccionar el {0}.")]
         [Range(1, double.MaxValue, ErrorMessage = "Debe seleccionar el {0}.")]
         public int IdActorDuennoProceso { get; set; }
         public virtual Actor ActorDuennoProceso { get; set; }
 
-        [Display(Name = "Responsable de gestión y seguimiento")]
+        [Display(Name = "Responsable de gest y seg")]
         [Required(ErrorMessage = "Debe seleccionar el {0}.")]
         [Range(1, double.MaxValue, ErrorMessage = "Debe seleccionar el {0}.")]
         public int IdActorResponsableGestSeg { get; set; }
@@ -85,8 +84,7 @@ namespace SistemasLegales.Models.Entidades
         [Display(Name = "Nro. días para notificación")]
         [Required(ErrorMessage = "Debe introducir el {0}.")]
         public int DiasNotificacion { get; set; }
-
-        [Required(ErrorMessage = "Debe introducir el {0}.")]
+        
         [EmailAddress(ErrorMessage = "El {0} es inválido.")]
         [Display(Name = "Correo notificación 1")]
         [StringLength(100, MinimumLength = 1, ErrorMessage = "El {0} no puede tener más de {1} y menos de {2} caracteres.")]
@@ -157,9 +155,6 @@ namespace SistemasLegales.Models.Entidades
                 {
                     if (!NotificacionEnviada)
                     {
-                        NotificacionEnviada = true;
-                        await db.SaveChangesAsync();
-
                         var requisito = await db.Requisito
                             .Include(c => c.Documento).ThenInclude(c=> c.RequisitoLegal.OrganismoControl)
                             .Include(c => c.Ciudad)
@@ -174,9 +169,11 @@ namespace SistemasLegales.Models.Entidades
                         {
                             ActorDuennoProceso.Email,
                             ActorResponsableGestSeg.Email,
-                            ActorCustodioDocumento.Email,
-                            EmailNotificacion1
+                            ActorCustodioDocumento.Email
                         };
+
+                        if (!String.IsNullOrEmpty(EmailNotificacion1))
+                            listadoEmails.Add(EmailNotificacion1);
 
                         if (!String.IsNullOrEmpty(EmailNotificacion2))
                             listadoEmails.Add(EmailNotificacion2);
@@ -193,6 +190,9 @@ namespace SistemasLegales.Models.Entidades
                             Status: {Status.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine},
                             Observaciones: {Observaciones}, {System.Environment.NewLine}{System.Environment.NewLine}
                         ");
+
+                        NotificacionEnviada = true;
+                        await db.SaveChangesAsync();
                         return true;
                     }
                 }

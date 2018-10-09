@@ -21,72 +21,63 @@
             <td><label asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.Documento.RequisitoLegal.OrganismoControl.Nombre)</td>
         </tr>
-
         <tr>
             <td><label asp-for="Documento.IdRequisitoLegal" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.Documento.RequisitoLegal.Nombre)</td>
         </tr>
-
         <tr>
             <td><label asp-for="IdDocumento" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.Documento.Nombre)</td>
         </tr>
-
         <tr>
             <td><label asp-for="IdCiudad" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.Ciudad.Nombre)</td>
         </tr>
-
         <tr>
             <td><label asp-for="IdProceso" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.Proceso.Nombre)</td>
         </tr>
 
         <tr>
+            <td><label asp-for="IdProyecto" class="negrita"></label></td>
+            <td>@Html.DisplayFor(m => m.Proyecto.Nombre)</td>
+        </tr>
+        <tr>
             <td><label asp-for="IdActorDuennoProceso" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.ActorDuennoProceso.Nombres)</td>
         </tr>
-
         <tr>
             <td><label asp-for="IdActorResponsableGestSeg" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.ActorResponsableGestSeg.Nombres)</td>
         </tr>
-
         <tr>
             <td><label asp-for="IdActorCustodioDocumento" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.ActorCustodioDocumento.Nombres)</td>
         </tr>
-
         <tr>
             <td><label asp-for="FechaCumplimiento" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.FechaCumplimiento)</td>
         </tr>
-
         <tr>
             <td><label asp-for="FechaCaducidad" class="negrita"></label></td>
             <td>@{await ViewContext.Writer.WriteAsync(Model?.FechaCaducidad?.ToString("dd/MM/yyyy") ?? "-");}</td>
         </tr>
-
         <tr>
             <td><label asp-for="IdStatus" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.Status.Nombre)</td>
         </tr>
-
         <tr>
             <td><label asp-for="DiasNotificacion" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.DiasNotificacion)</td>
         </tr>
-
         <tr>
             <td><label asp-for="EmailNotificacion1" class="negrita"></label></td>
             <td>@Html.DisplayFor(m => m.EmailNotificacion1)</td>
         </tr>
-
         <tr>
             <td><label asp-for="EmailNotificacion2" class="negrita"></label></td>
             <td>@{await ViewContext.Writer.WriteAsync(Model?.EmailNotificacion2 ?? "-");}</td>
         </tr>
-
         <tr>
             <td><label asp-for="Observaciones" class="negrita"></label></td>
             <td>@{await ViewContext.Writer.WriteAsync(Model?.Observaciones ?? "-");}</td>

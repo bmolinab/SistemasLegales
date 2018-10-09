@@ -36,8 +36,8 @@ namespace SistemasLegales.Controllers
                     .Include(c => c.Documento)
                     .Include(c => c.Ciudad)
                     .Include(c => c.Proceso)
-                    .Include(c => c.Proyecto)
-                    .OrderBy(c => c.IdDocumento).ThenBy(c=> c.Documento.IdRequisitoLegal).ThenBy(c=> c.Documento.RequisitoLegal.IdOrganismoControl).ThenBy(c => c.IdCiudad).ThenBy(c => c.IdProceso).ThenBy(c=>c.IdProyecto).ToListAsync();
+                    .Include(c=> c.Proyecto)
+                    .OrderBy(c => c.IdDocumento).ThenBy(c=> c.Documento.IdRequisitoLegal).ThenBy(c=> c.Documento.RequisitoLegal.IdOrganismoControl).ThenBy(c => c.IdCiudad).ThenBy(c => c.IdProceso).ThenBy(c=> c.IdProyecto).ToListAsync();
         }
 
         [Authorize(Policy = "GerenciaGestion")]
@@ -57,6 +57,8 @@ namespace SistemasLegales.Controllers
                 var listadoProyectos = await db.Proyecto.OrderBy(c => c.Nombre).ToListAsync();
                 listadoProyectos.Insert(0, new Proyecto { IdProyecto = -1, Nombre = "Todos" });
                 ViewData["Proyecto"] = new SelectList(listadoProyectos, "IdProyecto", "Nombre");
+
+
             }
             catch (Exception)
             {
@@ -118,7 +120,7 @@ namespace SistemasLegales.Controllers
                             IdDocumento = requisito.IdDocumento,
                             IdCiudad = requisito.IdCiudad,
                             IdProceso = requisito.IdProceso,
-                            IdProyecto= requisito.IdProyecto,
+                            IdProyecto=requisito.IdProyecto,
                             IdActorDuennoProceso = requisito.IdActorDuennoProceso,
                             IdActorResponsableGestSeg = requisito.IdActorResponsableGestSeg,
                             IdActorCustodioDocumento = requisito.IdActorCustodioDocumento,

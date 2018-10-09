@@ -24,9 +24,11 @@
         <div class="col-md-3 col-xs-4 form-control-label">
             <label asp-for="IdRequisitoLegal"></label>
         </div>
-        <div class="col-md-5 col-xs-8">
-            <div class="form-group">
-                <select asp-for="IdRequisitoLegal" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.RequisitoLegal"></select>
+        <div class="col-md-5 col-xs-8 padding-left-0 padding-right-0">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <div class="demo margin-top-0">
+                    <select asp-for="IdRequisitoLegal" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.RequisitoLegal"></select>
+                </div>
                 <span asp-validation-for="IdRequisitoLegal" class="text-danger"></span>
             </div>
         </div>
@@ -36,9 +38,11 @@
         <div class="col-md-3 col-xs-4 form-control-label">
             <label asp-for="Nombre"></label>
         </div>
-        <div class="col-md-5 col-xs-8">
-            <div class="form-group">
-                <input asp-for="Nombre" class="form-control" />
+        <div class="col-md-5 col-xs-8 padding-left-0 padding-right-0">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <div class="demo margin-top-0">
+                    <input asp-for="Nombre" class="form-control" />
+                </div>
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
         </div>

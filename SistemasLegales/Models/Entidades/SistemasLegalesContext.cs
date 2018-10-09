@@ -92,9 +92,9 @@ namespace SistemasLegales.Models.Entidades
                     .HasConstraintName("FK_AdminRequisitoLegal_Proceso");
 
                 entity.HasOne(d => d.Proyecto)
-                   .WithMany(p => p.Requisito)
-                   .HasForeignKey(d => d.IdProyecto)
-                   .HasConstraintName("FK_Requisito_Proyecto");
+                  .WithMany(p => p.Requisito)
+                  .HasForeignKey(d => d.IdProyecto)
+                    .HasConstraintName("FK_Requisito_Proyecto");
 
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.AdminRequisitoLegal)

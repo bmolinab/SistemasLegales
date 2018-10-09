@@ -15,7 +15,7 @@
         });
     };
 
-    this.eventoResponsableGestSeg = function () {
+    this.eventoProyecto = function () {
         $("#IdProyecto").on("change", function (e) {
             partialViewListadoTabla();
         });
@@ -75,6 +75,7 @@
                         }
                     },
                     IdActorResponsableGestSeg: $("#IdActorResponsableGestSeg").val(),
+                    IdProyecto: $("#IdProyecto").val(),
                     Anno: $("#Anno").val(),
                     SemaforoVerde: semaforoVerde,
                     SemaforoAmarillo: semaforoAmarillo,
@@ -98,6 +99,7 @@
         init: function () {
             eventoOrganismoControl();
             eventoResponsableGestSeg();
+            eventoProyecto();
             eventoFechaAnno();
             eventoSemaforoEstado();
             partialViewListadoTabla();

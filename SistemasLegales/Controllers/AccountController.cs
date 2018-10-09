@@ -158,7 +158,8 @@ namespace SistemasLegales.Controllers
                     {
                         var user = new ApplicationUser { UserName = model.UserName, Email = $"{model.UserName.ToLower()}@bekaert.com" };
                         result = await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, model.Role);
+                        if (result.Succeeded)
+                            await _userManager.AddToRoleAsync(user, model.Role);
                     }
                     else
                     {

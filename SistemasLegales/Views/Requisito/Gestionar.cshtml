@@ -25,10 +25,10 @@
     }
 
     <div class="row">
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
+                <div class="demo margin-top-0">
                     <select asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
                 </div>
                 <span asp-validation-for="Documento.RequisitoLegal.IdOrganismoControl" class="text-danger"></span>
@@ -43,10 +43,10 @@
             @{await Html.RenderPartialAsync("_DocumentoSelect", Model);}
         </div>
 
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="IdCiudad"></label>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdCiudad"></label>
+                <div class="demo margin-top-0">
                     <select asp-for="IdCiudad" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Ciudad"></select>
                 </div>
                 <span asp-validation-for="IdCiudad" class="text-danger"></span>
@@ -55,40 +55,44 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="IdProceso"></label>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdProceso"></label>
+                <div class="demo margin-top-0">
                     <select asp-for="IdProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proceso"></select>
                 </div>
-                <span asp-validation-for="IdProceso" class="text-danger"></span>
             </div>
         </div>
-
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="IdActorDuennoProceso"></label>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdProyecto"></label>
+                <div class="demo margin-top-0">
+                    <select asp-for="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdActorDuennoProceso"></label>
+                <div class="demo margin-top-0">
                     <select asp-for="IdActorDuennoProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
                 </div>
                 <span asp-validation-for="IdActorDuennoProceso" class="text-danger"></span>
             </div>
         </div>
-
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="IdActorResponsableGestSeg"></label>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdActorResponsableGestSeg"></label>
+                <div class="demo margin-top-0">
                     <select asp-for="IdActorResponsableGestSeg" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
                 </div>
                 <span asp-validation-for="IdActorResponsableGestSeg" class="text-danger"></span>
             </div>
         </div>
-
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="IdActorCustodioDocumento"></label>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdActorCustodioDocumento"></label>
+                <div class="demo margin-top-0">
                     <select asp-for="IdActorCustodioDocumento" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
                 </div>
                 <span asp-validation-for="IdActorCustodioDocumento" class="text-danger"></span>
@@ -97,7 +101,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
             <div class="form-group">
                 <label asp-for="FechaCumplimiento"></label>
                 <div class="input-group margin-bottom-0 focused">
@@ -108,7 +112,7 @@
             </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
             <div class="form-group">
                 <label asp-for="FechaCaducidad"></label>
                 <div class="input-group margin-bottom-0 focused">
@@ -119,17 +123,17 @@
             </div>
         </div>
 
-        <div class="col-sm-3">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="IdStatus"></label>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdStatus"></label>
+                <div class="demo margin-top-0">
                     <select asp-for="IdStatus" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Status"></select>
-                    <span asp-validation-for="IdStatus" class="text-danger"></span>
                 </div>
+                <span asp-validation-for="IdStatus" class="text-danger"></span>
             </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
             <div class="form-group">
                 <label asp-for="DiasNotificacion"></label>
                 <div class="input-group spinner focused margin-bottom-0" data-trigger="spinner">
@@ -144,7 +148,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
             <div class="form-group">
                 <div class="input-group margin-bottom-0">
                     <label asp-for="EmailNotificacion1"></label>
@@ -154,7 +158,7 @@
             </div>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
             <div class="form-group">
                 <div class="input-group margin-bottom-0">
                     <label asp-for="EmailNotificacion2"></label>
@@ -166,7 +170,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
             <div class="form-group">
                 <div class="input-group margin-bottom-0">
                     <label asp-for="Observaciones"></label>

@@ -19,7 +19,7 @@ namespace SistemasLegales.Models.Utiles
         public static string Error { get { return "error"; } }
         public static string Aviso { get { return "warning"; } }
         public static string ExisteRegistro { get { return "Existe un registro de igual información."; } }
-        public static string ExisteUsuario { get { return "El usuario ya existe."; } }
+        public static string ExisteUsuario { get { return "Verifique que el usuario no exista y que la contraseña cumpla con los requisitos de complejidad (Al menos un caracter no alfanumérico, un dígito (0 - 9) y una letra mayúscula (A - Z))."; } }
         public static string BorradoNoSatisfactorio { get { return "No es posible eliminar el registro, existen relaciones que dependen de él."; } }
         public static string RegistroNoEncontrado { get { return "El registro solicitado no se ha encontrado."; } }
         public static string ModeloInvalido { get { return "El modelo es inválido."; } }

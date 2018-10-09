@@ -2,32 +2,29 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-4 col-xs-12 col-lg-4">
-        <div class="form-group">
-            <div class="input-group margin-bottom-0">
-                <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
+        <div class="card-inner padding-0">
+            <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
+            <div class="demo margin-top-0">
                 <select id="IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
             </div>
         </div>
     </div>
     <div class="col-sm-12 col-md-4 col-xs-12 col-lg-4">
-        <div class="form-group">
-            <div class="input-group margin-bottom-0">
-                <label asp-for="IdActorResponsableGestSeg"></label>
+        <div class="card-inner padding-0">
+            <label asp-for="IdProyecto"></label>
+            <div class="demo margin-top-0">
+                <select id="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
+            </div>
+        </div>
+    </div>  
+    <div class="col-sm-12 col-md-4 col-xs-12 col-lg-4">
+        <div class="card-inner padding-0">
+            <label asp-for="IdActorResponsableGestSeg"></label>
+            <div class="demo margin-top-0">
                 <select id="IdActorResponsableGestSeg" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
             </div>
         </div>
     </div>
-
-    <div class="col-sm-12 col-md-4 col-xs-12 col-lg-4">
-        <div class="form-group">
-            <div class="input-group margin-bottom-0">
-                <label asp-for="IdProyecto"></label>
-                <select id="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
-            </div>
-        </div>
-    </div>
-
-
     <div class="col-sm-12 col-md-4 col-xs-12 col-lg-4">
         <div class="form-group">
             <label asp-for="Anno"></label>
