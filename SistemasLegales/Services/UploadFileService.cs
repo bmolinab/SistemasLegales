@@ -4,6 +4,7 @@ using SistemasLegales.Models.Entidades;
 using SistemasLegales.Models.Utiles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -137,8 +138,12 @@ namespace SistemasLegales.Services
                 await db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception)
-            { }
+            catch (Exception ex)
+            {
+
+                Debug.Write(ex.Message);
+
+            }
             return false;
         }
 

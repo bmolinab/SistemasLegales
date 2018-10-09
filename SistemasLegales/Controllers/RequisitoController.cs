@@ -108,6 +108,7 @@ namespace SistemasLegales.Controllers
         {
             try
             {
+                Requisito miRequisito = new Requisito();
                 ViewBag.accion = requisito.IdRequisito == 0 ? "Crear" : "Editar";var tt = Request.Form;
                 ModelState.Remove("Documento.Nombre");
                 ModelState.Remove("Documento.RequisitoLegal.Nombre");
@@ -115,12 +116,13 @@ namespace SistemasLegales.Controllers
                 {
                     if (requisito.IdRequisito == 0)
                     {
-                        db.Add(new Requisito
+
+                         miRequisito = new Requisito
                         {
                             IdDocumento = requisito.IdDocumento,
                             IdCiudad = requisito.IdCiudad,
                             IdProceso = requisito.IdProceso,
-                            IdProyecto=requisito.IdProyecto,
+                            IdProyecto = requisito.IdProyecto,
                             IdActorDuennoProceso = requisito.IdActorDuennoProceso,
                             IdActorResponsableGestSeg = requisito.IdActorResponsableGestSeg,
                             IdActorCustodioDocumento = requisito.IdActorCustodioDocumento,
@@ -133,26 +135,28 @@ namespace SistemasLegales.Controllers
                             EmailNotificacion2 = requisito.EmailNotificacion2,
                             Observaciones = requisito.Observaciones,
                             NotificacionEnviada = false
-                        });
+                        };
+
+                        db.Add(miRequisito);
                     }
                     else
                     {
-                        var requisitoActualizar = await db.Requisito.FirstOrDefaultAsync(c => c.IdRequisito == requisito.IdRequisito);
-                        requisitoActualizar.IdDocumento = requisito.IdDocumento;
-                        requisitoActualizar.IdCiudad = requisito.IdCiudad;
-                        requisitoActualizar.IdProceso = requisito.IdProceso;
-                        requisitoActualizar.IdProyecto = requisito.IdProyecto;
-                        requisitoActualizar.IdActorDuennoProceso = requisito.IdActorDuennoProceso;
-                        requisitoActualizar.IdActorResponsableGestSeg = requisito.IdActorResponsableGestSeg;
-                        requisitoActualizar.IdActorCustodioDocumento = requisito.IdActorCustodioDocumento;
-                        requisitoActualizar.FechaCumplimiento = requisito.FechaCumplimiento;
-                        requisitoActualizar.FechaCaducidad = requisito.FechaCaducidad;
-                        requisitoActualizar.IdStatus = requisito.IdStatus;
-                        requisitoActualizar.DuracionTramite = requisito.DuracionTramite;
-                        requisitoActualizar.DiasNotificacion = requisito.DiasNotificacion;
-                        requisitoActualizar.EmailNotificacion1 = requisito.EmailNotificacion1;
-                        requisitoActualizar.EmailNotificacion2 = requisito.EmailNotificacion2;
-                        requisitoActualizar.Observaciones = requisito.Observaciones;
+                        miRequisito = await db.Requisito.FirstOrDefaultAsync(c => c.IdRequisito == requisito.IdRequisito);
+                        miRequisito.IdDocumento = requisito.IdDocumento;
+                        miRequisito.IdCiudad = requisito.IdCiudad;
+                        miRequisito.IdProceso = requisito.IdProceso;
+                        miRequisito.IdProyecto = requisito.IdProyecto;
+                        miRequisito.IdActorDuennoProceso = requisito.IdActorDuennoProceso;
+                        miRequisito.IdActorResponsableGestSeg = requisito.IdActorResponsableGestSeg;
+                        miRequisito.IdActorCustodioDocumento = requisito.IdActorCustodioDocumento;
+                        miRequisito.FechaCumplimiento = requisito.FechaCumplimiento;
+                        miRequisito.FechaCaducidad = requisito.FechaCaducidad;
+                        miRequisito.IdStatus = requisito.IdStatus;
+                        miRequisito.DuracionTramite = requisito.DuracionTramite;
+                        miRequisito.DiasNotificacion = requisito.DiasNotificacion;
+                        miRequisito.EmailNotificacion1 = requisito.EmailNotificacion1;
+                        miRequisito.EmailNotificacion2 = requisito.EmailNotificacion2;
+                        miRequisito.Observaciones = requisito.Observaciones;
                     }
                     await db.SaveChangesAsync();
 
@@ -165,7 +169,7 @@ namespace SistemasLegales.Controllers
 
                         if (data.Length > 0)
                         {
-                            var activoFijoDocumentoTransfer = new DocumentoRequisitoTransfer { Nombre = file.FileName, Fichero = data, IdRequisito = requisito.IdRequisito };
+                            var activoFijoDocumentoTransfer = new DocumentoRequisitoTransfer { Nombre = file.FileName, Fichero = data, IdRequisito = miRequisito.IdRequisito };
                             responseFile = await uploadFileService.UploadFiles(activoFijoDocumentoTransfer);
                         }
                     }
