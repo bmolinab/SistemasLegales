@@ -130,7 +130,7 @@ namespace SistemasLegales.Controllers
 
                 if (id != null)
                 {
-                    var requisito = await db.Requisito.Include(c=> c.DocumentoRequisito).Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl).FirstOrDefaultAsync(c => c.IdRequisito == id);
+                    var requisito = await db.Requisito.Include(c=> c.DocumentoRequisito).Include(x=>x.Accion).Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl).FirstOrDefaultAsync(c => c.IdRequisito == id);
                     if (requisito == null)
                         return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
 

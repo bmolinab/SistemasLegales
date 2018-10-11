@@ -15,48 +15,49 @@
 }
 <input type="hidden" id="idRequisito" asp-for="IdRequisito" />
 <fieldset>
-        <div class="col-12 margin-top-5">
-                    <div class="col-md-12 col-sm-12 col col-xs-12 col-lg-12">
-                        <div class="product-deatil col-lg-12 text-align-left JustifyFull">
-                            <h4 class="name">
-                                <b>
-                                    <a href="javascript:void (0)" >
-                                        @Model.Documento.RequisitoLegal.OrganismoControl.Nombre
-                                    </a>
-                                </b>
-                            </h4>
-                            <h5 class="name">
-                                <a href="javascript:void (0)" >
-                                    @Model.Documento.RequisitoLegal.Nombre
-                                </a>
-                            </h5>
-                            <h6 class="name">
-                                <a href="javascript:void (0)" >
-                                    @Model.Documento.Nombre
-                                </a>
-                            </h6>
-                        </div>
+    <div class="col-lg-12"> <a asp-action="Gestionar" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Editar Requisito</a></div>
+    <div class="col-12 margin-top-5">
+        <div class="col-md-12 col-sm-12 col col-xs-12 col-lg-12">
+            <div class="product-deatil col-lg-12 text-align-left JustifyFull">
+                <h4 class="name">
+                    <b>
+                        <a href="javascript:void (0)">
+                            @Model.Documento.RequisitoLegal.OrganismoControl.Nombre
+                        </a>
+                    </b>
+                </h4>
+                <h5 class="name">
+                    <a href="javascript:void (0)">
+                        @Model.Documento.RequisitoLegal.Nombre
+                    </a>
+                </h5>
+                <h6 class="name">
+                    <a href="javascript:void (0)">
+                        @Model.Documento.Nombre
+                    </a>
+                </h6>
+            </div>
 
-                        <section class="col col-lg-12 text-align-center">
-                            <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
-                                <span class="text-primary h6"><a>Ciudad:</a></span>
-                                <br />
-                                <span class="">@Model.Ciudad.Nombre</span>
-                            </p>
-                            <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
-                                <span class="text-primary h6"><a>Proyecto:</a></span>
-                                <br />
-                                <span class="">@Model.Proyecto.Nombre</span>
-                            </p>
+            <section class="col col-lg-12 text-align-center">
+                <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
+                    <span class="text-primary h6"><a>Ciudad:</a></span>
+                    <br />
+                    <span class="">@Model.Ciudad.Nombre</span>
+                </p>
+                <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
+                    <span class="text-primary h6"><a>Proyecto:</a></span>
+                    <br />
+                    <span class="">@Model.Proyecto.Nombre</span>
+                </p>
 
-                            <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
-                                <span class="text-primary h6"><a>Due&ntilde;o del proceso:</a></span>
-                                <br />
-                                <span class="" >@Model.ActorDuennoProceso.Nombres</span>
-                            </p>
-                        </section>
-                    </div>
-                </div>
+                <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
+                    <span class="text-primary h6"><a>Due&ntilde;o del proceso:</a></span>
+                    <br />
+                    <span class="">@Model.ActorDuennoProceso.Nombres</span>
+                </p>
+            </section>
+        </div>
+    </div>
 </fieldset>
 
 
@@ -65,11 +66,11 @@
     <section class="col col-lg-12">
        
         <div class="col col-lg-12">
-            <legend>Acci&oacute;n</legend>
+            <legend>Acciones</legend>
             <div class="form-group">
                 <label>Fecha</label>
                 <div class="input-group margin-bottom-0 focused">
-                    <input class="form-control datepicker" id="fechaAccion" />
+                    <input class="form-control datepicker" onfocus="OcultarMensaje()" id="fechaAccion" />
                     <span class="input-group-addon bg btndatepicker"><i class="fa fa-calendar"></i></span>
                 </div>
             </div>
@@ -78,7 +79,7 @@
             <div class="form-group">
                 <label>Detalle</label>
                 <div class="input-group margin-bottom-0">
-                    <textarea id="Observaciones" maxlength="500" name="Observaciones" class="form-control" rows="6" data-val="true" data-val-length="Las Observaciones no pueden tener más de 500 y menos de 1 caracteres." data-val-length-max="500" data-val-length-min="1"></textarea>
+                    <textarea id="Observaciones" onfocus="OcultarMensaje()" maxlength="999" name="Observaciones" class="form-control" rows="6" data-val="true" data-val-length="Las Observaciones no pueden tener más de 500 y menos de 1 caracteres." data-val-length-max="999" data-val-length-min="1"></textarea>
                 </div>
             </div>
         </div>
@@ -136,15 +137,22 @@
 
     @{ await Html.RenderPartialAsync("_DatepickerPartial"); }
 
-
+   
 
     <script type="text/javascript">
+
+        function OcultarMensaje()
+        {
+            $("#mensajeObservaciones").hide();
+
+        }
+
         function EliminarAccion(valor)
         {
 
             var mensaje = confirm("\u00bf Desea eliminar el acci\u00f3n ?");
             if (mensaje) {
-
+                MiApp.LoadingPanel.mostrarNotificacion("bodyTemplate", "Eliminando la acci\u00f3n...");
              $.ajax({
                     type: 'POST',
                     url: '@Url.Action("EliminarAccion","Requisito")',
@@ -176,13 +184,14 @@
                      newTable += "</tbody>";
                      newTable += "</table>";
                      document.getElementById("tbAcciones").innerHTML = newTable;
+                     MiApp.Mensajes.mostrarNotificacion("success", "La acci\u00f3n se ha realizado satisfactoriamente.");
 
                     }, complete: function (data) {
-
+                     $("#bodyTemplate").waitMe("hide");
                     },
 
                     error: function (ex) {
-                        alert('Failed to retrieve data.' + ex);
+                        MiApp.Mensajes.mostrarNotificacion("error", "Ocurri\u00f3 un error al conectarse al servicio, inténtelo nuevamente.");
                     }
                 });
             }
@@ -202,7 +211,7 @@
                 return;
             }
 
-
+            MiApp.LoadingPanel.mostrarNotificacion("bodyTemplate", "Adicionando la acci\u00f3n...");
 
              $.ajax({
                     type: 'POST',
@@ -235,13 +244,13 @@
                      newTable += "</tbody>";
                      newTable += "</table>";
                      document.getElementById("tbAcciones").innerHTML = newTable;
-
+                     MiApp.Mensajes.mostrarNotificacion("success", "La acci\u00f3n se ha realizado satisfactoriamente.");
                     }, complete: function (data) {
-
+                     $("#bodyTemplate").waitMe("hide");
                     },
 
                     error: function (ex) {
-                        alert('Failed to retrieve data.' + ex);
+                        MiApp.Mensajes.mostrarNotificacion("error", "Ocurri\u00f3 un error al conectarse al servicio, inténtelo nuevamente.");
                     }
                 });
 
