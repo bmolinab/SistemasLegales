@@ -163,6 +163,8 @@ namespace SistemasLegales.Controllers
                 Requisito miRequisito = new Requisito();
                 ViewBag.accion = requisito.IdRequisito == 0 ? "Crear" : "Editar";var tt = Request.Form;
                 ModelState.Remove("Documento.Nombre");
+                ModelState.Remove("Documento.Tipo");
+                ModelState.Remove("Documento.Cantidad");
                 ModelState.Remove("Documento.RequisitoLegal.Nombre");
                 if (ModelState.IsValid)
                 {
