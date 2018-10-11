@@ -181,16 +181,29 @@
             </div>
         </div>
 
-        
         <fieldset>
             <legend>Documentaci&oacute;n adicional</legend>
             <div class="row">
                 <div class="col-md-12 col-xs-12 col-sm-12">
                     <input type="file" id="file" name="file" />
                 </div>
+
+
+                @{
+                    if (Model != null)
+                    {
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            @{await Html.RenderPartialAsync("_FileDownload", Model?.DocumentoRequisito);}
+                        </div>
+                    }
+                }
+
+
             </div>
 
         </fieldset>
+
+    
 
 
 
