@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +7,11 @@ using SistemasLegales.Models.Entidades;
 using SistemasLegales.Models.Extensores;
 using SistemasLegales.Models.Utiles;
 using SistemasLegales.Services;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SistemasLegales.Controllers
 {
@@ -38,6 +38,11 @@ namespace SistemasLegales.Controllers
                     .Include(c => c.Proceso)
                     .Include(c=> c.Proyecto)
                     .OrderBy(c => c.IdDocumento).ThenBy(c=> c.Documento.IdRequisitoLegal).ThenBy(c=> c.Documento.RequisitoLegal.IdOrganismoControl).ThenBy(c => c.IdCiudad).ThenBy(c => c.IdProceso).ThenBy(c=> c.IdProyecto).ToListAsync();
+        }
+
+        private async Task<List<Accion>> ListarAcciones(int IdRequisito)
+        {
+            return await db.Accion.Where(c => c.IdRequisito == IdRequisito).ToListAsync();                                     
         }
 
         [Authorize(Policy = "GerenciaGestion")]
@@ -210,6 +215,7 @@ namespace SistemasLegales.Controllers
                             .Include(c => c.ActorCustodioDocumento)
                             .Include(c => c.Status)
                             .Include(c=> c.DocumentoRequisito)
+                            .Include(c=> c.Accion)
                         .FirstOrDefaultAsync(c => c.IdRequisito == id);
                     if (requisito == null)
                         return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");

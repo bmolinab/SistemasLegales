@@ -115,6 +115,7 @@ namespace SistemasLegales.Models.Entidades
         [NotMapped]
         public bool SemaforoRojo { get; set; }
 
+        public virtual ICollection<Accion> Accion { get; set; }
         public virtual ICollection<DocumentoRequisito> DocumentoRequisito { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

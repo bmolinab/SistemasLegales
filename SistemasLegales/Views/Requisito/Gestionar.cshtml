@@ -15,190 +15,224 @@
     <link rel="stylesheet" type="text/css" href="~/lib/bootstrap-fileinput/css/fileinput.min.css">
 }
 
-<form asp-action="Gestionar" novalidate="novalidate" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    @{
-        if (Model != null)
-        {
-            <input type="hidden" asp-for="IdRequisito" />
+    <form asp-action="Gestionar" novalidate="novalidate" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @{
+            if (Model != null)
+            {
+                <input type="hidden" asp-for="IdRequisito" />
+            }
         }
-    }
 
-    <div class="row">
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="card-inner padding-0 margin-bottom-0">
-                <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
-                <div class="demo margin-top-0">
-                    <select asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
-                </div>
-                <span asp-validation-for="Documento.RequisitoLegal.IdOrganismoControl" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div id="divRequisitoLegal">
-            @{await Html.RenderPartialAsync("_RequisitoLegalSelect", Model);}
-        </div>
-
-        <div id="divDocumento">
-            @{await Html.RenderPartialAsync("_DocumentoSelect", Model);}
-        </div>
-
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="card-inner padding-0 margin-bottom-0">
-                <label asp-for="IdCiudad"></label>
-                <div class="demo margin-top-0">
-                    <select asp-for="IdCiudad" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Ciudad"></select>
-                </div>
-                <span asp-validation-for="IdCiudad" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="card-inner padding-0 margin-bottom-0">
-                <label asp-for="IdProceso"></label>
-                <div class="demo margin-top-0">
-                    <select asp-for="IdProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proceso"></select>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="card-inner padding-0 margin-bottom-0">
-                <label asp-for="IdProyecto"></label>
-                <div class="demo margin-top-0">
-                    <select asp-for="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="card-inner padding-0 margin-bottom-0">
-                <label asp-for="IdActorDuennoProceso"></label>
-                <div class="demo margin-top-0">
-                    <select asp-for="IdActorDuennoProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
-                </div>
-                <span asp-validation-for="IdActorDuennoProceso" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="card-inner padding-0 margin-bottom-0">
-                <label asp-for="IdActorResponsableGestSeg"></label>
-                <div class="demo margin-top-0">
-                    <select asp-for="IdActorResponsableGestSeg" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
-                </div>
-                <span asp-validation-for="IdActorResponsableGestSeg" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="card-inner padding-0 margin-bottom-0">
-                <label asp-for="IdActorCustodioDocumento"></label>
-                <div class="demo margin-top-0">
-                    <select asp-for="IdActorCustodioDocumento" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
-                </div>
-                <span asp-validation-for="IdActorCustodioDocumento" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="form-group">
-                <label asp-for="FechaCumplimiento"></label>
-                <div class="input-group margin-bottom-0 focused">
-                    <input asp-for="FechaCumplimiento" class="form-control datepicker" />
-                    <span class="input-group-addon bg btndatepicker" data-picker="FechaCumplimiento"><i class="fa fa-calendar"></i></span>
-                </div>
-                <span asp-validation-for="FechaCumplimiento" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="form-group">
-                <label asp-for="FechaCaducidad"></label>
-                <div class="input-group margin-bottom-0 focused">
-                    <input asp-for="FechaCaducidad" class="form-control datepicker" />
-                    <span class="input-group-addon bg btndatepicker" data-picker="FechaCaducidad"><i class="fa fa-calendar"></i></span>
-                </div>
-                <span asp-validation-for="FechaCaducidad" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="card-inner padding-0 margin-bottom-0">
-                <label asp-for="IdStatus"></label>
-                <div class="demo margin-top-0">
-                    <select asp-for="IdStatus" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Status"></select>
-                </div>
-                <span asp-validation-for="IdStatus" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-            <div class="form-group">
-                <label asp-for="DiasNotificacion"></label>
-                <div class="input-group spinner focused margin-bottom-0" data-trigger="spinner">
-                    <input type="text" asp-for="DiasNotificacion" class="form-control" data-rule="quantity" />
-                    <span class="input-group-addon">
-                        <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                        <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="EmailNotificacion1"></label>
-                    <input asp-for="EmailNotificacion1" class="form-control" />
-                </div>
-                <span asp-validation-for="EmailNotificacion1" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="EmailNotificacion2"></label>
-                    <input asp-for="EmailNotificacion2" class="form-control" />
-                </div>
-                <span asp-validation-for="EmailNotificacion2" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
-            <div class="form-group">
-                <div class="input-group margin-bottom-0">
-                    <label asp-for="Observaciones"></label>
-                    <textarea asp-for="Observaciones" class="form-control" rows="4"></textarea>
-                </div>
-                <span asp-validation-for="Observaciones" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
-    <fieldset>
-        <legend>Documentaci&oacute;n adicional</legend>
         <div class="row">
-            <div class="col-md-12 col-xs-12 col-sm-12">
-                <input type="file" id="file" name="file" />
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="card-inner padding-0 margin-bottom-0">
+                    <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
+                    </div>
+                    <span asp-validation-for="Documento.RequisitoLegal.IdOrganismoControl" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div id="divRequisitoLegal">
+                @{await Html.RenderPartialAsync("_RequisitoLegalSelect", Model);}
+            </div>
+
+            <div id="divDocumento">
+                @{await Html.RenderPartialAsync("_DocumentoSelect", Model);}
+            </div>
+
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="card-inner padding-0 margin-bottom-0">
+                    <label asp-for="IdCiudad"></label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="IdCiudad" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Ciudad"></select>
+                    </div>
+                    <span asp-validation-for="IdCiudad" class="text-danger"></span>
+                </div>
             </div>
         </div>
-    </fieldset>
 
-    <div class="row">
-        <div class="col-md-offset-5 col-xs-offset-6">
-            <button type="submit" class="btn btn-primary ladda-button" data-style="expand-left" id="btn-guardar">
-                <span class="ladda-label" id="laddaSpanGuardar">ACEPTAR</span>
-            </button>
-            <a asp-action="Index" class="btn btn-default">CANCELAR</a>
+        <div class="row">
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="card-inner padding-0 margin-bottom-0">
+                    <label asp-for="IdProceso"></label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="IdProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proceso"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="card-inner padding-0 margin-bottom-0">
+                    <label asp-for="IdProyecto"></label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="card-inner padding-0 margin-bottom-0">
+                    <label asp-for="IdActorDuennoProceso"></label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="IdActorDuennoProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                    </div>
+                    <span asp-validation-for="IdActorDuennoProceso" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="card-inner padding-0 margin-bottom-0">
+                    <label asp-for="IdActorResponsableGestSeg"></label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="IdActorResponsableGestSeg" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                    </div>
+                    <span asp-validation-for="IdActorResponsableGestSeg" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="card-inner padding-0 margin-bottom-0">
+                    <label asp-for="IdActorCustodioDocumento"></label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="IdActorCustodioDocumento" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                    </div>
+                    <span asp-validation-for="IdActorCustodioDocumento" class="text-danger"></span>
+                </div>
+            </div>
         </div>
-    </div>
-</form>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="form-group">
+                    <label asp-for="FechaCumplimiento"></label>
+                    <div class="input-group margin-bottom-0 focused">
+                        <input asp-for="FechaCumplimiento" class="form-control datepicker" />
+                        <span class="input-group-addon bg btndatepicker" data-picker="FechaCumplimiento"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <span asp-validation-for="FechaCumplimiento" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="form-group">
+                    <label asp-for="FechaCaducidad"></label>
+                    <div class="input-group margin-bottom-0 focused">
+                        <input asp-for="FechaCaducidad" class="form-control datepicker" />
+                        <span class="input-group-addon bg btndatepicker" data-picker="FechaCaducidad"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <span asp-validation-for="FechaCaducidad" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="card-inner padding-0 margin-bottom-0">
+                    <label asp-for="IdStatus"></label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="IdStatus" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Status"></select>
+                    </div>
+                    <span asp-validation-for="IdStatus" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="form-group">
+                    <label asp-for="DiasNotificacion"></label>
+                    <div class="input-group spinner focused margin-bottom-0" data-trigger="spinner">
+                        <input type="text" asp-for="DiasNotificacion" class="form-control" data-rule="quantity" />
+                        <span class="input-group-addon">
+                            <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                            <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group margin-bottom-0">
+                        <label asp-for="EmailNotificacion1"></label>
+                        <input asp-for="EmailNotificacion1" class="form-control" />
+                    </div>
+                    <span asp-validation-for="EmailNotificacion1" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group margin-bottom-0">
+                        <label asp-for="EmailNotificacion2"></label>
+                        <input asp-for="EmailNotificacion2" class="form-control" />
+                    </div>
+                    <span asp-validation-for="EmailNotificacion2" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group margin-bottom-0">
+                        <label asp-for="Observaciones"></label>
+                        <textarea asp-for="Observaciones" class="form-control" rows="4"></textarea>
+                    </div>
+                    <span asp-validation-for="Observaciones" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <fieldset>
+            <legend>Acci&oacute;n</legend>
+
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                <div class="form-group">
+                    <label>Detalle</label>
+                    <div class="input-group margin-bottom-0">
+                        <input class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <div class="input-group margin-bottom-0 focused">
+                        <input class="form-control datepicker" />
+                        <span class="input-group-addon bg btndatepicker"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-offset-5 col-xs-offset-6">
+                <a class="btn btn-default">AGREGAR</a>
+            </div>
+
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Documentaci&oacute;n adicional</legend>
+            <div class="row">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <input type="file" id="file" name="file" />
+                </div>
+            </div>
+        </fieldset>
+
+
+
+        <div class="row">
+            <div class="col-md-offset-5 col-xs-offset-6">
+                <button type="submit" class="btn btn-primary ladda-button" data-style="expand-left" id="btn-guardar">
+                    <span class="ladda-label" id="laddaSpanGuardar">ACEPTAR</span>
+                </button>
+                <a asp-action="Index" class="btn btn-default">CANCELAR</a>
+            </div>
+        </div>
+
+
+    </form>
+
 
 @section Scripts{
 

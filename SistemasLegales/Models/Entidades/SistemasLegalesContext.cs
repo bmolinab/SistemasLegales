@@ -7,6 +7,7 @@ namespace SistemasLegales.Models.Entidades
 {
     public partial class SistemasLegalesContext : IdentityDbContext<ApplicationUser>
     {
+        public virtual DbSet<Accion> Accion { get; set; }
         public virtual DbSet<Actor> Actor { get; set; }
         public virtual DbSet<Requisito> Requisito { get; set; }
         public virtual DbSet<Ciudad> Ciudad { get; set; }
@@ -25,6 +26,18 @@ namespace SistemasLegales.Models.Entidades
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Accion>(entity =>
+            {
+                entity.HasKey(e => e.IdAccion)
+                    .HasName("PK_Accion");
+
+                entity.Property(e => e.Detalle).HasColumnType("varchar(500)");
+
+                entity.HasOne(d => d.IdRequisitoNavigation)
+                    .WithMany(p => p.Accion)
+                    .HasForeignKey(d => d.IdRequisito)
+                    .HasConstraintName("FK_Accion_Requisito");
+            });
             modelBuilder.Entity<Actor>(entity =>
             {
                 entity.HasKey(e => e.IdActor)

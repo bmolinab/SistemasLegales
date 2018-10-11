@@ -86,6 +86,43 @@
 </table>
 
 <fieldset>
+    <legend>Acci&oacute;n</legend>
+    <div class="row">
+        <div class="col-md-12 col-xs-12 col-sm-12">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Detalle                        
+                        </th>
+                        <th>
+                            Fecha
+                        </th>
+                       
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Accion)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Detalle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fecha)
+                            </td>                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</fieldset>
+
+<fieldset>
     <legend>Documentaci&oacute;n adicional</legend>
     <div class="row">
         <div class="col-md-12 col-xs-12 col-sm-12">
