@@ -83,6 +83,9 @@ namespace SistemasLegales
             services.AddScoped<TimedHostedService>();
             services.AddSingleton<IUploadFileService, UploadFileService>();
 
+            services.AddSingleton<IReporteServicio, ReporteServicio>();
+            services.AddSingleton<IEncriptarServicio, EncriptarServicio>();
+
             services.AddMemoryCache();
             services.AddSession();
 
@@ -104,6 +107,22 @@ namespace SistemasLegales
             ConstantesTimerEnvioNotificacion.Hora = int.Parse(Configuration.GetSection("Hora").Value);
             ConstantesTimerEnvioNotificacion.Minutos = int.Parse(Configuration.GetSection("Minutos").Value);
             ConstantesTimerEnvioNotificacion.Segundos = int.Parse(Configuration.GetSection("Segundos").Value);
+
+
+            ReportConfig.DefaultNetworkCredentials = Convert.ToBoolean(Configuration.GetSection("DefaultNetworkCredentials").Value);
+
+            if (!ReportConfig.DefaultNetworkCredentials)
+            {
+                ReportConfig.UserName = Configuration.GetSection("UserNameReport").Value;
+                ReportConfig.Password = Configuration.GetSection("PasswordReport").Value;
+                ReportConfig.CustomDomain = Configuration.GetSection("CustomDomain").Value;
+            }
+            ReportConfig.ReportServerUrl = Configuration.GetSection("ReportServerUrl").Value;
+            ReportConfig.ReportFolderPath = Configuration.GetSection("ReportFolderPath").Value;
+            ReportConfig.ProjectReportUrl = Configuration.GetSection("ProjectReportUrl").Value;
+
+            ReportConfig.CompletePath = string.Format("{0}{1}", ReportConfig.ReportServerUrl, ReportConfig.ReportFolderPath);
+
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TimedHostedService timedHostedService/*, IServiceProvider serviceProvider*/)
