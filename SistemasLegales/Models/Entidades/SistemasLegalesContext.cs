@@ -31,7 +31,7 @@ namespace SistemasLegales.Models.Entidades
                 entity.HasKey(e => e.IdAccion)
                     .HasName("PK_Accion");
 
-                entity.Property(e => e.Detalle).HasColumnType("varchar(500)");
+                entity.Property(e => e.Detalle).HasColumnType("varchar(1000)");
 
                 entity.HasOne(d => d.IdRequisitoNavigation)
                     .WithMany(p => p.Accion)
