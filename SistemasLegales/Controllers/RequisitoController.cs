@@ -73,6 +73,50 @@ namespace SistemasLegales.Controllers
         }
 
         [Authorize(Policy = "Gestion")]
+        public async Task<IActionResult> Editar(int? id)
+        {
+            try
+            {
+                var accion =await db.Accion.Where(x => x.IdAccion == id).Select(x => new Accion { Detalle = x.Detalle, Fecha = x.Fecha, IdRequisito = x.IdRequisito, IdAccion = x.IdAccion }).FirstOrDefaultAsync();
+                if (accion!=null)
+                {
+                    return View(accion);
+                }
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
+            }
+            catch (Exception)
+            {
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.ErrorCargarDatos}");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "Gestion")]
+        public async Task<IActionResult> Editar(Accion accion)
+        {
+            try
+            {
+                var accionActualizar = await db.Accion.Where(x => x.IdAccion == accion.IdAccion).FirstOrDefaultAsync();
+                if (accionActualizar!=null)
+                {
+                    accionActualizar.Fecha = accion.Fecha;
+                    accionActualizar.Detalle = accion.Detalle;
+                    await db.SaveChangesAsync();
+
+                    TempData["Mensaje"] = $"{Mensaje.Informacion}|{Mensaje.Satisfactorio}";
+                    return RedirectToAction("Detalles", new { id = accionActualizar.IdRequisito });
+                }
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
+            }
+            catch (Exception)
+            {
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.ErrorCargarDatos}");
+            }
+        }
+
+
+
+        [Authorize(Policy = "Gestion")]
         public async Task<IActionResult> Gestionar(int? id)
         {
             try
@@ -305,6 +349,44 @@ namespace SistemasLegales.Controllers
                 return StatusCode(500);
             }
         }
+
+
+        [HttpPost]
+        [Authorize(Policy = "Gestion")]
+        public async Task<JsonResult> InsertarAcciones(string observaciones, int idRequisito, DateTime fechaAccion)
+        {
+            var accion = new Accion { Detalle = observaciones, IdRequisito = idRequisito, Fecha = fechaAccion };
+            await db.AddAsync(accion);
+            await db.SaveChangesAsync();
+
+           var listaAcciones= await db.Accion.Where(x => x.IdRequisito == idRequisito).Select(x => new Accion {IdAccion=x.IdAccion, Detalle = x.Detalle, Fecha = x.Fecha }).ToListAsync();
+
+            return Json(listaAcciones);
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "Gestion")]
+        public async Task<JsonResult> EliminarAccion(int idAccion,int idRequisito)
+        {
+
+            var listaAcciones = new List<Accion>();
+            try
+            {
+                var accion = await db.Accion.Where(x => x.IdAccion == idAccion).FirstOrDefaultAsync();
+                db.Remove(accion);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                listaAcciones = await db.Accion.Where(x => x.IdRequisito == idRequisito).Select(x => new Accion { IdAccion = x.IdAccion, Detalle = x.Detalle, Fecha = x.Fecha }).ToListAsync();
+                return Json(listaAcciones);
+            }
+            listaAcciones = await db.Accion.Where(x => x.IdRequisito == idRequisito).Select(x => new Accion { IdAccion = x.IdAccion, Detalle = x.Detalle, Fecha = x.Fecha }).ToListAsync();
+
+            return Json(listaAcciones);
+        }
+
+
 
         [Authorize(Policy = "GerenciaGestion")]
         public async Task<IActionResult> DescargarArchivo(int id)

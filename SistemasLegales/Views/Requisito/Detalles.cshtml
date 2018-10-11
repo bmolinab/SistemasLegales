@@ -1,82 +1,127 @@
 @model Requisito
 @{
     ViewData["Titulo"] = "GESTI\u00D3N DE REQUISITOS";
-    ViewData["Subtitulo"] = "Detalles";
+    ViewData["Subtitulo"] = "Tr\u00e1mite legal";
 
 }
 @section Migas{
     <li><a asp-action="Index">Requisitos</a></li>
-    <li class="active">Detalles</li>
+    <li class="active">Acciones</li>
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th width="50%">CAMPO</th>
-            <th width="50%">VALOR</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><label asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="negrita"></label></td>
-            <td>@Html.DisplayFor(m => m.Documento.RequisitoLegal.OrganismoControl.Nombre)</td>
-        </tr>
-        <tr>
-            <td><label asp-for="Documento.IdRequisitoLegal" class="negrita"></label></td>
-            <td>@Html.DisplayFor(m => m.Documento.RequisitoLegal.Nombre)</td>
-        </tr>
-        <tr>
-            <td><label asp-for="IdDocumento" class="negrita"></label></td>
-            <td>@Html.DisplayFor(m => m.Documento.Nombre)</td>
-        </tr>
-        <tr>
-            <td><label asp-for="IdCiudad" class="negrita"></label></td>
-            <td>@Html.DisplayFor(m => m.Ciudad.Nombre)</td>
-        </tr>
-     
+@section CSS{
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/lib/boootstrap-datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" />
+}
+<input type="hidden" id="idRequisito" asp-for="IdRequisito" />
+<fieldset>
+        <div class="col-12 margin-top-5">
+                    <div class="col-md-12 col-sm-12 col col-xs-12 col-lg-12">
+                        <div class="product-deatil col-lg-12 text-align-left JustifyFull">
+                            <h4 class="name">
+                                <b>
+                                    <a href="javascript:void (0)" >
+                                        @Model.Documento.RequisitoLegal.OrganismoControl.Nombre
+                                    </a>
+                                </b>
+                            </h4>
+                            <h5 class="name">
+                                <a href="javascript:void (0)" >
+                                    @Model.Documento.RequisitoLegal.Nombre
+                                </a>
+                            </h5>
+                            <h6 class="name">
+                                <a href="javascript:void (0)" >
+                                    @Model.Documento.Nombre
+                                </a>
+                            </h6>
+                        </div>
 
-        <tr>
-            <td><label asp-for="IdProyecto" class="negrita"></label></td>
-            <td>@Html.DisplayFor(m => m.Proyecto.Nombre)</td>
-        </tr>
-        <tr>
-            <td><label asp-for="IdActorDuennoProceso" class="negrita"></label></td>
-            <td>@Html.DisplayFor(m => m.ActorDuennoProceso.Nombres)</td>
-        </tr>
-       
-      
-     
-    </tbody>
-</table>
+                        <section class="col col-lg-12 text-align-center">
+                            <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
+                                <span class="text-primary h6"><a>Ciudad:</a></span>
+                                <br />
+                                <span class="">@Model.Ciudad.Nombre</span>
+                            </p>
+                            <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
+                                <span class="text-primary h6"><a>Proyecto:</a></span>
+                                <br />
+                                <span class="">@Model.Proyecto.Nombre</span>
+                            </p>
+
+                            <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
+                                <span class="text-primary h6"><a>Due&ntilde;o del proceso:</a></span>
+                                <br />
+                                <span class="" >@Model.ActorDuennoProceso.Nombres</span>
+                            </p>
+                        </section>
+                    </div>
+                </div>
+</fieldset>
+
 
 <fieldset>
-    <legend>Acci&oacute;n</legend>
-    <div class="row">
-        <div class="col-md-12 col-xs-12 col-sm-12">
+    
+    <section class="col col-lg-12">
+       
+        <div class="col col-lg-12">
+            <legend>Acci&oacute;n</legend>
+            <div class="form-group">
+                <label>Fecha</label>
+                <div class="input-group margin-bottom-0 focused">
+                    <input class="form-control datepicker" id="fechaAccion" />
+                    <span class="input-group-addon bg btndatepicker"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label>Detalle</label>
+                <div class="input-group margin-bottom-0">
+                    <textarea id="Observaciones" maxlength="500" name="Observaciones" class="form-control" rows="6" data-val="true" data-val-length="Las Observaciones no pueden tener más de 500 y menos de 1 caracteres." data-val-length-max="500" data-val-length-min="1"></textarea>
+                </div>
+            </div>
+        </div>
+        <section id="mensajeObservaciones" hidden="hidden" class="col col-lg-12">
+            <span class="text-danger">Debe completar el formulario</span>
+        </section>
+        <div class="col col-lg-12 center-block">
+            <a class="btn btn-primary" onclick="adicionaraccion()">AGREGAR</a>
+        </div>
 
-            <table class="table">
+    </section>
+
+    <div class="row col col-lg-12">
+        <div class="col col-lg-12">
+            <table id="tbAcciones" class="table">
                 <thead>
                     <tr>
                         <th>
-                            Detalle                        
-                        </th>
-                        <th>
                             Fecha
                         </th>
-                       
-                        <th></th>
+                        <th>
+                            Detalle
+                        </th>
+
+                        <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Accion)
                     {
                         <tr>
+                            <td class="datepicker text-justify">
+                                @string.Format("{0:dd/MM/yyyy}", item.Fecha)
+
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Detalle)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Fecha)
-                            </td>                            
+                                <a href='../Editar/@item.IdAccion' title='Editar'>Editar</a> |
+                                <a href='javascript:void (0)' title='Eliminar' onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
+                            </td>
+
                         </tr>
                     }
                 </tbody>
@@ -86,11 +131,123 @@
     </div>
 </fieldset>
 
-<fieldset>
-    <legend>Documentaci&oacute;n adicional</legend>
-    <div class="row">
-        <div class="col-md-12 col-xs-12 col-sm-12">
-            @{await Html.RenderPartialAsync("_FileDownload", Model?.DocumentoRequisito);}
-        </div>
-    </div>
-</fieldset>
+@section Scripts{
+
+
+    @{ await Html.RenderPartialAsync("_DatepickerPartial"); }
+
+
+
+    <script type="text/javascript">
+        function EliminarAccion(valor)
+        {
+
+            var mensaje = confirm("\u00bf Desea eliminar el acci\u00f3n ?");
+            if (mensaje) {
+
+             $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EliminarAccion","Requisito")',
+                 dataType: 'json',
+                 data: { idAccion: valor, idRequisito: $("#idRequisito").val()},
+                 success: function (data) {
+
+                     document.getElementById("tbAcciones").innerHTML = "";
+                     var newTable = " <table id='tbAcciones' class='table'>";
+                     newTable += "<thead>";
+
+                     newTable += "<tr>";
+                     newTable += "<th>Fecha</th>";
+                     newTable += "<th >Detalle</th>";
+                     newTable += "<th >Opciones</th>";
+                     newTable += "</tr>";
+                     newTable += "</thead>";
+                     newTable += "<tbody>";
+                     for (var i = 0; i < data.length; i++) {
+                         newTable += "<tr >";
+                         newTable += "<td class='datepicker'>" + data[i].fecha + "</td > ";
+                         newTable += "<td >" + data[i].detalle + "</td>";
+                         newTable += "<td>";
+                         newTable += "<a href='../Editar/" + data[i].idAccion +"'  title ='Editar'>Editar</a> |";
+                         newTable += "<a href='javascript:void (0)'  title ='Eliminar' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
+                         newTable += "</td>";
+                         newTable += "</tr>";
+                     };
+                     newTable += "</tbody>";
+                     newTable += "</table>";
+                     document.getElementById("tbAcciones").innerHTML = newTable;
+
+                    }, complete: function (data) {
+
+                    },
+
+                    error: function (ex) {
+                        alert('Failed to retrieve data.' + ex);
+                    }
+                });
+            }
+
+        }
+
+        function adicionaraccion() {
+
+            var pasaValidaciones = true;
+            var observaciones = $("#Observaciones").val();
+            var idRequisito = $("#idRequisito").val();
+            var fechaAccion = $("#fechaAccion").val();
+
+            if (observaciones == "" || idRequisito == null || fechaAccion == "") {
+
+                $("#mensajeObservaciones").show();
+                return;
+            }
+
+
+
+             $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("InsertarAcciones","Requisito")',
+                    dataType: 'json',
+                 data: { observaciones: observaciones, idRequisito: idRequisito, fechaAccion: fechaAccion },
+                 success: function (data) {
+
+                     document.getElementById("tbAcciones").innerHTML = "";
+                     var newTable = " <table id='tbAcciones' class='table'>";
+                     newTable += "<thead>";
+
+                     newTable += "<tr>";
+                     newTable += "<th>Fecha</th>";
+                     newTable += "<th >Detalle</th>";
+                     newTable += "<th >Opciones</th>";
+                     newTable += "</tr>";
+                     newTable += "</thead>";
+                     newTable += "<tbody>";
+                     for (var i = 0; i < data.length; i++) {
+                         newTable += "<tr >";
+                         newTable += "<td class='datepicker'>" + data[i].fecha + "</td > ";
+                         newTable += "<td >" + data[i].detalle + "</td>";
+                         newTable += "<td>";
+                         newTable += "<a href='../Editar/" + data[i].idAccion + "'  title ='Editar'>Editar</a> |";
+                         newTable += "<a href='javascript:void (0)'  title ='Eliminar' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
+                         newTable += "</td>";
+                         newTable += "</tr>";
+                     };
+                     newTable += "</tbody>";
+                     newTable += "</table>";
+                     document.getElementById("tbAcciones").innerHTML = newTable;
+
+                    }, complete: function (data) {
+
+                    },
+
+                    error: function (ex) {
+                        alert('Failed to retrieve data.' + ex);
+                    }
+                });
+
+
+
+        }
+
+    </script>
+}

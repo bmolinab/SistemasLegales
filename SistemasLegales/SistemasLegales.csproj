@@ -40,4 +40,10 @@
      <Folder Include="wwwroot\Requisitos\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Requisito\Editar.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>
