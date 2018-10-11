@@ -22,6 +22,16 @@ namespace SistemasLegales.Models.Entidades
         [Required(ErrorMessage = "Debe seleccionar el {0}.")]
         [Range(1, double.MaxValue, ErrorMessage = "Debe seleccionar el {0}.")]
         public int IdRequisitoLegal { get; set; }
+
+
+        [Display(Name = "Tipo")]
+        [Required(ErrorMessage = "Debe introducir la {0}.")]
+        public int? Tipo { get; set; }
+
+        [Display(Name = "Cantidad")]
+        [Required(ErrorMessage = "Debe introducir la {0}.")]
+        public int? Cantidad { get; set; }
+
         public virtual RequisitoLegal RequisitoLegal { get; set; }
 
         public virtual ICollection<Requisito> Requisito { get; set; }

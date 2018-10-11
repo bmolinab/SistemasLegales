@@ -33,6 +33,13 @@
                 <th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().IdRequisitoLegal)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Tipo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Cantidad)
+                </th>
+                
                 @{
                     if (User.IsInRole(Perfiles.Gestor))
                     {
@@ -47,23 +54,59 @@
             @{
                 foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RequisitoLegal.Nombre)
-                        </td>
-                        @{
-                            if (User.IsInRole(Perfiles.Gestor))
-                            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                   @Html.DisplayFor(modelItem => item.RequisitoLegal.Nombre)
+                </td>
+                @{
+                    if (item.Tipo > 0)
+                    {
+                        switch (item.Tipo)
+                        {
+                            case 1:
+                <td>
+                    D&iacute;as
+                </td>                               
+                                break;
+                            case 2:
                                 <td>
-                                    <a asp-action="Gestionar" asp-route-id="@item.IdDocumento">Editar</a> |
-                                    <a href="javascript:void(0);" class="btnEliminar" id="@item.IdDocumento" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Documento... ?">Eliminar</a>
+                                    Meses
                                 </td>
-                            }
+                                break;
+                            case 3:
+                                <td>
+                                    A&ntilde;os
+                                </td>
+                                break;
+                            default:
+                                break;
                         }
-                    </tr>
+
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tipo)
+                        </td>
+                    }
+
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                @{
+                    if (User.IsInRole(Perfiles.Gestor))
+                    {
+                        <td>
+                            <a asp-action="Gestionar" asp-route-id="@item.IdDocumento">Editar</a> |
+                            <a href="javascript:void(0);" class="btnEliminar" id="@item.IdDocumento" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Documento... ?">Eliminar</a>
+                        </td>
+                    }
+                }
+            </tr>
                 }
             }
         </tbody>
