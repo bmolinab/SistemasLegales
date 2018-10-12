@@ -23,6 +23,8 @@ namespace SistemasLegales.Models.Utiles
         public static string BorradoNoSatisfactorio { get { return "No es posible eliminar el registro, existen relaciones que dependen de él."; } }
         public static string RegistroNoEncontrado { get { return "El registro solicitado no se ha encontrado."; } }
         public static string ModeloInvalido { get { return "El modelo es inválido."; } }
+
+        public static string CargarArchivoEstadoTerminado { get { return "Si el estado del requisito es terminado tiene que seleccionar un archivo, por favor."; } }
         public static string CarpetaDocumento { get { return "Requisitos"; } }
     }
 }

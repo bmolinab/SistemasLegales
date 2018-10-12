@@ -4,6 +4,7 @@
     ViewData["Subtitulo"] = ViewData["accion"];
 
 }
+@using SistemasLegales.Models.Utiles;
 @section Migas{
     <li><a asp-action="Index">Requisitos</a></li>
     <li class="active">@ViewData["accion"]</li>
@@ -24,35 +25,54 @@
             }
         }
 
-        <div class="row">
-            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-                <div class="card-inner padding-0 margin-bottom-0">
-                    <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
-                    <div class="demo margin-top-0">
-                        <select asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
-                    </div>
-                    <span asp-validation-for="Documento.RequisitoLegal.IdOrganismoControl" class="text-danger"></span>
-                </div>
-            </div>
+        <div class="row col-lg-12">
+            @{
+                        if ((User.Identity.IsAuthenticated == true) && (User.IsInRole(Perfiles.Administrador)) && (Model != null) && (Model.IdStatus == EstadoRequisito.Terminado))
+                        {
+                            <div class="row">
+                                <div class="col-md-offset-3 col-xs-offset-3 col col-lg-12">
+                                    <button type="submit" class="btn btn-primary ladda-button col-lg-6" data-style="expand-left" id="btn-guardar">
+                                        <span class="ladda-label" id="laddaSpanGuardar">FINALIZAR &nbsp;&nbsp;&nbsp;&nbsp;REQUISITO</span>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    }
 
-            <div id="divRequisitoLegal">
-                @{await Html.RenderPartialAsync("_RequisitoLegalSelect", Model);}
-            </div>
-
-            <div id="divDocumento">
-                @{await Html.RenderPartialAsync("_DocumentoSelect", Model);}
-            </div>
-
-            <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
-                <div class="card-inner padding-0 margin-bottom-0">
-                    <label asp-for="IdCiudad"></label>
-                    <div class="demo margin-top-0">
-                        <select asp-for="IdCiudad" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Ciudad"></select>
-                    </div>
-                    <span asp-validation-for="IdCiudad" class="text-danger"></span>
-                </div>
-            </div>
         </div>
+       
+                <div class="row">
+
+
+
+                    <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                        <div class="card-inner padding-0 margin-bottom-0">
+                            <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
+                            <div class="demo margin-top-0">
+                                <select asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
+                            </div>
+                            <span asp-validation-for="Documento.RequisitoLegal.IdOrganismoControl" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div id="divRequisitoLegal">
+                        @{await Html.RenderPartialAsync("_RequisitoLegalSelect", Model);}
+                    </div>
+
+                    <div id="divDocumento">
+                        @{await Html.RenderPartialAsync("_DocumentoSelect", Model);}
+                    </div>
+                    
+                    <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+                        <div class="card-inner padding-0 margin-bottom-0">
+                            <label asp-for="IdCiudad"></label>
+                            <div class="demo margin-top-0">
+                                <select asp-for="IdCiudad" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Ciudad"></select>
+                            </div>
+                            <span asp-validation-for="IdCiudad" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
 
         <div class="row">
             <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
@@ -180,49 +200,52 @@
                 </div>
             </div>
         </div>
-       @{ if (Model != null)
-           {
-        <fieldset>
+        @{ if (Model != null)
+            {
+                if (Model.Accion != null || Model.Accion.Count == 0)
+                {
+                    <fieldset>
 
-            <legend>Acciones realizadas</legend>
-            <div class="col-lg-12"> <a asp-action="Detalles" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Gestionar Acciones</a></div>
-            <div class="table-responsive padding-15">
-                <table id="datatable-responsive" class="table" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>
-                                Fecha
-                            </th>
-                            <th>
-                                Detalle
-                            </th>
-                            <th>
-                                Opciones
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Accion)
-                        {
-                        <tr>
-                            <td class="datepicker text-justify">
-                                @string.Format("{0:dd/MM/yyyy}", item.Fecha)
+                        <legend>Acciones realizadas</legend>
+                        <div class="col-lg-12"> <a asp-action="Detalles" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Gestionar Acciones</a></div>
+                        <div class="table-responsive padding-15">
+                            <table id="datatable-responsive" class="table" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Fecha
+                                        </th>
+                                        <th>
+                                            Detalle
+                                        </th>
+                                        <th>
+                                            Opciones
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Accion)
+                                    {
+                                        <tr>
+                                            <td class="datepicker text-justify">
+                                                @string.Format("{0:dd/MM/yyyy}", item.Fecha)
 
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Detalle)
-                            </td>
-                            <td>
-                                <a href='javascript:void (0)' title='Eliminar' onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </fieldset>
-               }
-           }
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Detalle)
+                                            </td>
+                                            <td>
+                                                <a href='javascript:void (0)' title='Eliminar' onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                }
+            }
+        }
         <fieldset>
             <legend>Documentaci&oacute;n adicional</legend>
             <div class="row">

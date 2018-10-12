@@ -62,7 +62,7 @@ namespace SistemasLegales
 
                 opts.AddPolicy("Gestion", policy => {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireRole("Gestor");
+                    policy.RequireRole("Gestor","Administrador");
                 });
 
                 opts.AddPolicy("Gerencia", policy => {
@@ -89,6 +89,10 @@ namespace SistemasLegales
             services.AddMemoryCache();
             services.AddSession();
 
+            EstadoRequisito.Terminado = int.Parse(Configuration.GetSection("EstadoTerminado").Value);
+
+
+
             // Configuración del correo
             MailConfig.HostUri = Configuration.GetSection("Smtp").Value;
             MailConfig.PrimaryPort = Convert.ToInt32(Configuration.GetSection("PrimaryPort").Value);
@@ -107,6 +111,7 @@ namespace SistemasLegales
             ConstantesTimerEnvioNotificacion.Hora = int.Parse(Configuration.GetSection("Hora").Value);
             ConstantesTimerEnvioNotificacion.Minutos = int.Parse(Configuration.GetSection("Minutos").Value);
             ConstantesTimerEnvioNotificacion.Segundos = int.Parse(Configuration.GetSection("Segundos").Value);
+
 
 
             ReportConfig.DefaultNetworkCredentials = Convert.ToBoolean(Configuration.GetSection("DefaultNetworkCredentials").Value);

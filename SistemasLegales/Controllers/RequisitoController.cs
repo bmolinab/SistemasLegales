@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SistemasLegales.Models.Entidades;
 using SistemasLegales.Models.Extensores;
 using SistemasLegales.Models.Utiles;
@@ -19,11 +21,13 @@ namespace SistemasLegales.Controllers
     public class RequisitoController : Controller
     {
         private readonly SistemasLegalesContext db;
+        public IConfigurationRoot Configuration { get; }
         private readonly IEmailSender emailSender;
         private readonly IUploadFileService uploadFileService;
-
-        public RequisitoController(SistemasLegalesContext context, IEmailSender emailSender, IUploadFileService uploadFileService)
+        private readonly UserManager<ApplicationUser> userManager;
+        public RequisitoController(UserManager<ApplicationUser> userManager, SistemasLegalesContext context, IEmailSender emailSender, IUploadFileService uploadFileService)
         {
+            this.userManager = userManager;
             db = context;
             this.emailSender = emailSender;
             this.uploadFileService = uploadFileService;
@@ -160,6 +164,24 @@ namespace SistemasLegales.Controllers
         {
             try
             {
+
+                if (requisito.IdStatus==EstadoRequisito.Terminado && file==null)
+                {
+                    ViewData["OrganismoControl"] = new SelectList(await db.OrganismoControl.OrderBy(c => c.Nombre).ToListAsync(), "IdOrganismoControl", "Nombre");
+                    ViewData["RequisitoLegal"] = await ObtenerSelectListRequisitoLegal(requisito?.Documento?.RequisitoLegal?.IdOrganismoControl ?? -1);
+                    ViewData["Documento"] = await ObtenerSelectListDocumento(requisito?.Documento?.IdRequisitoLegal ?? -1);
+                    ViewData["Ciudad"] = new SelectList(await db.Ciudad.OrderBy(c => c.Nombre).ToListAsync(), "IdCiudad", "Nombre");
+                    ViewData["Proceso"] = new SelectList(await db.Proceso.OrderBy(c => c.Nombre).ToListAsync(), "IdProceso", "Nombre");
+                    ViewData["Proyecto"] = new SelectList(await db.Proyecto.OrderBy(c => c.Nombre).ToListAsync(), "IdProyecto", "Nombre");
+                    ViewData["Actor"] = new SelectList(await db.Actor.OrderBy(c => c.Nombres).ToListAsync(), "IdActor", "Nombres");
+                    ViewData["Status"] = new SelectList(await db.Status.ToListAsync(), "IdStatus", "Nombre");
+                    var acciones =await db.Accion.Where(x => x.IdRequisito == requisito.IdRequisito).ToListAsync();
+                    requisito.Accion = acciones;
+                    return this.VistaError(requisito, $"{Mensaje.Error}|{Mensaje.CargarArchivoEstadoTerminado}");
+                }
+
+                
+
                 Requisito miRequisito = new Requisito();
                 ViewBag.accion = requisito.IdRequisito == 0 ? "Crear" : "Editar";var tt = Request.Form;
                 ModelState.Remove("Documento.Nombre");
@@ -168,6 +190,8 @@ namespace SistemasLegales.Controllers
                 ModelState.Remove("Documento.RequisitoLegal.Nombre");
                 if (ModelState.IsValid)
                 {
+                    
+
                     if (requisito.IdRequisito == 0)
                     {
 
@@ -227,6 +251,21 @@ namespace SistemasLegales.Controllers
                             responseFile = await uploadFileService.UploadFiles(activoFijoDocumentoTransfer);
                         }
                     }
+
+                    if (requisito.IdStatus == EstadoRequisito.Terminado)
+                    {
+                        var url = "";
+                        if (requisito.IdRequisito == 0)
+                        {
+                             url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}/{miRequisito.IdRequisito}";
+                        }
+                        else
+                        {
+                            url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}";
+                        }
+                        await requisito.EnviarEmailNotificaionRequisitoTerminado( userManager, url,miRequisito.IdRequisito,emailSender, db);
+                    }
+
                     await requisito.EnviarEmailNotificaion(emailSender, db);
                     return this.Redireccionar(responseFile ? $"{Mensaje.Informacion}|{Mensaje.Satisfactorio}" : $"{Mensaje.Aviso}|{Mensaje.ErrorUploadFiles}");
                 }
