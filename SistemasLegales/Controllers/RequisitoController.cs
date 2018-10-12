@@ -145,6 +145,10 @@ namespace SistemasLegales.Controllers
                     if (requisito == null)
                         return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
 
+                    if (requisito.Finalizado==true)
+                    {
+                        return this.Redireccionar($"{Mensaje.Informacion}|{Mensaje.RequisitoFinalizado}");
+                    }
 
 
                     ViewData["OrganismoControl"] = new SelectList(await db.OrganismoControl.OrderBy(c => c.Nombre).ToListAsync(), "IdOrganismoControl", "Nombre", requisito.Documento.RequisitoLegal.IdOrganismoControl);
@@ -164,6 +168,69 @@ namespace SistemasLegales.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Authorize(Policy = "Administracion")]
+        public async Task<IActionResult> Finalizar(Requisito requisito, IFormFile file)
+        {
+            var requisitoFinalizar = await db.Requisito.Where(x => x.IdRequisito == requisito.IdRequisito).FirstOrDefaultAsync();
+            if (requisitoFinalizar!=null)
+            {
+                requisitoFinalizar.Finalizado = true;
+                await db.SaveChangesAsync();
+
+                var documento = await  db.Documento.Where(x => x.IdDocumento == requisitoFinalizar.IdDocumento).FirstOrDefaultAsync();
+
+                switch (documento.Tipo)
+                {
+                    case 1:
+                        {
+                            requisitoFinalizar.FechaCumplimiento.AddDays((int)documento.Cantidad);
+                            requisitoFinalizar.FechaCaducidad?.AddDays((int)documento.Cantidad);
+                            break;
+                        }
+                    case 2:
+                        {
+                            requisitoFinalizar.FechaCumplimiento.AddMonths((int)documento.Cantidad);
+                            requisitoFinalizar.FechaCaducidad?.AddMonths((int)documento.Cantidad);
+                            break;
+                        }
+                    case 3:
+                        {
+                            requisitoFinalizar.FechaCumplimiento.AddYears((int)documento.Cantidad);
+                            requisitoFinalizar.FechaCaducidad?.AddYears((int)documento.Cantidad);
+                            break;
+                        }
+                }
+
+                Requisito miRequisito = new Requisito();
+                miRequisito = new Requisito
+                {
+                    IdDocumento = requisitoFinalizar.IdDocumento,
+                    IdCiudad = requisitoFinalizar.IdCiudad,
+                    IdProceso = requisitoFinalizar.IdProceso,
+                    IdProyecto = requisitoFinalizar.IdProyecto,
+                    IdActorDuennoProceso = requisitoFinalizar.IdActorDuennoProceso,
+                    IdActorResponsableGestSeg = requisitoFinalizar.IdActorResponsableGestSeg,
+                    IdActorCustodioDocumento = requisitoFinalizar.IdActorCustodioDocumento,
+                    FechaCumplimiento = requisitoFinalizar.FechaCumplimiento,
+                    FechaCaducidad = requisitoFinalizar.FechaCaducidad,
+                    IdStatus = requisitoFinalizar.IdStatus,
+                    DuracionTramite = requisitoFinalizar.DuracionTramite,
+                    DiasNotificacion = requisitoFinalizar.DiasNotificacion,
+                    EmailNotificacion1 = requisitoFinalizar.EmailNotificacion1,
+                    EmailNotificacion2 = requisitoFinalizar.EmailNotificacion2,
+                    Observaciones = requisitoFinalizar.Observaciones,
+                    NotificacionEnviada = false,
+                    Finalizado = false,
+                };
+
+                await db.AddAsync(miRequisito);
+                await db.SaveChangesAsync();
+                return this.Redireccionar($"{Mensaje.Informacion}|{Mensaje.Satisfactorio}");
+            }
+            return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "Gestion")]
