@@ -206,14 +206,13 @@
                         {
                         <tr>
                             <td class="datepicker text-justify">
-                                @string.Format("{0:dd/MM/yyyy}", item.Fecha)
-
+                                <p class="font-12 text-left">@item.Fecha </p>
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Detalle)
+                                <p class="font-12 text-left">@item.Detalle </p>
                             </td>
                             <td>
-                                <a href='javascript:void (0)' title='Eliminar' onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
+                                <a href='javascript:void (0)' title='Eliminar' class="font-12 text-left" onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
                             </td>
                         </tr>
                         }

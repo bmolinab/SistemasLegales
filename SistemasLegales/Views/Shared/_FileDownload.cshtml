@@ -15,13 +15,13 @@
                 {
                     <tr>
                         <td>
-                            <span class="negrita">@Html.DisplayFor(m => item.Nombre)</span>
+                            <span class="negrita font-12">@Html.DisplayFor(m => item.Nombre)</span>
                         </td>
                         <td>
-                            @Html.DisplayFor(m => item.Fecha)
+                            <p class="font-12 text-left">@item.Fecha</p>
                         </td>
                         <td>
-                            <a asp-controller="Requisito" asp-action="DescargarArchivo" asp-route-id="@item.IdDocumentoRequisito">Descargar</a>
+                            <a asp-controller="Requisito" class="font-12 text-left" asp-action="DescargarArchivo" asp-route-id="@item.IdDocumentoRequisito">Descargar</a>
                         </td>
                     </tr>
                 }

@@ -52,20 +52,20 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Nombres)
+                            <p class="font-12 text-left">@item.Nombres </p>
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Departamento)
+                            <p class="font-12 text-left">@item.Departamento </p>
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Email)
+                            <p class="font-12 text-left">@item.Email </p>
                         </td>
                         @{
                             if (User.IsInRole(Perfiles.Gestor))
                             {
                                 <td>
-                                    <a asp-action="Gestionar" asp-route-id="@item.IdActor">Editar</a> |
-                                    <a href="javascript:void(0);" class="btnEliminar" id="@item.IdActor" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Actor... ?">Eliminar</a>
+                                    <a asp-action="Gestionar" class="font-12 text-left" asp-route-id="@item.IdActor">Editar</a> |
+                                    <a href="javascript:void(0);" class="btnEliminar font-12 text-left" id="@item.IdActor" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Actor... ?">Eliminar</a>
                                 </td>
                             }
                         }
