@@ -24,11 +24,12 @@
 }
 
 <div class="table-responsive padding-15">
-    <table id="datatable-responsive" class="table table-striped table-bordered nowrap dataTable" cellspacing="0">
+    <table id="datatable-responsive" class="table table-striped table-bordered dataTable" cellspacing="0">
         <thead>
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().Nombre)
+
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().IdOrganismoControl)
@@ -49,17 +50,19 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Nombre)
+                            <p class="font-12 text-left">@item.Nombre </p>
+
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.OrganismoControl.Nombre)
+                            <p class="font-12 text-left">@item.OrganismoControl.Nombre </p>
+
                         </td>
                         @{
                             if (User.IsInRole(Perfiles.Gestor))
                             {
                                 <td>
-                                    <a asp-action="Gestionar" asp-route-id="@item.IdRequisitoLegal">Editar</a> |
-                                    <a href="javascript:void(0);" class="btnEliminar" id="@item.IdRequisitoLegal" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Requisito legal... ?">Eliminar</a>
+                                    <a asp-action="Gestionar" asp-route-id="@item.IdRequisitoLegal" class="font-12 text-left">Editar</a> |
+                                    <a href="javascript:void(0);" class="btnEliminar font-12 text-left"  id="@item.IdRequisitoLegal" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Requisito legal... ?">Eliminar</a>
                                 </td>
                             }
                         }

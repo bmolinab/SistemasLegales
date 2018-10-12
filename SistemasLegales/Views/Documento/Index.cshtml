@@ -24,7 +24,7 @@
 }
 
 <div class="table-responsive padding-15">
-        <table id="datatable-responsive" class="table table-striped table-bordered nowrap dataTable" cellspacing="0">
+        <table id="datatable-responsive" class="table table-striped table-bordered dataTable" cellspacing="0">
         <thead>
             <tr>
                 <th>
@@ -56,10 +56,10 @@
                 {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
+                    <p class="font-12 text-left">@item.Nombre </p>
                 </td>
                 <td>
-                   @Html.DisplayFor(modelItem => item.RequisitoLegal.Nombre)
+                    <p class="font-12 text-left">@item.RequisitoLegal.Nombre </p>
                 </td>
                 @{
                     if (item.Tipo > 0)
@@ -68,18 +68,18 @@
                         {
                             case 1:
                 <td>
-                    D&iacute;as
+                    <p class="font-12 text-left">D&iacute;as </p>
                 </td>                               
-                                break;
+                break;
                             case 2:
-                                <td>
-                                    Meses
-                                </td>
+                <td>
+                    <p class="font-12 text-left">Meses </p>
+                </td>
                                 break;
                             case 3:
-                                <td>
-                                    A&ntilde;os
-                                </td>
+                <td>
+                    <p class="font-12 text-left">A&ntilde;os</p>
+                </td>
                                 break;
                             default:
                                 break;
@@ -88,21 +88,22 @@
                     }
                     else
                     {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Tipo)
-                        </td>
+                <td>
+                    <p class="font-12 text-left">@item.Tipo </p>
+
+                </td>
                     }
 
                 }
                 <td>
-                    @Html.DisplayFor(modelItem => item.Cantidad)
+                    <p class="font-12 text-left">@item.Cantidad </p>
                 </td>
                 @{
                     if (User.IsInRole(Perfiles.Gestor))
                     {
                         <td>
-                            <a asp-action="Gestionar" asp-route-id="@item.IdDocumento">Editar</a> |
-                            <a href="javascript:void(0);" class="btnEliminar" id="@item.IdDocumento" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Documento... ?">Eliminar</a>
+                            <a asp-action="Gestionar" class="font-12 text-left" asp-route-id="@item.IdDocumento">Editar</a> |
+                            <a href="javascript:void(0);" class="btnEliminar font-12 text-left" id="@item.IdDocumento" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Documento... ?">Eliminar</a>
                         </td>
                     }
                 }

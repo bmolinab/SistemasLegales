@@ -1,7 +1,7 @@
 @model IEnumerable<Requisito>
 
 <div class="table-responsive padding-15">
-    <table id="datatable-responsive" class="table table-striped table-bordered nowrap dataTable" cellspacing="0">
+    <table id="datatable-responsive" class="table table-striped table-bordered dataTable" cellspacing="0">
         <thead>
             <tr>
                 <th>
@@ -30,40 +30,40 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody >
             @{
                 foreach (var item in Model)
                 {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Documento.RequisitoLegal.OrganismoControl.Nombre)
+                    <p class="font-12 text-left">@item.Documento.RequisitoLegal.OrganismoControl.Nombre </p>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Documento.RequisitoLegal.Nombre)
+                    <p class="font-12 text-left">@item.Documento.RequisitoLegal.Nombre </p>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Documento.Nombre)
+                    <p class="font-12 text-left">@item.Documento.Nombre </p>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Ciudad.Nombre)
+                    <p class="font-12 text-left">@item.Ciudad.Nombre </p>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Proceso.Nombre)
+                    <p class="font-12 text-left">@item.Proceso.Nombre </p>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Proyecto.Nombre)
+                    <p class="font-12 text-left"s>@item.Proyecto.Nombre </p>
                 </td>
                 <td>
                     @{await Html.RenderPartialAsync("_Badge", item);}
                 </td>
                 <td>
-                    <a asp-action="Detalles" asp-route-id="@item.IdRequisito">Detalles</a>
+                    <a asp-action="Detalles" class="font-12" asp-route-id="@item.IdRequisito">Acciones</a>
                     @{
                         if (User.IsInRole(Perfiles.Gestor))
                         {
-                            <span> | </span>
-                            <a asp-action="Gestionar" asp-route-id="@item.IdRequisito">Editar</a><span> | </span>
-                            <a href="javascript:void(0);" class="btnEliminar" id="@item.IdRequisito" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Requisito... ?">Eliminar</a>
+                            <span> | </span><br />
+                            <a asp-action="Gestionar" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><span> | </span><br />
+                            <a href="javascript:void(0);" class="btnEliminar font-12" id="@item.IdRequisito" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Requisito... ?">Eliminar</a>
                         }
                     }
                 </td>
