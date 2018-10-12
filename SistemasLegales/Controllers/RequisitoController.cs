@@ -36,12 +36,19 @@ namespace SistemasLegales.Controllers
         private async Task<List<Requisito>> ListarRequisitos()
         {
             return await db.Requisito
-                    .Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl)
+                .Where(x=> x.Finalizado==false)
+                    .Include(c => c.Documento)
+                    .ThenInclude(c => c.RequisitoLegal.OrganismoControl)
                     .Include(c => c.Documento)
                     .Include(c => c.Ciudad)
                     .Include(c => c.Proceso)
                     .Include(c=> c.Proyecto)
-                    .OrderBy(c => c.IdDocumento).ThenBy(c=> c.Documento.IdRequisitoLegal).ThenBy(c=> c.Documento.RequisitoLegal.IdOrganismoControl).ThenBy(c => c.IdCiudad).ThenBy(c => c.IdProceso).ThenBy(c=> c.IdProyecto).ToListAsync();
+                    .OrderBy(c => c.IdDocumento)
+                    .ThenBy(c=> c.Documento.IdRequisitoLegal)
+                    .ThenBy(c=> c.Documento.RequisitoLegal.IdOrganismoControl)
+                    .ThenBy(c => c.IdCiudad)
+                    .ThenBy(c => c.IdProceso)
+                    .ThenBy(c=> c.IdProyecto).ToListAsync();
         }
 
         private async Task<List<Accion>> ListarAcciones(int IdRequisito)
