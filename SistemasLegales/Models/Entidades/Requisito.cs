@@ -180,22 +180,22 @@ namespace SistemasLegales.Models.Entidades
                     var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
 
                     await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito terminado.",
-                       $@"Se le informa que un requisito a terminado en la aplicación Sistemas Legales con los datos siguientes: {System.Environment.NewLine}{System.Environment.NewLine}
-                            Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Requisito legal: {requisito.Documento.RequisitoLegal.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine}{System.Environment.NewLine},
-                            Fecha de caducidad: {FechaCaducidad}, {System.Environment.NewLine}{System.Environment.NewLine},
-                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine},
-                            Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}{System.Environment.NewLine},
-                            Link para finalizar el requisito: {url}, {System.Environment.NewLine}{System.Environment.NewLine}
+                       $@"Se le informa que un requisito a terminado en la aplicación Sistemas Legales con los datos siguientes: {System.Environment.NewLine}
+                            Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}, {System.Environment.NewLine}.
+                            Requisito legal: {requisito.Documento.RequisitoLegal.Nombre}, {System.Environment.NewLine}.
+                            Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}.
+                            Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}.
+                            Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}.
+                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine}.
+                            Fecha de caducidad: {FechaCaducidad}, {System.Environment.NewLine}.
+                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}.
+                            Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}.
+                            Link para finalizar el requisito: {url}, {System.Environment.NewLine}.
                         ");
                 }
             return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             { }
             return false;
         }
