@@ -92,10 +92,10 @@
                             </a>
                         </li>
                         @{
-                            if (User.IsInRole(Perfiles.Gestor))
+                            if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
                             {
                                 <li class="nav-heading ">
-                                    <span>ADMINISTRACIÓN</span>
+                                    <span class="negrita">-ADMINISTRACIÓN</span>
                                 </li>
                                 <li>
                                     <a asp-action="Index" asp-controller="Requisito" title="Gestión de requisitos">
@@ -104,7 +104,7 @@
                                 </li>
 
                                 <li class="nav-heading ">
-                                    <span>MANTENIMIENTO</span>
+                                    <span class="negrita">-MANTENIMIENTO</span>
                                 </li>
                                 <li>
                                     <a asp-action="Index" asp-controller="OrganismoControl" title="Organismos de control">
@@ -146,7 +146,7 @@
                             if (User.IsInRole(Perfiles.Gerencia))
                             {
                                 <li class="nav-heading ">
-                                    <span>GESTIÓN GERENCIAL</span>
+                                    <span class="negrita">-GESTIÓN GERENCIAL</span>
                                 </li>
                                 <li>
                                     <a asp-action="Index" asp-controller="Requisito" title="Estado de requisitos">
@@ -158,7 +158,7 @@
                             if (User.IsInRole(Perfiles.Administrador))
                             {
                                 <li class="nav-heading ">
-                                    <span>USUARIOS</span>
+                                    <span class=" negrita">-USUARIOS</span>
                                 </li>
                                 <li>
                                     <a asp-action="Users" asp-controller="Account" title="Gestión de usuarios">

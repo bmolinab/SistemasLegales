@@ -72,7 +72,7 @@ namespace SistemasLegales
 
                 opts.AddPolicy("GerenciaGestion", policy => {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireRole("Gerencia", "Gestor","Administrador");
+                    policy.RequireRole("Gerencia", "Gestor", "Administrador");
                 });
             });
 

@@ -15,7 +15,7 @@
 
 
 @{
-    if (User.IsInRole(Perfiles.Gestor))
+    if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
     {
         <div class="row">
             <div class="col-lg-2 col-sm-4 col-xs-12">
@@ -32,7 +32,7 @@
                     @Html.DisplayNameFor(model => model.FirstOrDefault().Nombre)
                 </th>
                 @{
-                    if (User.IsInRole(Perfiles.Gestor))
+                    if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
                     {
                         <th>
                             Opciones
@@ -51,7 +51,7 @@
 
                         </td>
                         @{
-                            if (User.IsInRole(Perfiles.Gestor))
+                            if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
                             {
                                 <td>
                                     <a asp-action="Gestionar" class="font-12 text-left" asp-route-id="@item.IdProyecto">Editar</a> |
@@ -66,7 +66,7 @@
     </table>
 </div>
 @{
-    if (User.IsInRole(Perfiles.Gestor))
+    if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
     {
         await Html.RenderPartialAsync("_Eliminar");
     }

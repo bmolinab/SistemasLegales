@@ -3,7 +3,7 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    ViewData["Titulo"] = User.IsInRole(Perfiles.Gestor) ? "GESTI\u00D3N DE REQUISITOS" : "ESTADO DE REQUISITOS";
+    ViewData["Titulo"] = User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador)? "GESTI\u00D3N DE REQUISITOS" : "ESTADO DE REQUISITOS";
     ViewData["Subtitulo"] = "LISTADO";
 
 }
@@ -18,7 +18,7 @@
 }
 
 @{
-    if (User.IsInRole(Perfiles.Gestor))
+    if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
     {
         <div class="row">
             <div class="col-lg-2 col-sm-4 col-xs-12">
@@ -35,7 +35,7 @@
 </div>
 
 @{
-    if (User.IsInRole(Perfiles.Gestor))
+    if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
     {
         await Html.RenderPartialAsync("_Eliminar");
     }
