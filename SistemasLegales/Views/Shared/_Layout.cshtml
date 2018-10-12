@@ -92,7 +92,7 @@
                             </a>
                         </li>
                         @{
-                            if (User.IsInRole(Perfiles.Gestor))
+                            if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
                             {
                                 <li class="nav-heading ">
                                     <span>ADMINISTRACIÓN</span>
