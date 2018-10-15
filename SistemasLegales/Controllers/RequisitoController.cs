@@ -215,7 +215,7 @@ namespace SistemasLegales.Controllers
                     IdActorCustodioDocumento = requisitoFinalizar.IdActorCustodioDocumento,
                     FechaCumplimiento = requisitoFinalizar.FechaCumplimiento,
                     FechaCaducidad = requisitoFinalizar.FechaCaducidad,
-                    IdStatus = requisitoFinalizar.IdStatus,
+                    IdStatus = EstadoRequisito.Iniciado,
                     DuracionTramite = requisitoFinalizar.DuracionTramite,
                     DiasNotificacion = requisitoFinalizar.DiasNotificacion,
                     EmailNotificacion1 = requisitoFinalizar.EmailNotificacion1,

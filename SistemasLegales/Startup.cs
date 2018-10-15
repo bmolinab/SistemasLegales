@@ -90,7 +90,8 @@ namespace SistemasLegales
             services.AddSession();
 
             EstadoRequisito.Terminado = int.Parse(Configuration.GetSection("EstadoTerminado").Value);
-           
+            EstadoRequisito.Iniciado = int.Parse(Configuration.GetSection("EstadoIniciado").Value);
+
 
 
 
