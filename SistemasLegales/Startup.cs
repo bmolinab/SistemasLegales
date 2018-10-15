@@ -90,6 +90,7 @@ namespace SistemasLegales
             services.AddSession();
 
             EstadoRequisito.Terminado = int.Parse(Configuration.GetSection("EstadoTerminado").Value);
+           
 
 
 
@@ -106,6 +107,7 @@ namespace SistemasLegales
             MailConfig.NameFrom = Configuration.GetSection("NameFrom").Value;
 
             ConstantesCorreo.MensajeCorreoSuperior = Configuration.GetSection("MensajeCorreoSuperior").Value;
+            ConstantesCorreo.DominioCorreo = Configuration.GetSection("DominioCorreo").Value;
 
             //Constantes de envio de notificación por email
             ConstantesTimerEnvioNotificacion.Hora = int.Parse(Configuration.GetSection("Hora").Value);

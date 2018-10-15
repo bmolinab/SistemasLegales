@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <Folder Include="Views\OrganismoControl\" />
+    <Folder Include="wwwroot\js\moment\" />
      <Folder Include="wwwroot\Requisitos\" />
   </ItemGroup>
 

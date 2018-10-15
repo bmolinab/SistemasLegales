@@ -1,7 +1,7 @@
 ﻿MiApp.Generales = function () {
     var form = $(this);
 
-    this.gestionarMsg = function() {
+    this.gestionarMsg = function () {
         var mensaje = $("#spanMensaje").html();
         if (mensaje != "" && mensaje != null) {
             var arr_msg = mensaje.split('|');
@@ -15,8 +15,12 @@
                 var l = Ladda.create(document.querySelector('#btn-guardar'));
                 l.start();
                 $("#laddaSpanGuardar").addClass("padding-left-20");
+
+                var ll = Ladda.create(document.querySelector('#btn-guardar-1'));
+                ll.start();
+                $("#laddaSpanGuardar-1").addClass("padding-left-20");
             } catch (e) { }
-            
+
         });
     };
 

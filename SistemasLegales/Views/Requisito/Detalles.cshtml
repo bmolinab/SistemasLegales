@@ -62,9 +62,9 @@
 
 
 <fieldset>
-    
+
     <section class="col col-lg-12">
-       
+
         <div class="col col-lg-12">
             <legend>Acciones</legend>
             <div class="form-group">
@@ -120,7 +120,7 @@
 
                             </td>
                             <td>
-                                <a href='../Editar/@item.IdAccion'  class="font-12" title='Editar'>Editar</a> |
+                                <a href='../Editar/@item.IdAccion' class="font-12" title='Editar'>Editar</a> |
                                 <a href='javascript:void (0)' title='Eliminar' class="font-12" onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
                             </td>
 
@@ -137,8 +137,6 @@
 
 
     @{ await Html.RenderPartialAsync("_DatepickerPartial"); }
-
-   
 
     <script type="text/javascript">
 
@@ -174,11 +172,11 @@
                      newTable += "<tbody>";
                      for (var i = 0; i < data.length; i++) {
                          newTable += "<tr >";
-                         newTable += "<td class='datepicker'>" + data[i].fecha + "</td > ";
-                         newTable += "<td >" + data[i].detalle + "</td>";
+                         newTable += "<td class='datepicker'> <p class='font-12 text-left'>"  + moment(data[i].fecha).format("DD/MM/YYYY") + "</p></td > ";
+                         newTable += "<td ><p class='font-12 text-left'>"  + data[i].detalle + "</p></td>";
                          newTable += "<td>";
-                         newTable += "<a href='../Editar/" + data[i].idAccion +"'  title ='Editar'>Editar</a> |";
-                         newTable += "<a href='javascript:void (0)'  title ='Eliminar' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
+                         newTable += "<a href='../Editar/" + data[i].idAccion + "' class='font-12' title ='Editar'>Editar</a> |";
+                         newTable += "<a href='javascript:void (0)'  title ='Eliminar' class='font-12' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
                          newTable += "</td>";
                          newTable += "</tr>";
                      };
@@ -234,11 +232,11 @@
                      newTable += "<tbody>";
                      for (var i = 0; i < data.length; i++) {
                          newTable += "<tr >";
-                         newTable += "<td class='datepicker'>" + data[i].fecha + "</td > ";
-                         newTable += "<td >" + data[i].detalle + "</td>";
+                         newTable += "<td class='datepicker'> <p class='font-12 text-left'>" + moment(data[i].fecha).format("DD/MM/YYYY") + "</p></td > ";
+                         newTable += "<td ><p class='font-12 text-left'>" + data[i].detalle + "</p></td>";
                          newTable += "<td>";
-                         newTable += "<a href='../Editar/" + data[i].idAccion + "'  title ='Editar'>Editar</a> |";
-                         newTable += "<a href='javascript:void (0)'  title ='Eliminar' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
+                         newTable += "<a href='../Editar/" + data[i].idAccion + "' class='font-12' title ='Editar'>Editar</a> |";
+                         newTable += "<a href='javascript:void (0)'  title ='Eliminar' class='font-12' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
                          newTable += "</td>";
                          newTable += "</tr>";
                      };

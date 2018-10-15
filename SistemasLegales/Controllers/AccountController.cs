@@ -156,21 +156,56 @@ namespace SistemasLegales.Controllers
                     IdentityResult result;
                     if (String.IsNullOrEmpty(model.Id))
                     {
-                        var user = new ApplicationUser { UserName = model.UserName, Email = $"{model.UserName.ToLower()}@bekaert.com" };
+                        var user = new ApplicationUser { UserName = model.UserName, Email = $"{model.UserName.ToLower()}{ConstantesCorreo.DominioCorreo}" };
                         result = await _userManager.CreateAsync(user, model.Password);
                         if (result.Succeeded)
                             await _userManager.AddToRoleAsync(user, model.Role);
                     }
                     else
                     {
+
+
                         var user = await _userManager.FindByIdAsync(model.Id);
-                        result = await _userManager.UpdateAsync(user);
 
-                        //Eliminando roles
-                        await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+                        var existe = false;
+                        var existeUsuario= await _userManager.FindByNameAsync(model.UserName);
+                        if (existeUsuario != null)
+                        {
 
-                        //Insertando rol
-                        await _userManager.AddToRoleAsync(user, model.Role);
+                            if (existeUsuario.Id == user.Id)
+                            {
+                                existe = false;
+                            }
+                            else
+                            {
+                                return this.VistaError(model, $"{Mensaje.Error}|{Mensaje.ExisteUsuario}");
+                            }
+                        }
+
+                        if (existe==false)
+                        {
+                            user.Email = $"{model.UserName.ToLower()}{ConstantesCorreo.DominioCorreo}";
+                            user.NormalizedEmail = $"{model.UserName.ToUpper()}{ConstantesCorreo.DominioCorreo.ToUpper()}";
+                            user.NormalizedUserName = model.UserName.ToUpper();
+                            user.UserName = model.UserName;
+                            var a= await _userManager.RemovePasswordAsync(user);
+                            var succesPasword = await _userManager.AddPasswordAsync(user, model.Password);
+                            if (succesPasword.Succeeded==false)
+                            {
+                                return this.VistaError(model, $"{Mensaje.Error}|{Mensaje.ComplejidadContrasena}");
+                            }
+                            result = await _userManager.UpdateAsync(user);
+
+                            //Eliminando roles
+                            await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+
+                            //Insertando rol
+                            await _userManager.AddToRoleAsync(user, model.Role);
+                        }
+                        else
+                        {
+                            return this.VistaError(model, $"{Mensaje.Error}|{Mensaje.ExisteUsuario}");
+                        }
                     }
                     if (result.Succeeded)
                     {

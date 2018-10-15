@@ -60,7 +60,7 @@
                 <td>
                     <a asp-action="Detalles" class="font-12" asp-route-id="@item.IdRequisito">Acciones</a>
                     @{
-                        if (User.IsInRole(Perfiles.Gestor))
+                        if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
                         {
                             <span> | </span><br />
                             <a asp-action="Gestionar" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><span> | </span><br />

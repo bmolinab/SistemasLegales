@@ -515,8 +515,10 @@ namespace SistemasLegales.Controllers
                 return File(documentoRequisitoTransfer.Fichero, MimeTypes.GetMimeType(documentoRequisitoTransfer.Nombre), documentoRequisitoTransfer.Nombre);
             }
             catch (Exception)
-            { }
-            return StatusCode(500);
+            {
+                return StatusCode(400, "El archivo solicitado no está disponible, por favor comuníquese con el administrador para obtener  más información.");
+               
+            }
         }
 
         #region AJAX_RequisitoLegal

@@ -8,5 +8,6 @@ namespace SistemasLegales.Models.Utiles
     public static class ConstantesCorreo
     {
         public static string MensajeCorreoSuperior;
+        public static string DominioCorreo { get; set; }
     }
 }
