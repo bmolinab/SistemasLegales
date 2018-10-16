@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SistemasLegales.Models.Entidades;
 using SistemasLegales.Models.Utiles;
 using System;
@@ -13,9 +14,11 @@ namespace SistemasLegales.Services
     {
         private readonly SistemasLegalesContext db;
         private readonly IEmailSender emailSender;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public TimedHostedService(SistemasLegalesContext db, IEmailSender emailSender)
+        public TimedHostedService(UserManager<ApplicationUser> userManager, SistemasLegalesContext db, IEmailSender emailSender)
         {
+            this.userManager = userManager;
             this.db = db;
             this.emailSender = emailSender;
         }
@@ -26,7 +29,7 @@ namespace SistemasLegales.Services
             {
                 var listadoRequisitos = await db.Requisito.Where(c => c.FechaCaducidad != null && !c.NotificacionEnviada).ToListAsync();
                 foreach (var item in listadoRequisitos)
-                    await item.EnviarEmailNotificaion(emailSender, db);
+                    await item.EnviarEmailNotificaion(userManager,emailSender, db);
             }
             catch (Exception)
             { }
