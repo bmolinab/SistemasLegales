@@ -185,19 +185,19 @@ namespace SistemasLegales.Controllers
                 {
                     case 1:
                         {
-                            requisitoFinalizar.FechaCumplimiento.AddDays((int)documento.Cantidad);
+                            requisitoFinalizar.FechaCumplimiento?.AddDays((int)documento.Cantidad);
                             requisitoFinalizar.FechaCaducidad?.AddDays((int)documento.Cantidad);
                             break;
                         }
                     case 2:
                         {
-                            requisitoFinalizar.FechaCumplimiento.AddMonths((int)documento.Cantidad);
+                            requisitoFinalizar.FechaCumplimiento?.AddMonths((int)documento.Cantidad);
                             requisitoFinalizar.FechaCaducidad?.AddMonths((int)documento.Cantidad);
                             break;
                         }
                     case 3:
                         {
-                            requisitoFinalizar.FechaCumplimiento.AddYears((int)documento.Cantidad);
+                            requisitoFinalizar.FechaCumplimiento?.AddYears((int)documento.Cantidad);
                             requisitoFinalizar.FechaCaducidad?.AddYears((int)documento.Cantidad);
                             break;
                         }
@@ -273,6 +273,7 @@ namespace SistemasLegales.Controllers
                         {
                             IdDocumento = requisito.IdDocumento,
                             IdCiudad = requisito.IdCiudad,
+                            Criticidad= requisito.Criticidad,
                             IdProceso = requisito.IdProceso,
                             IdProyecto = requisito.IdProyecto,
                             IdActorDuennoProceso = requisito.IdActorDuennoProceso,
@@ -296,6 +297,7 @@ namespace SistemasLegales.Controllers
                         miRequisito = await db.Requisito.FirstOrDefaultAsync(c => c.IdRequisito == requisito.IdRequisito);
                         miRequisito.IdDocumento = requisito.IdDocumento;
                         miRequisito.IdCiudad = requisito.IdCiudad;
+                        miRequisito.Criticidad = requisito.Criticidad;
                         miRequisito.IdProceso = requisito.IdProceso;
                         miRequisito.IdProyecto = requisito.IdProyecto;
                         miRequisito.IdActorDuennoProceso = requisito.IdActorDuennoProceso;
@@ -433,7 +435,7 @@ namespace SistemasLegales.Controllers
                     lista = lista.Where(c => c.IdProyecto == requisito.IdProyecto).ToList();
 
                 if (requisito.Anno != null)
-                    lista = lista.Where(c => c.FechaCumplimiento.Year == requisito.Anno).ToList();
+                    lista = lista.Where(c => c.FechaCumplimiento?.Year == requisito.Anno).ToList();
 
                 foreach (var item in lista)
                 {

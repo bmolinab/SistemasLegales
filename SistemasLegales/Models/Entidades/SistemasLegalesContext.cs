@@ -61,15 +61,17 @@ namespace SistemasLegales.Models.Entidades
                 entity.HasKey(e => e.IdRequisito)
                     .HasName("PK_AdminRequisitoLegal");
 
+                entity.Property(e => e.Criticidad)
+                .HasDefaultValueSql("0");
+
+
                 entity.Property(e => e.EmailNotificacion1)
-                    .IsRequired()
                     .HasColumnType("varchar(100)");
 
                 entity.Property(e => e.EmailNotificacion2)
-                    .IsRequired()
                     .HasColumnType("varchar(100)");
 
-                entity.Property(e => e.Observaciones).HasColumnType("varchar(1000)");
+                entity.Property(e => e.Observaciones).HasColumnType("text");
 
                 entity.HasOne(d => d.ActorCustodioDocumento)
                     .WithMany(p => p.AdminRequisitoLegalIdActorCustodioDocumento)

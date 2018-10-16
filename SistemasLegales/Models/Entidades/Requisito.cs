@@ -62,13 +62,12 @@ namespace SistemasLegales.Models.Entidades
         public int IdActorCustodioDocumento { get; set; }
         public virtual Actor ActorCustodioDocumento { get; set; }
 
-        [Required(ErrorMessage = "Debe introducir la {0}")]
         [Display(Name = "Fecha de cumplimiento")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime FechaCumplimiento { get; set; }
+        public DateTime? FechaCumplimiento { get; set; }
 
-        [Display(Name = "Fecha de caducidad")]
+        [Display(Name = "Fecha Exigible")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? FechaCaducidad { get; set; }
@@ -105,6 +104,9 @@ namespace SistemasLegales.Models.Entidades
         public bool NotificacionEnviada { get; set; }
 
         public bool Finalizado { get; set; }
+
+        public int? Criticidad { get; set; }
+
 
         [NotMapped]
         [Display(Name = "Año")]
@@ -176,7 +178,7 @@ namespace SistemasLegales.Models.Entidades
                 if (listaAdministradores.Count>0)
                 {
 
-                    var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento.ToString("dd/MM/yyyy") : "No Definido";
+                    var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
                     var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
 
                     await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito terminado.",
@@ -239,7 +241,7 @@ namespace SistemasLegales.Models.Entidades
                             Documento: {Documento.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
                             Ciudad: {Ciudad.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
                             Proceso: {Proceso.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Fecha de cumplimiento: {FechaCumplimiento.ToString("dd/MM/yyyy")}, {System.Environment.NewLine}{System.Environment.NewLine},
+                            Fecha de cumplimiento: {FechaCumplimiento?.ToString("dd/MM/yyyy")}, {System.Environment.NewLine}{System.Environment.NewLine},
                             Fecha de caducidad: {FechaCaducidad.Value.ToString("dd/MM/yyyy")}, {System.Environment.NewLine}{System.Environment.NewLine},
                             Status: {Status.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine},
                             Observaciones: {Observaciones}, {System.Environment.NewLine}{System.Environment.NewLine}

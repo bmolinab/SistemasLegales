@@ -118,6 +118,30 @@
                 <span asp-validation-for="IdActorCustodioDocumento" class="text-danger"></span>
             </div>
         </div>
+
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <div class="form-group">
+
+                    <label>Criticidad</label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="Criticidad" class="form-control show-tick" data-live-search="true">
+                            <option value="0">Bajo</option>
+                            <option value="1">Medio</option>
+                            <option value="2">Alto</option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="Criticidad" class="text-danger"></span>
+
+                </div>
+                </div>
+            </div>
+
+
+
+
+
+
     </div>
 
     <div class="row">
@@ -225,29 +249,29 @@
                                                 Opciones
                                             </th>
                                         }
-                                     }
-                                        </tr>
+                                    }
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model.Accion)
                                 {
-                                <tr>
-                                    <td class="datepicker text-justify">
-                                        @string.Format("{0:dd/MM/yyyy}", item.Fecha)
+                                    <tr>
+                                        <td class="datepicker text-justify">
+                                            @string.Format("{0:dd/MM/yyyy}", item.Fecha)
 
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Detalle)
-                                    </td>
-                                    @{
-                                        if (User.IsInRole(Perfiles.Administrador))
-                                        {
-                                            <td>
-                                                <a href='javascript:void (0)' title='Eliminar' onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
-                                            </td>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Detalle)
+                                        </td>
+                                        @{
+                                            if (User.IsInRole(Perfiles.Administrador))
+                                            {
+                                                <td>
+                                                    <a href='javascript:void (0)' title='Eliminar' onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
+                                                </td>
+                                            }
                                         }
-                                     }
-                                 </tr>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
