@@ -218,26 +218,36 @@
                                     <th>
                                         Detalle
                                     </th>
-                                    <th>
-                                        Opciones
-                                    </th>
-                                </tr>
+                                    @{
+                                        if (User.IsInRole(Perfiles.Administrador))
+                                        {
+                                            <th>
+                                                Opciones
+                                            </th>
+                                        }
+                                     }
+                                        </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model.Accion)
                                 {
-                                    <tr>
-                                        <td class="datepicker text-justify">
-                                            @string.Format("{0:dd/MM/yyyy}", item.Fecha)
+                                <tr>
+                                    <td class="datepicker text-justify">
+                                        @string.Format("{0:dd/MM/yyyy}", item.Fecha)
 
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Detalle)
-                                        </td>
-                                        <td>
-                                            <a href='javascript:void (0)' title='Eliminar' onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
-                                        </td>
-                                    </tr>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Detalle)
+                                    </td>
+                                    @{
+                                        if (User.IsInRole(Perfiles.Administrador))
+                                        {
+                                            <td>
+                                                <a href='javascript:void (0)' title='Eliminar' onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
+                                            </td>
+                                        }
+                                     }
+                                 </tr>
                                 }
                             </tbody>
                         </table>
