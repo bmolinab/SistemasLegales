@@ -69,6 +69,7 @@ namespace SistemasLegales.Models.Entidades
 
         [Display(Name = "Fecha Exigible")]
         [DataType(DataType.DateTime)]
+        [Required(ErrorMessage = "Debe seleccionar la {0}.")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? FechaCaducidad { get; set; }
 
@@ -144,14 +145,66 @@ namespace SistemasLegales.Models.Entidades
         /// <returns></returns>
         public int ObtenerSemaforo()
         {
-            int myNegInt = System.Math.Abs(DiasNotificacion) * (-1);
+
+
+
+
+
+            int myNegInt = (Math.Abs(DiasNotificacion+ConstantesSemaforo.MenosDiasNotificacion) * (-1));
+
+
+            
+
+
+
             if (FechaCaducidad == null)
+                return 3;
+
+            //*********************************
+
+            DateTime diasnotificacion = FechaCaducidad.Value.AddDays(myNegInt);//some datetime
+            DateTime diasexigible = FechaCaducidad.Value.AddDays((ConstantesSemaforo.MenosDiasExigible*-1));//some datetime
+
+
+            DateTime hoy = DateTime.Now;
+
+            TimeSpan restantesexigible = diasexigible - hoy.Date;
+            TimeSpan restantenotificacion = diasnotificacion - hoy.Date;
+
+
+            int diasN = restantenotificacion.Days;
+            int diasE = restantesexigible.Days;
+
+            if (diasN>0)
+            {
                 return 1;
 
-            var fechaInicioNotificacion = FechaCaducidad.Value.AddDays(myNegInt);
-            var fechaCaducidad = new DateTime(FechaCaducidad.Value.Year, FechaCaducidad.Value.Month, FechaCaducidad.Value.Day, 23, 59, 59);
-            return DateTime.Now < fechaInicioNotificacion ? 1 : (DateTime.Now >= fechaInicioNotificacion && DateTime.Now <= fechaCaducidad) ? 2 : 3;
+            }          
+            else if (diasE <= 0)
+            {
+                return 3;
+            }
+            else return 2;
+            //*********************************
         }
+
+        public string ObtenerDias()
+        {
+
+          
+            if (FechaCaducidad == null)
+                return "Sin fecha";
+
+            int myNegInt = (Math.Abs(DiasNotificacion+2) * (-1));
+            
+            DateTime a = FechaCaducidad.Value.AddDays(myNegInt);//some datetime
+            DateTime now = DateTime.Now;
+            TimeSpan ts =  a - now.Date;
+            int days =ts.Days;
+
+            return days.ToString();
+        }
+       
 
         public async Task<bool> EnviarEmailNotificaionRequisitoTerminado(UserManager<ApplicationUser> userManager,string url,int idRequisito,IEmailSender emailSender, SistemasLegalesContext db)
         {

@@ -1,17 +1,18 @@
 @model Requisito
 @{
-    int semaforo = Model.ObtenerSemaforo();
+                int semaforo = Model.ObtenerSemaforo();
+                string dias = Model.ObtenerDias();
 
     if (semaforo == 1)
     {
-        <span class="label label-success">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span class="label label-success col-lg-12">@dias</span>
     }
     else if (semaforo == 2)
     {
-        <span class="label bg-yellow">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span class="label bg-yellow col-lg-12">@dias</span>
     }
     else
     {
-        <span class="label label-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span class="label label-danger col-lg-12">@dias</span>
     }
 }

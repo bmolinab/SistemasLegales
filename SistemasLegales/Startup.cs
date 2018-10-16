@@ -91,6 +91,9 @@ namespace SistemasLegales
 
             EstadoRequisito.Terminado = int.Parse(Configuration.GetSection("EstadoTerminado").Value);
             EstadoRequisito.Iniciado = int.Parse(Configuration.GetSection("EstadoIniciado").Value);
+            //Configuracion para restar los días
+            ConstantesSemaforo.MenosDiasNotificacion = int.Parse(Configuration.GetSection("MenosDiasNotificacion").Value);
+            ConstantesSemaforo.MenosDiasExigible = int.Parse(Configuration.GetSection("MenosDiasExigible").Value);
 
 
 
@@ -114,6 +117,7 @@ namespace SistemasLegales
             ConstantesTimerEnvioNotificacion.Hora = int.Parse(Configuration.GetSection("Hora").Value);
             ConstantesTimerEnvioNotificacion.Minutos = int.Parse(Configuration.GetSection("Minutos").Value);
             ConstantesTimerEnvioNotificacion.Segundos = int.Parse(Configuration.GetSection("Segundos").Value);
+
 
 
 
