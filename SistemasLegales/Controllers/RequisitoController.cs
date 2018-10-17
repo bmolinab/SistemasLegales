@@ -135,26 +135,29 @@ namespace SistemasLegales.Controllers
                 requisitoFinalizar.Finalizado = true;
                 await db.SaveChangesAsync();
 
+                 var FechaCumplimiento = new DateTime?();
+                var FechaCaducidad = new DateTime?();
+                
                 var documento = await db.Documento.Where(x => x.IdDocumento == requisitoFinalizar.IdDocumento).FirstOrDefaultAsync();
 
                 switch (documento.Tipo)
                 {
                     case 1:
                         {
-                            requisitoFinalizar.FechaCumplimiento?.AddDays((int)documento.Cantidad);
-                            requisitoFinalizar.FechaCaducidad?.AddDays((int)documento.Cantidad);
+                           FechaCumplimiento= requisitoFinalizar.FechaCumplimiento?.AddDays((int)documento.Cantidad);
+                            FechaCaducidad= requisitoFinalizar.FechaCaducidad?.AddDays((int)documento.Cantidad);
                             break;
                         }
                     case 2:
                         {
-                            requisitoFinalizar.FechaCumplimiento?.AddMonths((int)documento.Cantidad);
-                            requisitoFinalizar.FechaCaducidad?.AddMonths((int)documento.Cantidad);
+                            FechaCumplimiento = requisitoFinalizar.FechaCumplimiento?.AddMonths((int)documento.Cantidad);
+                            FechaCaducidad = requisitoFinalizar.FechaCaducidad?.AddMonths(Convert.ToInt32(documento.Cantidad));
                             break;
                         }
                     case 3:
                         {
-                            requisitoFinalizar.FechaCumplimiento?.AddYears((int)documento.Cantidad);
-                            requisitoFinalizar.FechaCaducidad?.AddYears((int)documento.Cantidad);
+                            FechaCumplimiento = requisitoFinalizar.FechaCumplimiento?.AddYears((int)documento.Cantidad);
+                            FechaCaducidad = requisitoFinalizar.FechaCaducidad?.AddYears((int)documento.Cantidad);
                             break;
                         }
                 }
@@ -169,8 +172,8 @@ namespace SistemasLegales.Controllers
                     IdActorDuennoProceso = requisitoFinalizar.IdActorDuennoProceso,
                     IdActorResponsableGestSeg = requisitoFinalizar.IdActorResponsableGestSeg,
                     IdActorCustodioDocumento = requisitoFinalizar.IdActorCustodioDocumento,
-                    FechaCumplimiento = requisitoFinalizar.FechaCumplimiento,
-                    FechaCaducidad = requisitoFinalizar.FechaCaducidad,
+                    FechaCumplimiento = FechaCumplimiento,
+                    FechaCaducidad = FechaCaducidad,
                     IdStatus = EstadoRequisito.Iniciado,
                     DuracionTramite = requisitoFinalizar.DuracionTramite,
                     DiasNotificacion = requisitoFinalizar.DiasNotificacion,

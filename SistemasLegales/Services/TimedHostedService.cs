@@ -27,7 +27,7 @@ namespace SistemasLegales.Services
         {
             try
             {
-                var listadoRequisitos = await db.Requisito.Where(c => c.FechaCaducidad != null && !c.NotificacionEnviada).ToListAsync();
+                var listadoRequisitos = await db.Requisito.Where(c => c.FechaCaducidad != null && !c.Finalizado && !c.NotificacionEnviada && !c.NotificacionEnviadaUltima).ToListAsync();
                 foreach (var item in listadoRequisitos)
                     await item.EnviarEmailNotificaion(userManager,emailSender, db);
             }

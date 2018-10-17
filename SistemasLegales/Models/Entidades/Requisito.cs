@@ -104,6 +104,10 @@ namespace SistemasLegales.Models.Entidades
         [Display(Name = "Notificación enviada")]
         public bool NotificacionEnviada { get; set; }
 
+        [Display(Name = "Notificación enviada")]
+        public bool NotificacionEnviadaUltima { get; set; }
+        
+
         public bool Finalizado { get; set; }
 
         public int? Criticidad { get; set; }
@@ -148,32 +152,16 @@ namespace SistemasLegales.Models.Entidades
         /// <returns></returns>
         public int ObtenerSemaforo()
         {
-
-
-
-
-
             int myNegInt = (Math.Abs(DiasNotificacion+ConstantesSemaforo.MenosDiasNotificacion) * (-1));
-
-
-            
-
-
-
             if (FechaCaducidad == null)
                 return 3;
-
             //*********************************
 
             DateTime diasnotificacion = FechaCaducidad.Value.AddDays(myNegInt);//some datetime
             DateTime diasexigible = FechaCaducidad.Value.AddDays((ConstantesSemaforo.MenosDiasExigible*-1));//some datetime
-
-
             DateTime hoy = DateTime.Now;
-
             TimeSpan restantesexigible = diasexigible - hoy.Date;
             TimeSpan restantenotificacion = diasnotificacion - hoy.Date;
-
 
             int diasN = restantenotificacion.Days;
             int diasE = restantesexigible.Days;
@@ -193,7 +181,6 @@ namespace SistemasLegales.Models.Entidades
 
         public string ObtenerDias()
         {
-
           
             if (FechaCaducidad == null)
                 return "Sin fecha";
@@ -400,6 +387,8 @@ namespace SistemasLegales.Models.Entidades
 
                 if (semaforo == 3)
                 {
+                    if (!NotificacionEnviadaUltima)
+                    {
                         var requisito = await db.Requisito
                             .Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl)
                             .Include(c => c.Ciudad)
@@ -450,6 +439,7 @@ namespace SistemasLegales.Models.Entidades
                         NotificacionEnviada = true;
                         await db.SaveChangesAsync();
                         return true;
+                    }
                 }
             }
             catch (Exception)
