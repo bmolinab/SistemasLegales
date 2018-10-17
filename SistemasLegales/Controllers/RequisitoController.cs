@@ -184,13 +184,11 @@ namespace SistemasLegales.Controllers
                     Finalizado = false,
                 };
 
-
-
-
                 await db.AddAsync(miRequisito);
                 await db.SaveChangesAsync();
 
-                await miRequisito.EnviarEmailNotificaionRequisitoFinalizado(emailSender, db);
+                await requisito.EnviarEmailNotificaionRequisitoFinalizado(emailSender, db);
+                await miRequisito.EnviarEmailNotificaionRequisitoCreacionAutomatica(userManager,emailSender, db);
 
                 return this.Redireccionar($"{Mensaje.Informacion}|{Mensaje.Satisfactorio}");
             }

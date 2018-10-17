@@ -195,8 +195,66 @@ namespace SistemasLegales.Models.Entidades
 
             return days.ToString();
         }
-       
+        
 
+            public async Task<bool> EnviarEmailNotificaionRequisitoCreacionAutomatica(UserManager<ApplicationUser> userManager, IEmailSender emailSender, SistemasLegalesContext db)
+        {
+            try
+            {
+                var requisito = await db.Requisito
+                                        .Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl)
+                                        .Include(c => c.Ciudad)
+                                        .Include(c => c.Proceso)
+                                        .Include(c => c.ActorDuennoProceso)
+                                        .Include(c => c.ActorResponsableGestSeg)
+                                        .Include(c => c.ActorCustodioDocumento)
+                                        .Include(c => c.Status)
+                                        .FirstOrDefaultAsync(c => c.IdRequisito == IdRequisito);
+
+
+                if (requisito != null)
+                {
+
+                    var listadoEmails = new List<string>()
+                        {
+                            ActorDuennoProceso.Email,
+                            ActorResponsableGestSeg.Email,
+                            ActorCustodioDocumento.Email
+                        };
+
+                    if (!String.IsNullOrEmpty(EmailNotificacion1))
+                        listadoEmails.Add(EmailNotificacion1);
+
+                    if (!String.IsNullOrEmpty(EmailNotificacion2))
+                        listadoEmails.Add(EmailNotificacion2);
+
+
+                    var listaAdministradores = await userManager.GetUsersInRoleAsync(Perfiles.Administrador);
+
+                    foreach (var item in listaAdministradores)
+                    {
+                        listadoEmails.Add(item.Email);
+                    }
+                    var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
+                    var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito creado automaticamete.",
+                       $@"Se le informa que el se ha creado un requisito de manera automática en la aplicación Sistemas Legales con los datos siguientes: {System.Environment.NewLine}
+                            Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}, {System.Environment.NewLine}
+                            Requisito legal: {requisito.Documento.RequisitoLegal.Nombre}, {System.Environment.NewLine}
+                            Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}
+                            Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}
+                            Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}
+                            Fecha de exigible: {FechaCaducidad}, {System.Environment.NewLine}
+                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}
+                            Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}
+                        ");
+                }
+                return true;
+            }
+            catch (Exception)
+            { }
+            return false;
+        }
         public async Task<bool> EnviarEmailNotificaionRequisitoFinalizado(IEmailSender emailSender, SistemasLegalesContext db)
         {
             try
