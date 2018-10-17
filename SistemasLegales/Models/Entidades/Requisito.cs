@@ -197,7 +197,7 @@ namespace SistemasLegales.Models.Entidades
         }
        
 
-        public async Task<bool> EnviarEmailNotificaionRequisitoFinalizado(int idRequisito, IEmailSender emailSender, SistemasLegalesContext db)
+        public async Task<bool> EnviarEmailNotificaionRequisitoFinalizado(IEmailSender emailSender, SistemasLegalesContext db)
         {
             try
             {
@@ -209,7 +209,7 @@ namespace SistemasLegales.Models.Entidades
                                         .Include(c => c.ActorResponsableGestSeg)
                                         .Include(c => c.ActorCustodioDocumento)
                                         .Include(c => c.Status)
-                                        .FirstOrDefaultAsync(c => c.IdRequisito == idRequisito);
+                                        .FirstOrDefaultAsync(c => c.IdRequisito == IdRequisito);
 
 
                 if (requisito!=null)
@@ -222,15 +222,15 @@ namespace SistemasLegales.Models.Entidades
                     var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
                     await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito finalizado.",
                        $@"Se le informa que el requisito a finalizado en la aplicación Sistemas Legales con los datos siguientes: {System.Environment.NewLine}
-                            Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}, {System.Environment.NewLine}.
-                            Requisito legal: {requisito.Documento.RequisitoLegal.Nombre}, {System.Environment.NewLine}.
-                            Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}.
-                            Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}.
-                            Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}.
-                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine}.
-                            Fecha de exigible: {FechaCaducidad}, {System.Environment.NewLine}.
-                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}.
-                            Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}.
+                            Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}, {System.Environment.NewLine}
+                            Requisito legal: {requisito.Documento.RequisitoLegal.Nombre}, {System.Environment.NewLine}
+                            Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}
+                            Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}
+                            Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}
+                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine}
+                            Fecha de exigible: {FechaCaducidad}, {System.Environment.NewLine}
+                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}
+                            Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}
                         ");
                 }
                 return true;
@@ -239,7 +239,7 @@ namespace SistemasLegales.Models.Entidades
             { }
             return false;
         }
-        public async Task<bool> EnviarEmailNotificaionRequisitoTerminado(UserManager<ApplicationUser> userManager,string url,int idRequisito,IEmailSender emailSender, SistemasLegalesContext db)
+        public async Task<bool> EnviarEmailNotificaionRequisitoTerminado(UserManager<ApplicationUser> userManager,string url,IEmailSender emailSender, SistemasLegalesContext db)
         {
             try
             {
@@ -253,8 +253,7 @@ namespace SistemasLegales.Models.Entidades
                                         .Include(c => c.ActorResponsableGestSeg)
                                         .Include(c => c.ActorCustodioDocumento)
                                         .Include(c => c.Status)
-                                        .FirstOrDefaultAsync(c => c.IdRequisito == idRequisito);
-
+                                        .FirstOrDefaultAsync(c => c.IdRequisito == IdRequisito);
 
                 var listadoEmails = new List<string>();
                 foreach (var item in listaAdministradores)
@@ -289,7 +288,7 @@ namespace SistemasLegales.Models.Entidades
         }
 
 
-        public async Task<bool> EnviarEmailNotificaionNoFinalizado(string url, int idRequisito, IEmailSender emailSender, SistemasLegalesContext db)
+        public async Task<bool> EnviarEmailNotificaionNoFinalizado(string url, IEmailSender emailSender, SistemasLegalesContext db)
         {
             try
             {
@@ -301,7 +300,7 @@ namespace SistemasLegales.Models.Entidades
                                         .Include(c => c.ActorResponsableGestSeg)
                                         .Include(c => c.ActorCustodioDocumento)
                                         .Include(c => c.Status)
-                                        .FirstOrDefaultAsync(c => c.IdRequisito == idRequisito);
+                                        .FirstOrDefaultAsync(c => c.IdRequisito == IdRequisito);
                 if (requisito != null)
                 {
 
@@ -312,16 +311,16 @@ namespace SistemasLegales.Models.Entidades
                     var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
                     await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito.",
                        $@"Se le informa que un requisito no ha sido aprobado su finalización en la aplicación Sistemas Legales con los datos siguientes: {System.Environment.NewLine}
-                            Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}, {System.Environment.NewLine}.
-                            Requisito legal: {requisito.Documento.RequisitoLegal.Nombre}, {System.Environment.NewLine}.
-                            Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}.
-                            Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}.
-                            Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}.
-                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine}.
-                            Fecha de exigible : {FechaCaducidad}, {System.Environment.NewLine}.
-                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}.
-                            Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}.
-                            Para acceder al requisito haga clic aquí: {url}, {System.Environment.NewLine}.
+                            Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}, {System.Environment.NewLine}
+                            Requisito legal: {requisito.Documento.RequisitoLegal.Nombre}, {System.Environment.NewLine}
+                            Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}
+                            Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}
+                            Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}
+                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine}
+                            Fecha de exigible : {FechaCaducidad}, {System.Environment.NewLine}
+                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}
+                            Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}
+                            Para acceder al requisito haga clic aquí: {url}, {System.Environment.NewLine}
                         ");
                 }
                 return true;
@@ -370,14 +369,14 @@ namespace SistemasLegales.Models.Entidades
                         await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.",
                         $@"Se le informa que está a punto de caducar un requisito en la aplicación Sistemas Legales con los datos siguientes: {System.Environment.NewLine}{System.Environment.NewLine}
                             Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Requisito legal: {requisito.Documento.RequisitoLegal.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine}
-                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine}{System.Environment.NewLine},
-                            Fecha de exigible: {FechaCaducidad}, {System.Environment.NewLine}{System.Environment.NewLine},
-                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}{System.Environment.NewLine},
-                            Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}{System.Environment.NewLine}
+                            Requisito legal: {requisito.Documento.RequisitoLegal.Nombre}, {System.Environment.NewLine}
+                            Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}
+                            Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}
+                            Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}
+                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine}
+                            Fecha de exigible: {FechaCaducidad}, {System.Environment.NewLine}
+                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}
+                            Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}
                         ");
 
                         NotificacionEnviada = true;
@@ -431,13 +430,13 @@ namespace SistemasLegales.Models.Entidades
                             Documento: {requisito.Documento.Nombre}, {System.Environment.NewLine}
                             Ciudad: {requisito.Ciudad.Nombre}, {System.Environment.NewLine}
                             Proceso: {requisito.Proceso.Nombre}, {System.Environment.NewLine}
-                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine},
-                            Fecha de exigible: {FechaCaducidad}, {System.Environment.NewLine},
-                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine},
+                            Fecha de cumplimiento: {FechaCumplimiento}, {System.Environment.NewLine}
+                            Fecha de exigible: {FechaCaducidad}, {System.Environment.NewLine}
+                            Status: {requisito.Status.Nombre}, {System.Environment.NewLine}
                             Observaciones: {requisito.Observaciones}, {System.Environment.NewLine}
                         ");
 
-                        NotificacionEnviada = true;
+                        NotificacionEnviadaUltima = true;
                         await db.SaveChangesAsync();
                         return true;
                     }

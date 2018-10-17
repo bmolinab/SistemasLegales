@@ -190,7 +190,7 @@ namespace SistemasLegales.Controllers
                 await db.AddAsync(miRequisito);
                 await db.SaveChangesAsync();
 
-                await miRequisito.EnviarEmailNotificaionRequisitoFinalizado(miRequisito.IdRequisito, emailSender, db);
+                await miRequisito.EnviarEmailNotificaionRequisitoFinalizado(emailSender, db);
 
                 return this.Redireccionar($"{Mensaje.Informacion}|{Mensaje.Satisfactorio}");
             }
@@ -231,7 +231,7 @@ namespace SistemasLegales.Controllers
                 ViewData["OrganismoControl"] = new SelectList(await db.OrganismoControl.OrderBy(c => c.Nombre).ToListAsync(), "IdOrganismoControl", "Nombre");
                 ViewData["RequisitoLegal"] = await ObtenerSelectListRequisitoLegal((ViewData["OrganismoControl"] as SelectList).FirstOrDefault() != null ? int.Parse((ViewData["OrganismoControl"] as SelectList).FirstOrDefault().Value) : -1);
                 ViewData["Documento"] = await ObtenerSelectListDocumento((ViewData["RequisitoLegal"] as SelectList).FirstOrDefault() != null ? int.Parse((ViewData["RequisitoLegal"] as SelectList).FirstOrDefault().Value) : -1);
-                var requisitoNew = new Requisito { IdRequisito=0,IdStatusAnterior=-1};
+                var requisitoNew = new Requisito { IdRequisito=0,IdStatusAnterior=-1,Accion=new List<Accion>()};
                 return View(requisitoNew);
             }
             catch (Exception)
@@ -351,7 +351,7 @@ namespace SistemasLegales.Controllers
                         {
                             url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}";
                         }
-                        await requisito.EnviarEmailNotificaionNoFinalizado( url, miRequisito.IdRequisito, emailSender, db);
+                        await miRequisito.EnviarEmailNotificaionNoFinalizado( url, emailSender, db);
                     }
 
                     if (requisito.IdStatus == EstadoRequisito.Terminado)
@@ -365,10 +365,10 @@ namespace SistemasLegales.Controllers
                         {
                             url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}";
                         }
-                        await requisito.EnviarEmailNotificaionRequisitoTerminado( userManager, url,miRequisito.IdRequisito,emailSender, db);
+                        await miRequisito.EnviarEmailNotificaionRequisitoTerminado( userManager, url,emailSender, db);
                     }
 
-                    await requisito.EnviarEmailNotificaion(userManager,emailSender, db);
+                    await miRequisito.EnviarEmailNotificaion(userManager,emailSender, db);
                     return this.Redireccionar(responseFile ? $"{Mensaje.Informacion}|{Mensaje.Satisfactorio}" : $"{Mensaje.Aviso}|{Mensaje.ErrorUploadFiles}");
                 }
                 ViewData["OrganismoControl"] = new SelectList(await db.OrganismoControl.OrderBy(c => c.Nombre).ToListAsync(), "IdOrganismoControl", "Nombre");
