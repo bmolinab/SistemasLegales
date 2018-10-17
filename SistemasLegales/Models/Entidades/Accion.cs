@@ -10,7 +10,7 @@ namespace SistemasLegales.Models.Entidades
     {
         public int IdAccion { get; set; }
         [Required(ErrorMessage = "Debe introducir el {0}.")]
-        [StringLength(999, MinimumLength = 1, ErrorMessage = "El {0} no puede tener más de {1} y menos de {2} caracteres.")]
+        [DataType(DataType.Text)]
         [Display(Name = "Detalle")]
         public string Detalle { get; set; }
 

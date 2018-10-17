@@ -98,7 +98,8 @@ namespace SistemasLegales.Models.Entidades
         public string EmailNotificacion2 { get; set; }
 
         [Display(Name = "Observaciones")]
-        [StringLength(1000, MinimumLength = 1, ErrorMessage = "Las {0} no pueden tener más de {1} y menos de {2} caracteres.")]
+        [DataType(DataType.Text)]
+       // [StringLength(1000, MinimumLength = 1, ErrorMessage = "Las {0} no pueden tener más de {1} y menos de {2} caracteres.")]
         public string Observaciones { get; set; }
 
         [Display(Name = "Notificación enviada")]
