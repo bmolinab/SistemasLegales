@@ -156,7 +156,7 @@ namespace SistemasLegales.Controllers
                     IdentityResult result;
                     if (String.IsNullOrEmpty(model.Id))
                     {
-                        var user = new ApplicationUser { UserName = model.UserName, Email = $"{model.UserName.ToLower()}{ConstantesCorreo.DominioCorreo}" };
+                        var user = new ApplicationUser { UserName = model.UserName.ToLower(), Email = model.UserName.ToLower()};
                         result = await _userManager.CreateAsync(user, model.Password);
                         if (result.Succeeded)
                             await _userManager.AddToRoleAsync(user, model.Role);
@@ -184,10 +184,10 @@ namespace SistemasLegales.Controllers
 
                         if (existe==false)
                         {
-                            user.Email = $"{model.UserName.ToLower()}{ConstantesCorreo.DominioCorreo}";
-                            user.NormalizedEmail = $"{model.UserName.ToUpper()}{ConstantesCorreo.DominioCorreo.ToUpper()}";
+                            user.Email =model.UserName.ToLower();
+                            user.NormalizedEmail = model.UserName.ToUpper();
                             user.NormalizedUserName = model.UserName.ToUpper();
-                            user.UserName = model.UserName;
+                            user.UserName = model.UserName.ToLower();
                             var a= await _userManager.RemovePasswordAsync(user);
                             var succesPasword = await _userManager.AddPasswordAsync(user, model.Password);
                             if (succesPasword.Succeeded==false)

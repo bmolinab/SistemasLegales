@@ -135,9 +135,11 @@ namespace SistemasLegales
 
             ReportConfig.CompletePath = string.Format("{0}{1}", ReportConfig.ReportServerUrl, ReportConfig.ReportFolderPath);
 
+
+
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TimedHostedService timedHostedService/*, IServiceProvider serviceProvider*/)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TimedHostedService timedHostedService )//, IServiceProvider serviceProvider)
         {
             var defaultCulture = new CultureInfo("es-ec");
             defaultCulture.NumberFormat.NumberDecimalSeparator = ".";
@@ -206,9 +208,9 @@ namespace SistemasLegales
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var usersName = new ApplicationUser[]
             {
-                new ApplicationUser { UserName = "Administrador", Email = "administrador@bekaert.com" },
-                new ApplicationUser { UserName = "Gerencia", Email = "gerencia@bekaert.com" },
-                new ApplicationUser { UserName = "Gestor", Email = "gestor@bekaert.com" }
+                new ApplicationUser { UserName = "administrador@bekaert.com", Email = "administrador@bekaert.com" },
+                new ApplicationUser { UserName = "gerencia@bekaert.com", Email = "gerencia@bekaert.com" },
+                new ApplicationUser { UserName = "gestor@bekaert.com", Email = "gestor@bekaert.com" }
             };
             IdentityResult result;
             foreach (var item in usersName)
@@ -219,18 +221,18 @@ namespace SistemasLegales
                     //Se crean los usuarios si no existen en la BD
                     switch (item.UserName)
                     {
-                        case "Administrador": result = userManager.CreateAsync(item, "Administrador2018*").Result; break;
-                        case "Gerencia": result = userManager.CreateAsync(item, "Gerencia2018*").Result; break;
-                        case "Gestor": result = userManager.CreateAsync(item, "Gestor2018*").Result; break;
+                        case "administrador@bekaert.com": result = userManager.CreateAsync(item, "Administrador2018*").Result; break;
+                        case "gerencia@bekaert.com": result = userManager.CreateAsync(item, "Gerencia2018*").Result; break;
+                        case "gestor@bekaert.com": result = userManager.CreateAsync(item, "Gestor2018*").Result; break;
                     }
                 }
 
                 //Se asignan los roles a los usuarios si no existen en la BD
                 switch (item.UserName)
                 {
-                    case "Administrador": result = userManager.AddToRoleAsync(item, Perfiles.Administrador).Result; break;
-                    case "Gerencia": result = userManager.AddToRoleAsync(item, Perfiles.Gerencia).Result; break;
-                    case "Gestor": result = userManager.AddToRoleAsync(item, Perfiles.Gestor).Result; break;
+                    case "administrador@bekaert.com": result = userManager.AddToRoleAsync(item, Perfiles.Administrador).Result; break;
+                    case "gerencia@bekaert.com": result = userManager.AddToRoleAsync(item, Perfiles.Gerencia).Result; break;
+                    case "gestor@bekaert.com": result = userManager.AddToRoleAsync(item, Perfiles.Gestor).Result; break;
                 }
             }
         }

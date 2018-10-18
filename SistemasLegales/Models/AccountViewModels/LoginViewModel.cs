@@ -10,6 +10,7 @@ namespace SistemasLegales.Models.AccountViewModels
     {
         [Required(ErrorMessage = "Debe introducir el {0}.")]
         [Display(Name = "Usuario")]
+        [EmailAddress(ErrorMessage = "El Correo electrónico es inválido.")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Debe introducir la {0}.")]
