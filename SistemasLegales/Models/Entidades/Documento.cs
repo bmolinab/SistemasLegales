@@ -15,10 +15,10 @@ namespace SistemasLegales.Models.Entidades
 
         [Required(ErrorMessage = "Debe introducir el {0}.")]
         [StringLength(200, MinimumLength = 1, ErrorMessage = "El {0} no puede tener más de {1} y menos de {2} caracteres.")]
-        [Display(Name = "Documento")]
+        [Display(Name = "Requisito")]
         public string Nombre { get; set; }
 
-        [Display(Name = "Requisito legal")]
+        [Display(Name = "Base legal")]
         [Required(ErrorMessage = "Debe seleccionar el {0}.")]
         [Range(1, double.MaxValue, ErrorMessage = "Debe seleccionar el {0}.")]
         public int IdRequisitoLegal { get; set; }

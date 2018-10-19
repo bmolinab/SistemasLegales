@@ -273,7 +273,7 @@ namespace SistemasLegales.Controllers
                 ModelState.Remove("Documento.RequisitoLegal.Nombre");
                 if (ModelState.IsValid)
                 {
-                    
+                    var nuevoRegistro = false;
 
                     if (requisito.IdRequisito == 0)
                     {
@@ -300,6 +300,8 @@ namespace SistemasLegales.Controllers
                         };
 
                         db.Add(miRequisito);
+                        nuevoRegistro = true;
+                        
                     }
                     else
                     {
@@ -364,6 +366,20 @@ namespace SistemasLegales.Controllers
                             url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}";
                         }
                         await miRequisito.EnviarEmailNotificaionRequisitoTerminado( userManager, url,emailSender, db);
+                    }
+
+                    if (nuevoRegistro)
+                    {
+                        var url = "";
+                        if (requisito.IdRequisito == 0)
+                        {
+                            url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}/{miRequisito.IdRequisito}";
+                        }
+                        else
+                        {
+                            url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}";
+                        }
+                        await miRequisito.EnviarEmailNotificaionRequisitoCreacion(url, emailSender, db);
                     }
 
                     await miRequisito.EnviarEmailNotificaion(userManager,emailSender, db);
