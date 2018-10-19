@@ -23,6 +23,28 @@ namespace SistemasLegales.Services
             this.emailSender = emailSender;
         }
 
+
+        public async Task EnviarNotificacionRequisitosCincoDias()
+        {
+            try
+            {
+                var fechaActual = DateTime.Now.AddDays(NotificacionContinua.Dias).Date;
+                var fechaCaducidad = DateTime.Now;
+                var listadoRequisitos = await db.Requisito.Where(c => c.FechaCaducidad != null && !c.Finalizado).ToListAsync();
+                foreach (var item in listadoRequisitos)
+                {
+                    fechaCaducidad = item.FechaCaducidad.Value.Date;
+                    if (fechaActual>=fechaCaducidad)
+                    {
+                        await item.EnviarEmailNotificaionDias(emailSender, db);
+                    }
+                }
+
+            }
+            catch (Exception)
+            { }
+        }
+
         public async Task EnviarNotificacionRequisitos()
         {
             try

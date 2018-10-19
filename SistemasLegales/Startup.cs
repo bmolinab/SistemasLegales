@@ -132,8 +132,9 @@ namespace SistemasLegales
             ReportConfig.ReportServerUrl = Configuration.GetSection("ReportServerUrl").Value;
             ReportConfig.ReportFolderPath = Configuration.GetSection("ReportFolderPath").Value;
             ReportConfig.ProjectReportUrl = Configuration.GetSection("ProjectReportUrl").Value;
-
             ReportConfig.CompletePath = string.Format("{0}{1}", ReportConfig.ReportServerUrl, ReportConfig.ReportFolderPath);
+
+            NotificacionContinua.Dias =Convert.ToInt32(Configuration.GetSection("DiasNotificacionesContinuas").Value);
 
 
 
@@ -185,6 +186,9 @@ namespace SistemasLegales
 
             BackgroundJob.Enqueue(() => timedHostedService.EnviarNotificacionRequisitos() );
             RecurringJob.AddOrUpdate(() => timedHostedService.EnviarNotificacionRequisitos(), $"{ConstantesTimerEnvioNotificacion.Minutos} {ConstantesTimerEnvioNotificacion.Hora} * * *");
+
+            BackgroundJob.Enqueue(() => timedHostedService.EnviarNotificacionRequisitosCincoDias());
+            RecurringJob.AddOrUpdate(() => timedHostedService.EnviarNotificacionRequisitosCincoDias(), $"{ConstantesTimerEnvioNotificacion.Minutos} {ConstantesTimerEnvioNotificacion.Hora} * * *");
         }
 
         private void CreateRoles(IServiceProvider serviceProvider)

@@ -5,6 +5,9 @@
         <thead>
             <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().FechaCaducidad)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().Documento.RequisitoLegal.IdOrganismoControl)
                 </th>
                 <th>
@@ -32,10 +35,13 @@
         </thead>
         <tbody >
             @{
-                foreach (var item in Model)
+                foreach (var item in Model.OrderBy(x=>x.FechaCaducidad))
                 {
                     
             <tr>
+                <td>
+                    <p class="font-12 text-left"> @string.Format("{0:dd/MM/yyyy}", item.FechaCaducidad)</p>
+                </td>
                 <td>
                     <p class="font-12 text-left">@item.Documento.RequisitoLegal.OrganismoControl.Nombre </p>
                 </td>
@@ -52,7 +58,7 @@
                     <p class="font-12 text-left">@item.Proceso.Nombre </p>
                 </td>
                 <td>
-                    <p class="font-12 text-left"s>@item.Proyecto.Nombre </p>
+                    <p class="font-12 text-left" s>@item.Proyecto.Nombre </p>
                 </td>
                 <td>
                     @{await Html.RenderPartialAsync("_Badge", item);}

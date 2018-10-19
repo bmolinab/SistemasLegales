@@ -48,7 +48,7 @@ namespace SistemasLegales.Controllers
                     .ThenBy(c=> c.Documento.RequisitoLegal.IdOrganismoControl)
                     .ThenBy(c => c.IdCiudad)
                     .ThenBy(c => c.IdProceso)
-                    .ThenBy(c=> c.IdProyecto).ToListAsync();
+                    .ThenBy(c=> c.IdProyecto).OrderBy(x=>x.FechaCaducidad).ToListAsync();
         }
 
         private async Task<List<Accion>> ListarAcciones(int IdRequisito)
