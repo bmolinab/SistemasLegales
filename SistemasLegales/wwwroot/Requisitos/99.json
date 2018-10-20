@@ -1,0 +1,11 @@
+{
+  "ConnectionStrings": {
+    "SeguridadConnection": "Server=DESKTOP-95R0B9N\\MSSQLSERVER1;Database=ds.seguridad.db;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  }
+}

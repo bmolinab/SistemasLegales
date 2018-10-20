@@ -83,7 +83,7 @@ namespace SistemasLegales.Controllers
             return View(lista);
         }
 
-        [Authorize(Policy = "Gestion")]
+        [Authorize(Policy = "Administracion")]
         public async Task<IActionResult> Editar(int? id)
         {
             try
@@ -187,7 +187,7 @@ namespace SistemasLegales.Controllers
                 await db.AddAsync(miRequisito);
                 await db.SaveChangesAsync();
 
-                await requisito.EnviarEmailNotificaionRequisitoFinalizado(emailSender, db);
+                await requisitoFinalizar.EnviarEmailNotificaionRequisitoFinalizado(emailSender, db);
                 await miRequisito.EnviarEmailNotificaionRequisitoCreacionAutomatica(userManager,emailSender, db);
 
                 return this.Redireccionar($"{Mensaje.Informacion}|{Mensaje.Satisfactorio}");
@@ -525,7 +525,7 @@ namespace SistemasLegales.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Gestion")]
+        [Authorize(Policy = "Administracion")]
         public async Task<JsonResult> EliminarAccion(int idAccion,int idRequisito)
         {
 
