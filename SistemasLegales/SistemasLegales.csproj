@@ -26,7 +26,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.4" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.3" />
     <PackageReference Include="MimeTypes" Version="1.0.6" />
-    <PackageReference Include="SendMailSMTPNet.Core" Version="1.2.6" />
+    <PackageReference Include="SendMailSMTPNet.Core" Version="1.2.9" />
   </ItemGroup>
 
   <ItemGroup>

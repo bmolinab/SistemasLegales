@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using SistemasLegales.Services;
 
 namespace SistemasLegales.Controllers
@@ -7,17 +8,17 @@ namespace SistemasLegales.Controllers
     {
 
         private readonly IReporteServicio reporteServicio;
-
-        public ReportController( IReporteServicio reporteServicio)
+        public IConfiguration Configuration { get; }
+        public ReportController( IReporteServicio reporteServicio, IConfiguration Configuration)
         {
-            
+            this.Configuration = Configuration;
             this.reporteServicio = reporteServicio;
         }
 
       
         public ActionResult RepTramites(int id)
         {
-            var parametersToAdd = reporteServicio.GetDefaultParameters("/ReportesSistemaLegalIA/ReporteTramites");
+            var parametersToAdd = reporteServicio.GetDefaultParameters(Configuration.GetSection("ReporteTramites").Value);
             var newUri = reporteServicio.GenerateUri(parametersToAdd);
             return Redirect(newUri);
         }

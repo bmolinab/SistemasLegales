@@ -85,6 +85,7 @@ namespace SistemasLegales
 
             services.AddSingleton<IReporteServicio, ReporteServicio>();
             services.AddSingleton<IEncriptarServicio, EncriptarServicio>();
+            
 
             services.AddMemoryCache();
             services.AddSession();
@@ -136,6 +137,7 @@ namespace SistemasLegales
 
             NotificacionContinua.Dias =Convert.ToInt32(Configuration.GetSection("DiasNotificacionesContinuas").Value);
 
+            services.AddSingleton<IConfiguration>(Configuration);
 
 
         }

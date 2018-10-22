@@ -14,6 +14,10 @@ namespace SistemasLegales.Models.Utiles
         public static string CustomDomain { get; set; }
         public static string CompletePath { get; set; }
         public static string ProjectReportUrl { get; set; }
+
+      
+
+
         
     }
 }
