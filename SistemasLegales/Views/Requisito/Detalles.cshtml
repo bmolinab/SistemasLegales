@@ -13,8 +13,9 @@
     <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/lib/boootstrap-datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" />
 }
+@{var adm = User.IsInRole("Administrador"); }
 <input type="hidden" id="idRequisito" asp-for="IdRequisito" />
-
+<input type="hidden" id="idAdministrador" value="@adm.ToString().ToLower()" />
 <fieldset>
     <div class="col-lg-12"> <a asp-action="Gestionar" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Editar Requisito</a></div>
     <div class="col-12 margin-top-5">
@@ -150,7 +151,8 @@
     @{ await Html.RenderPartialAsync("_DatepickerPartial"); }
 
     <script type="text/javascript">
-         var perfilAdmin= @User.IsInRole("Administrador");
+        var perfilAdmin = $("#idAdministrador").val();
+        alert(perfilAdmin);
         function OcultarMensaje()
         {
             $("#mensajeObservaciones").hide();
@@ -188,7 +190,7 @@
                          newTable += "<td class='datepicker'> <p class='font-12 text-left'>"  + moment(data[i].fecha).format("DD/MM/YYYY") + "</p></td > ";
                          newTable += "<td ><p class='font-12 text-left'>"  + data[i].detalle + "</p></td>";
                         
-                         if (perfilAdmin) {
+                         if (perfilAdmin=="true") {
                              newTable += "<td>";
                              newTable += "<a href='../Editar/" + data[i].idAccion + "' class='font-12' title ='Editar'>Editar</a> |";
                              newTable += "<a href='javascript:void (0)'  title ='Eliminar' class='font-12' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
@@ -254,7 +256,7 @@
                          newTable += "<td class='datepicker'> <p class='font-12 text-left'>" + moment(data[i].fecha).format("DD/MM/YYYY") + "</p></td > ";
                          newTable += "<td ><p class='font-12 text-left'>" + data[i].detalle + "</p></td>";
 
-                         if (perfilAdmin)
+                         if (perfilAdmin=="true")
                          {
                              newTable += "<td>";
                              newTable += "<a href='../Editar/" + data[i].idAccion + "' class='font-12' title ='Editar'>Editar</a> |";

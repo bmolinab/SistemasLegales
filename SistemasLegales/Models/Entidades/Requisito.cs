@@ -262,7 +262,6 @@ namespace SistemasLegales.Models.Entidades
             return false;
         }
 
-
         public async Task<bool> EnviarEmailNotificaionRequisitoCreacionAutomatica(UserManager<ApplicationUser> userManager, IEmailSender emailSender, SistemasLegalesContext db)
         {
             try
@@ -322,7 +321,6 @@ namespace SistemasLegales.Models.Entidades
             { }
             return false;
         }
-
 
         public async Task<bool> EnviarEmailNotificaionRequisitoFinalizado(IEmailSender emailSender, SistemasLegalesContext db)
         {
@@ -424,7 +422,6 @@ namespace SistemasLegales.Models.Entidades
             return false;
         }
 
-
         public async Task<bool> EnviarEmailNotificaionNoFinalizado(string url, IEmailSender emailSender, SistemasLegalesContext db)
         {
             try
@@ -482,16 +479,8 @@ namespace SistemasLegales.Models.Entidades
 
                         var listadoEmails = new List<string>()
                         {
-                            ActorDuennoProceso.Email,
                             ActorResponsableGestSeg.Email,
-                            ActorCustodioDocumento.Email
                         };
-
-                        if (!String.IsNullOrEmpty(EmailNotificacion1))
-                            listadoEmails.Add(EmailNotificacion1);
-
-                        if (!String.IsNullOrEmpty(EmailNotificacion2))
-                            listadoEmails.Add(EmailNotificacion2);
 
                         var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
                         var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
@@ -516,8 +505,6 @@ namespace SistemasLegales.Models.Entidades
             { }
             return false;
         }
-
-
 
         public async Task<bool> EnviarEmailNotificaion(UserManager<ApplicationUser> userManager, IEmailSender emailSender, SistemasLegalesContext db)
         {
