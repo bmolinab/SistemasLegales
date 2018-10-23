@@ -30,7 +30,7 @@
 
     <div class="row col-lg-12">
         @{
-            if ((User.Identity.IsAuthenticated == true) && (User.IsInRole(Perfiles.Administrador)) && (Model != null) && (Model.IdStatus == EstadoRequisito.Terminado))
+            if ((User.Identity.IsAuthenticated == true)&&(Model.IdStatusAnterior==EstadoRequisito.Terminado) && (User.IsInRole(Perfiles.Administrador)) && (Model != null) && (Model.IdStatus == EstadoRequisito.Terminado))
             {
                 <div class="row">
                     <div class="col-md-offset-3 col-xs-offset-3 col col-lg-12">

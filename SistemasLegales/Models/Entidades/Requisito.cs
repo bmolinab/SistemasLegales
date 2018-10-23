@@ -130,6 +130,84 @@ namespace SistemasLegales.Models.Entidades
         [NotMapped]
         public int IdStatusAnterior { get; set; }
 
+
+        [NotMapped]
+        public string CabeceraNotificacion { get { return "<p><h3> Según control de la MATRIZ LEGAL de IDEAL ALAMBREC S.A.</h3> </p> <p> <h4> Se le alerta:  @TipoMensaje.</h4></p> <p> <h4> El documento cuyo proceso está a su cargo caduca en @dias días.</h4></p> <p> <h4> La información de referencia es la siguiente:</h4></p>"; } set {} }
+
+        [NotMapped]
+        public string CuerpoNotificacion { get { return "<p>Organismo de control:@OrganismoControl<br />Base legal: @BaseLegal.<br /> <b>Requisito: @Requisito.</b><br /> Ciudad: @Ciudad.<br /> Proceso: @Proceso.<br />  Fecha de cumplimiento: @FechaCumplimiento.<br /> Fecha de exigible: @FechaCaducidad.<br /> " +
+                    " Status: @Status.<br />  Observaciones: @Observaciones<br /></p><br/>"; } set { }
+        }
+        [NotMapped]
+        public string UrlNotificacion { get { return "<p> <h4>Para acceder al requisito haga clic aquí: <a href = '@url'  target='_blank'>@url</a></h4></p>"; } set { }
+        }
+
+        [NotMapped]
+        public string FooterNotificacion { get { return "<p><h4>Le solicitamos tomar las acciones que correspondan</h4></p><p><h4>ADMINISTRACION DE REQUISITOS LEGALES IAB</h4></p>"; } set { } }
+
+        public string ConformarMensaje(string url, Requisito requisito,TipoMensaje tipoMensaje)
+        {
+            var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
+            var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
+
+            var cabecera = "";
+
+            switch (tipoMensaje)
+            {
+                case TipoMensaje.CREATE:
+                    cabecera= CabeceraNotificacion.Replace("@TipoMensaje","Se ha creado un nuevo requisito");
+                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    break;
+                case TipoMensaje.TERMINADO:
+                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "El gestor ha dado por terminado un requisito");
+                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    break;
+                case TipoMensaje.FINALIZADO:
+                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "Se ha finalizado el requisito");
+                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    break;
+                case TipoMensaje.AUTOMATICO:
+                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "Se ha creado un requisito de automáticamente");
+                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    break;
+                case TipoMensaje.NOACEPTADO:
+                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "No ha sido aceptada la finalización del requisito");
+                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    break;
+                case TipoMensaje.CADUCAR:
+                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "El requisito está a punto de caducar");
+                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    break;
+                default:
+                    break;
+            }
+
+            var cuerpo = "";
+            cuerpo = CuerpoNotificacion.Replace("@OrganismoControl", requisito.Documento.RequisitoLegal.OrganismoControl.Nombre);
+            cuerpo = cuerpo.Replace("@BaseLegal", requisito.Documento.RequisitoLegal.Nombre);
+            cuerpo = cuerpo.Replace("@Requisito", requisito.Documento.Nombre);
+            cuerpo = cuerpo.Replace("@Ciudad", requisito.Ciudad.Nombre);
+            cuerpo = cuerpo.Replace("@Proceso", requisito.Proceso.Nombre);
+            cuerpo = cuerpo.Replace("@FechaCumplimiento", FechaCumplimiento);
+            cuerpo = cuerpo.Replace("@FechaCaducidad", FechaCaducidad);
+            cuerpo = cuerpo.Replace("@Status", requisito.Status.Nombre);
+            cuerpo = cuerpo.Replace("@Observaciones", requisito.Observaciones);
+
+            if (!string.IsNullOrEmpty(url))
+            {
+                var miUrl = UrlNotificacion.Replace("@url", url);
+                cuerpo = cuerpo + miUrl;
+            }
+
+            var salida = cabecera + cuerpo + FooterNotificacion;
+            return salida;
+
+        }
+
+        
+
+
+
         public virtual ICollection<Accion> Accion { get; set; }
         public virtual ICollection<DocumentoRequisito> DocumentoRequisito { get; set; }
 
@@ -208,6 +286,8 @@ namespace SistemasLegales.Models.Entidades
             return days.ToString();
         }
 
+       
+
         public async Task<bool> EnviarEmailNotificaionRequisitoCreacion(string url, IEmailSender emailSender, SistemasLegalesContext db)
         {
             try
@@ -238,22 +318,7 @@ namespace SistemasLegales.Models.Entidades
                     if (!String.IsNullOrEmpty(EmailNotificacion2))
                         listadoEmails.Add(EmailNotificacion2);
 
-                    var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
-                    var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de creación de un requisito.",
-                        $@"<h3>Se le informa que se ha creado un requisito en la aplicación Sistemas Legales con los datos siguientes:</h3><br />
-                            <p><h4>Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}.</h4><br />
-                            Base legal: {requisito.Documento.RequisitoLegal.Nombre}.<br />
-                            <b>Requisito: {requisito.Documento.Nombre}.</b><br />
-                            Ciudad: {requisito.Ciudad.Nombre}.<br />
-                            Proceso: {requisito.Proceso.Nombre}.<br />
-                            Fecha de cumplimiento: {FechaCumplimiento}.<br />
-                            Fecha de exigible: {FechaCaducidad}.<br />
-                            Status: {requisito.Status.Nombre}.<br />
-                            Observaciones: {requisito.Observaciones}.<br />
-                            <h4>Días restantes: {ObtenerDiasRestantes()}.</h4><br />
-                             <h4>Para acceder al requisito haga clic aquí: <a href='{url}'  target='_blank'>{url}</a>.</h4><br /></p>
-                        ");
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de creación de un requisito.",ConformarMensaje(url,requisito,TipoMensaje.CREATE));
                 }
                 return true;
             }
@@ -300,21 +365,7 @@ namespace SistemasLegales.Models.Entidades
                     {
                         listadoEmails.Add(item.Email);
                     }
-                    var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
-                    var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito creado automaticamete.",
-                       $@"<h3>Se le informa que el se ha creado un requisito de manera automática en la aplicación Sistemas Legales con los datos siguientes:</h3><br />
-                            <p><h4>Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}.</h4><br />
-                            Base legal: {requisito.Documento.RequisitoLegal.Nombre}.<br />
-                            <b>Requisito: {requisito.Documento.Nombre}.</b><br />
-                            Ciudad: {requisito.Ciudad.Nombre}.<br />
-                            Proceso: {requisito.Proceso.Nombre}.<br />
-                            Fecha de cumplimiento: {FechaCumplimiento}.<br />
-                            Fecha de exigible: {FechaCaducidad}.<br />
-                            Status: {requisito.Status.Nombre}.<br />
-                            Observaciones: {requisito.Observaciones}.<br />
-                            <h4>Días restantes: {ObtenerDiasRestantes()}.</h4><br /></p>
-                        ");
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito creado automaticamete.", ConformarMensaje("", requisito, TipoMensaje.AUTOMATICO));
                 }
                 return true;
             }
@@ -352,21 +403,7 @@ namespace SistemasLegales.Models.Entidades
                     if (!String.IsNullOrEmpty(EmailNotificacion2))
                         listadoEmails.Add(EmailNotificacion2);
 
-                    var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
-                    var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito finalizado.",
-                       $@"<h3> Se le informa que el requisito a finalizado en la aplicación Sistemas Legales con los datos siguientes:</h3><br />
-                            <p><h4>Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}.</h4><br />
-                            Base legal: {requisito.Documento.RequisitoLegal.Nombre}.<br />
-                            <b>Requisito: {requisito.Documento.Nombre}.</b><br />
-                            Ciudad: {requisito.Ciudad.Nombre}.<br />
-                            Proceso: {requisito.Proceso.Nombre}.<br />
-                            Fecha de cumplimiento: {FechaCumplimiento}.<br />
-                            Fecha de exigible: {FechaCaducidad}.<br />
-                            Status: {requisito.Status.Nombre}.<br />
-                            Observaciones: {requisito.Observaciones}.<br />
-                            <h4>Días restantes: {ObtenerDiasRestantes()}.</h4><br /></p>
-                        ");
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito finalizado.",ConformarMensaje("", requisito, TipoMensaje.FINALIZADO));
                 }
                 return true;
             }
@@ -397,24 +434,7 @@ namespace SistemasLegales.Models.Entidades
                 }
                 if (listaAdministradores.Count>0)
                 {
-
-                    var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
-                    var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
-
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito terminado.",
-                       $@"<h3>Se le informa que un requisito a terminado en la aplicación Sistemas Legales con los datos siguientes:</h3><br />
-                            <p><h4>Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}.</h4><br />
-                            Base legal: {requisito.Documento.RequisitoLegal.Nombre}.<br />
-                            <b>Requisito: {requisito.Documento.Nombre}.</b><br />
-                            Ciudad: {requisito.Ciudad.Nombre}.<br />
-                            Proceso: {requisito.Proceso.Nombre}.<br />
-                            Fecha de cumplimiento: {FechaCumplimiento}.<br />
-                            Fecha de exigible: {FechaCaducidad}.<br />
-                            Status: {requisito.Status.Nombre}.<br />
-                            Observaciones: {requisito.Observaciones}.<br />
-                            <h4>Días restantes: {ObtenerDiasRestantes()}.</h4><br />
-                            <h4>Para acceder al requisito haga clic aquí: <a href='{url}'  target='_blank'>{url}</a>.</h4><br /></p>
-                        ");
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito terminado.", ConformarMensaje(url, requisito, TipoMensaje.TERMINADO));
                 }
             return true;
             }
@@ -440,22 +460,7 @@ namespace SistemasLegales.Models.Entidades
                 {
                     var listadoEmails = new List<string>();
                     listadoEmails.Add(requisito.ActorResponsableGestSeg.Email);
-                    var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
-                    var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito.",
-                       $@"<h3> Se le informa que un requisito no ha sido aprobado su finalización en la aplicación Sistemas Legales con los datos siguientes:</h3><br />
-                            <p><h4>Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}.</h4><br />
-                            Base legal: {requisito.Documento.RequisitoLegal.Nombre}.<br />
-                            <b>Requisito: {requisito.Documento.Nombre}.</b><br />
-                            Ciudad: {requisito.Ciudad.Nombre}.<br />
-                            Proceso: {requisito.Proceso.Nombre}.<br />
-                            Fecha de cumplimiento: {FechaCumplimiento}.<br />
-                            Fecha de exigible: {FechaCaducidad}.<br />
-                            Status: {requisito.Status.Nombre}.<br />
-                            Observaciones: {requisito.Observaciones}.<br />
-                            <h4>Días restantes: {ObtenerDiasRestantes()}.</h4><br />
-                             <h4>Para acceder al requisito haga clic aquí: <a href='{url}'  target='_blank'>{url}</a>.</h4><br /></p>
-                        ");
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito.", ConformarMensaje(url, requisito, TipoMensaje.NOACEPTADO));
                 }
                 return true;
             }
@@ -487,19 +492,7 @@ namespace SistemasLegales.Models.Entidades
                         var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
 
 
-                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.",
-                        $@"<h3> Se le informa que está a punto de caducar un requisito en la aplicación Sistemas Legales con los datos siguientes:</h3><br />
-                            <p><h4>Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}.</h4><br />
-                            Base legal: {requisito.Documento.RequisitoLegal.Nombre}.<br />
-                            <b>Requisito: {requisito.Documento.Nombre}.</b><br />
-                            Ciudad: {requisito.Ciudad.Nombre}.<br />
-                            Proceso: {requisito.Proceso.Nombre}.<br />
-                            Fecha de cumplimiento: {FechaCumplimiento}.<br />
-                            Fecha de exigible: {FechaCaducidad}.<br />
-                            Status: {requisito.Status.Nombre}.<br />
-                            Observaciones: {requisito.Observaciones}.<br />
-                            <h4>Días restantes: {ObtenerDiasRestantes()}.</h4><br /></p>
-                        ");
+                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR));
                         return true;
             }
             catch (Exception)
@@ -543,19 +536,7 @@ namespace SistemasLegales.Models.Entidades
                         var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
 
 
-                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.",
-                        $@"<h3> Se le informa que está a punto de caducar un requisito en la aplicación Sistemas Legales con los datos siguientes:</h3><br />
-                           <p><h4>Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}.</h4><br />
-                            Base legal: {requisito.Documento.RequisitoLegal.Nombre}.<br />
-                            <b>Requisito: {requisito.Documento.Nombre}.</b><br />
-                            Ciudad: {requisito.Ciudad.Nombre}.<br />
-                            Proceso: {requisito.Proceso.Nombre}.<br />
-                            Fecha de cumplimiento: {FechaCumplimiento}.<br />
-                            Fecha de exigible: {FechaCaducidad}.<br />
-                            Status: {requisito.Status.Nombre}.<br />
-                            Observaciones: {requisito.Observaciones}.<br />
-                            <h4>Días restantes: {ObtenerDiasRestantes()}.</h4><br /></p>
-                        ");
+                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR));
                         NotificacionEnviada = true;
                         await db.SaveChangesAsync();
                         return true;
@@ -600,27 +581,13 @@ namespace SistemasLegales.Models.Entidades
                         var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
                         var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
 
-                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.",
-                        $@"<h3> Se le informa que está a punto de caducar un requisito en la aplicación Sistemas Legales con los datos siguientes:</h3><br />
-                            <p><h4>Organismo de control: {requisito.Documento.RequisitoLegal.OrganismoControl.Nombre}.</h4><br />
-                            Base legal: {requisito.Documento.RequisitoLegal.Nombre}.<br />
-                            <b>Requisito: {requisito.Documento.Nombre}.</b><br />
-                            Ciudad: {requisito.Ciudad.Nombre}.<br />
-                            Proceso: {requisito.Proceso.Nombre}.<br />
-                            Fecha de cumplimiento: {FechaCumplimiento}.<br />
-                            Fecha de exigible: {FechaCaducidad}.<br />
-                            Status: {requisito.Status.Nombre}.<br />
-                            Observaciones: {requisito.Observaciones}.<br />
-                            <h4>Días restantes: {ObtenerDiasRestantes()}.</h4><br /></p>
-                        ");
+                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR));
 
                         NotificacionEnviadaUltima = true;
                         await db.SaveChangesAsync();
                         return true;
                     }
                 }
-
-
             }
             catch (Exception)
             { }
