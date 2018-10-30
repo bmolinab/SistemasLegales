@@ -30,7 +30,7 @@ namespace SistemasLegales.Services
             {
                 var fechaActual = DateTime.Now.AddDays(NotificacionContinua.Dias).Date;
                 var fechaCaducidad = DateTime.Now;
-                var listadoRequisitos = await db.Requisito.Where(c => c.FechaCaducidad != null && !c.Finalizado).ToListAsync();
+                var listadoRequisitos = await db.Requisito.Where(c => c.FechaCaducidad != null && !c.Finalizado && c.Habilitado).ToListAsync();
                 foreach (var item in listadoRequisitos)
                 {
                     fechaCaducidad = item.FechaCaducidad.Value.Date;
@@ -49,7 +49,7 @@ namespace SistemasLegales.Services
         {
             try
             {
-                var listadoRequisitos = await db.Requisito.Where(c => c.FechaCaducidad != null && !c.Finalizado && !c.NotificacionEnviada && !c.NotificacionEnviadaUltima).ToListAsync();
+                var listadoRequisitos = await db.Requisito.Where(c => c.FechaCaducidad != null && !c.Finalizado && c.Habilitado && !c.NotificacionEnviada && !c.NotificacionEnviadaUltima).ToListAsync();
                 foreach (var item in listadoRequisitos)
                     await item.EnviarEmailNotificaion(userManager,emailSender, db);
             }

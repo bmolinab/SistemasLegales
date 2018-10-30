@@ -35,9 +35,10 @@
 </div>
 
 @{
-    if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
+    if (User.IsInRole(Perfiles.Administrador))
     {
         await Html.RenderPartialAsync("_Eliminar");
+        await Html.RenderPartialAsync("_CambiarHabilitar");
     }
 }
 

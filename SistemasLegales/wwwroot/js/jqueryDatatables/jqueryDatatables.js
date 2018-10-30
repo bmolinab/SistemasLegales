@@ -19,6 +19,18 @@
                     $("#formEliminar").submit();
                 }
             });
+        },
+
+        eventoBtnCambiarHabilitar: function (e) {
+            var btnCambiarHabilitar = $(e);
+            var descripcion = btnCambiarHabilitar.data("descripcion");
+            var id = btnCambiarHabilitar.prop("id");
+            MiApp.Bootbox.init("Habilitar/Desabilitar", descripcion, null, [], {
+                isGuardar: true, hideAlGuardar: true, callbackGuardar: function () {
+                    $("#idRequisito").val(id);
+                    $("#formCambiarHabilitar").submit();
+                }
+            });
         }
     }
 }();

@@ -111,6 +111,8 @@ namespace SistemasLegales.Models.Entidades
 
         public bool Finalizado { get; set; }
 
+        public bool Habilitado { get; set; }
+
         public int? Criticidad { get; set; }
 
 
@@ -130,20 +132,7 @@ namespace SistemasLegales.Models.Entidades
         [NotMapped]
         public int IdStatusAnterior { get; set; }
 
-
-        [NotMapped]
-        public string CabeceraNotificacion { get { return "<p><h3> Según control de la MATRIZ LEGAL de IDEAL ALAMBREC S.A.</h3> </p> <p> <h4> Se le alerta:  @TipoMensaje.</h4></p> <p> <h4> El documento cuyo proceso está a su cargo caduca en @dias días.</h4></p> <p> <h4> La información de referencia es la siguiente:</h4></p>"; } set {} }
-
-        [NotMapped]
-        public string CuerpoNotificacion { get { return "<p>Organismo de control:@OrganismoControl<br />Base legal: @BaseLegal.<br /> <b>Requisito: @Requisito.</b><br /> Ciudad: @Ciudad.<br /> Proceso: @Proceso.<br />  Fecha de cumplimiento: @FechaCumplimiento.<br /> Fecha de exigible: @FechaCaducidad.<br /> " +
-                    " Status: @Status.<br />  Observaciones: @Observaciones<br /></p><br/>"; } set { }
-        }
-        [NotMapped]
-        public string UrlNotificacion { get { return "<p> <h4>Para acceder al requisito haga clic aquí: <a href = '@url'  target='_blank'>@url</a></h4></p>"; } set { }
-        }
-
-        [NotMapped]
-        public string FooterNotificacion { get { return "<p><h4>Le solicitamos tomar las acciones que correspondan</h4></p><p><h4>ADMINISTRACION DE REQUISITOS LEGALES IAB</h4></p>"; } set { } }
+        
 
         public string ConformarMensaje(string url, Requisito requisito,TipoMensaje tipoMensaje)
         {
@@ -155,51 +144,51 @@ namespace SistemasLegales.Models.Entidades
             switch (tipoMensaje)
             {
                 case TipoMensaje.CREATE:
-                    cabecera= CabeceraNotificacion.Replace("@TipoMensaje","Se ha creado un nuevo requisito");
-                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeCREATE) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
+                    cabecera =cabecera.Contains("@dias")? cabecera.Replace("@dias", ObtenerDiasRestantes()):"";
                     break;
                 case TipoMensaje.TERMINADO:
-                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "El gestor ha dado por terminado un requisito");
-                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeTERMINADO) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
                     break;
                 case TipoMensaje.FINALIZADO:
-                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "Se ha finalizado el requisito");
-                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeFINALIZADO) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
                     break;
                 case TipoMensaje.AUTOMATICO:
-                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "Se ha creado un requisito de automáticamente");
-                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeAUTOMATICO) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
                     break;
                 case TipoMensaje.NOACEPTADO:
-                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "No ha sido aceptada la finalización del requisito");
-                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeNOACEPTADO) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
                     break;
                 case TipoMensaje.CADUCAR:
-                    cabecera = CabeceraNotificacion.Replace("@TipoMensaje", "El requisito está a punto de caducar");
-                    cabecera = cabecera.Replace("@dias", ObtenerDiasRestantes());
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeCADUCAR) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
                     break;
                 default:
                     break;
             }
 
             var cuerpo = "";
-            cuerpo = CuerpoNotificacion.Replace("@OrganismoControl", requisito.Documento.RequisitoLegal.OrganismoControl.Nombre);
-            cuerpo = cuerpo.Replace("@BaseLegal", requisito.Documento.RequisitoLegal.Nombre);
-            cuerpo = cuerpo.Replace("@Requisito", requisito.Documento.Nombre);
-            cuerpo = cuerpo.Replace("@Ciudad", requisito.Ciudad.Nombre);
-            cuerpo = cuerpo.Replace("@Proceso", requisito.Proceso.Nombre);
-            cuerpo = cuerpo.Replace("@FechaCumplimiento", FechaCumplimiento);
-            cuerpo = cuerpo.Replace("@FechaCaducidad", FechaCaducidad);
-            cuerpo = cuerpo.Replace("@Status", requisito.Status.Nombre);
-            cuerpo = cuerpo.Replace("@Observaciones", requisito.Observaciones);
+            cuerpo =ConstantesCorreo.CuerpoNotificacion.Contains("@OrganismoControl")? ConstantesCorreo.CuerpoNotificacion.Replace("@OrganismoControl", requisito.Documento.RequisitoLegal.OrganismoControl.Nombre): ConstantesCorreo.CuerpoNotificacion.Replace("@OrganismoControl", string.Empty);
+            cuerpo =ConstantesCorreo.CuerpoNotificacion.Contains("BaseLegal") ? cuerpo.Replace("@BaseLegal", requisito.Documento.RequisitoLegal.Nombre): cuerpo.Replace("@BaseLegal", string.Empty);
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Requisito") ? cuerpo.Replace("@Requisito", requisito.Documento.Nombre): cuerpo.Replace("@Requisito",string.Empty);
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Ciudad") ? cuerpo.Replace("@Ciudad", requisito.Ciudad.Nombre): cuerpo.Replace("@Ciudad", string.Empty);
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Proceso") ? cuerpo.Replace("@Proceso", requisito.Proceso.Nombre) : cuerpo.Replace("@Proceso", string.Empty);
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@FechaCumplimiento") ? cuerpo.Replace("@FechaCumplimiento", FechaCumplimiento) : cuerpo.Replace("@FechaCumplimiento", string.Empty); ;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@FechaCaducidad") ? cuerpo.Replace("@FechaCaducidad", FechaCaducidad) : cuerpo.Replace("@FechaCaducidad", string.Empty); ;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Status") ? cuerpo.Replace("@Status", requisito.Status.Nombre) : cuerpo.Replace("@Status", string.Empty); ;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Observaciones") ? cuerpo.Replace("@Observaciones", requisito.Observaciones) : cuerpo.Replace("@Observaciones", string.Empty); ;
 
             if (!string.IsNullOrEmpty(url))
             {
-                var miUrl = UrlNotificacion.Replace("@url", url);
+                var miUrl = ConstantesCorreo.UrlNotificacion.Replace("@url", url);
                 cuerpo = cuerpo + miUrl;
             }
 
-            var salida = cabecera + cuerpo + FooterNotificacion;
+            var salida = cabecera + cuerpo + ConstantesCorreo.FooterNotificacion;
             return salida;
 
         }
@@ -473,7 +462,7 @@ namespace SistemasLegales.Models.Entidades
         {
             try
             {
-                        var requisito = await db.Requisito
+                        var requisito = await db.Requisito.Where(x=>x.Finalizado==false && x.Habilitado==true)
                             .Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl)
                             .Include(c => c.Ciudad)
                             .Include(c => c.Proceso)

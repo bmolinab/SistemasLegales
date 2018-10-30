@@ -457,6 +457,35 @@ namespace SistemasLegales.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administracion")]
+        public async Task<IActionResult> CambiarHabilitar(int idRequisito)
+        {
+            try
+            {
+                var requisito = await db.Requisito.FirstOrDefaultAsync(m => m.IdRequisito == idRequisito);
+                if (requisito != null)
+                {
+                    switch (requisito.Habilitado)
+                    {
+                        case true : requisito.Habilitado = false;
+                                    break;
+                         case false: requisito.Habilitado = true;
+                            break;
+                    }
+                    
+                    await db.SaveChangesAsync();
+                    return this.Redireccionar($"{Mensaje.Informacion}|{Mensaje.Satisfactorio}");
+                }
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
+            }
+            catch (Exception)
+            {
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.BorradoNoSatisfactorio}");
+            }
+        }
+
+        [HttpPost]
         [Authorize(Policy = "GerenciaGestion")]
         public async Task<IActionResult> ListadoResult(Requisito requisito)
         {

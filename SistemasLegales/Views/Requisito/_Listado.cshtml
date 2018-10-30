@@ -71,7 +71,14 @@
                         {
                             <span> | </span><br />
                             <a asp-action="Gestionar" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><span> | </span><br />
-                            <a href="javascript:void(0);" class="btnEliminar font-12" id="@item.IdRequisito" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Requisito... ?">Eliminar</a>
+
+                                                                                                                                 <a href="javascript:void(0);" class="btnCambiarHabilitar font-12" id="@item.IdRequisito" onclick="MiApp.Datatables.eventoBtnCambiarHabilitar(this)" data-descripcion="&#191;Desea cambiar el estado del Requisito... ?">@if (item.Habilitado)
+                                                                                                                                 {<text>Desabilitar</text> }
+                                                                                                                             else
+                                                                                                                             {<text>Habilitar</text>} </a>
+
+
+<a href="javascript:void(0);" class="btnEliminar font-12" id="@item.IdRequisito" onclick="MiApp.Datatables.eventoBtnEliminar(this)" if;Desea eliminar el Requisito... ?">Eliminar</a>
                         }
                     }
                 </td>

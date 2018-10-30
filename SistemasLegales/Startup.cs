@@ -114,6 +114,23 @@ namespace SistemasLegales
             ConstantesCorreo.MensajeCorreoSuperior = Configuration.GetSection("MensajeCorreoSuperior").Value;
             ConstantesCorreo.DominioCorreo = Configuration.GetSection("DominioCorreo").Value;
 
+
+            ///mensaje correo
+            ///
+            ConstantesCorreo.CabeceraNotificacion = Configuration.GetSection("CabeceraNotificacion").Value;
+            ConstantesCorreo.CuerpoNotificacion = Configuration.GetSection("CuerpoNotificacion").Value;
+            ConstantesCorreo.UrlNotificacion = Configuration.GetSection("UrlNotificacion").Value;
+            ConstantesCorreo.FooterNotificacion = Configuration.GetSection("FooterNotificacion").Value;
+
+            //tipos de mensaje notificación
+
+            ConstantesCorreo.MensajeCREATE = Configuration.GetSection("TipoMensaje.CREATE").Value;
+            ConstantesCorreo.MensajeTERMINADO = Configuration.GetSection("TipoMensaje.TERMINADO").Value;
+            ConstantesCorreo.MensajeFINALIZADO = Configuration.GetSection("TipoMensaje.FINALIZADO").Value;
+            ConstantesCorreo.MensajeAUTOMATICO = Configuration.GetSection("TipoMensaje.AUTOMATICO").Value;
+            ConstantesCorreo.MensajeNOACEPTADO = Configuration.GetSection("TipoMensaje.NOACEPTADO").Value;
+            ConstantesCorreo.MensajeCADUCAR = Configuration.GetSection("TipoMensaje.CADUCAR").Value;
+
             //Constantes de envio de notificación por email
             ConstantesTimerEnvioNotificacion.Hora = int.Parse(Configuration.GetSection("Hora").Value);
             ConstantesTimerEnvioNotificacion.Minutos = int.Parse(Configuration.GetSection("Minutos").Value);
