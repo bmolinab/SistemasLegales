@@ -144,43 +144,43 @@ namespace SistemasLegales.Models.Entidades
             switch (tipoMensaje)
             {
                 case TipoMensaje.CREATE:
-                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeCREATE) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
-                    cabecera =cabecera.Contains("@dias")? cabecera.Replace("@dias", ObtenerDiasRestantes()):"";
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeCREATE) : ConstantesCorreo.CabeceraNotificacion;
+                    cabecera =cabecera.Contains("@dias")? cabecera.Replace("@dias", ObtenerDiasRestantes()):cabecera;
                     break;
                 case TipoMensaje.TERMINADO:
-                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeTERMINADO) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
-                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeTERMINADO) : ConstantesCorreo.CabeceraNotificacion;
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : cabecera;
                     break;
                 case TipoMensaje.FINALIZADO:
-                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeFINALIZADO) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
-                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeFINALIZADO) : ConstantesCorreo.CabeceraNotificacion;
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : cabecera;
                     break;
                 case TipoMensaje.AUTOMATICO:
-                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeAUTOMATICO) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
-                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeAUTOMATICO) : ConstantesCorreo.CabeceraNotificacion;
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : cabecera;
                     break;
                 case TipoMensaje.NOACEPTADO:
-                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeNOACEPTADO) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
-                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeNOACEPTADO) : ConstantesCorreo.CabeceraNotificacion;
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : cabecera;
                     break;
                 case TipoMensaje.CADUCAR:
-                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeCADUCAR) : ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", string.Empty);
-                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : "";
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeCADUCAR) : ConstantesCorreo.CabeceraNotificacion;
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : cabecera;
                     break;
                 default:
                     break;
             }
 
             var cuerpo = "";
-            cuerpo =ConstantesCorreo.CuerpoNotificacion.Contains("@OrganismoControl")? ConstantesCorreo.CuerpoNotificacion.Replace("@OrganismoControl", requisito.Documento.RequisitoLegal.OrganismoControl.Nombre): ConstantesCorreo.CuerpoNotificacion.Replace("@OrganismoControl", string.Empty);
-            cuerpo =ConstantesCorreo.CuerpoNotificacion.Contains("BaseLegal") ? cuerpo.Replace("@BaseLegal", requisito.Documento.RequisitoLegal.Nombre): cuerpo.Replace("@BaseLegal", string.Empty);
-            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Requisito") ? cuerpo.Replace("@Requisito", requisito.Documento.Nombre): cuerpo.Replace("@Requisito",string.Empty);
-            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Ciudad") ? cuerpo.Replace("@Ciudad", requisito.Ciudad.Nombre): cuerpo.Replace("@Ciudad", string.Empty);
-            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Proceso") ? cuerpo.Replace("@Proceso", requisito.Proceso.Nombre) : cuerpo.Replace("@Proceso", string.Empty);
-            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@FechaCumplimiento") ? cuerpo.Replace("@FechaCumplimiento", FechaCumplimiento) : cuerpo.Replace("@FechaCumplimiento", string.Empty); ;
-            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@FechaCaducidad") ? cuerpo.Replace("@FechaCaducidad", FechaCaducidad) : cuerpo.Replace("@FechaCaducidad", string.Empty); ;
-            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Status") ? cuerpo.Replace("@Status", requisito.Status.Nombre) : cuerpo.Replace("@Status", string.Empty); ;
-            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Observaciones") ? cuerpo.Replace("@Observaciones", requisito.Observaciones) : cuerpo.Replace("@Observaciones", string.Empty); ;
+            cuerpo =ConstantesCorreo.CuerpoNotificacion.Contains("@OrganismoControl")? ConstantesCorreo.CuerpoNotificacion.Replace("@OrganismoControl", requisito.Documento.RequisitoLegal.OrganismoControl.Nombre): ConstantesCorreo.CuerpoNotificacion;
+            cuerpo =ConstantesCorreo.CuerpoNotificacion.Contains("BaseLegal") ? cuerpo.Replace("@BaseLegal", requisito.Documento.RequisitoLegal.Nombre): cuerpo;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Requisito") ? cuerpo.Replace("@Requisito", requisito.Documento.Nombre) : cuerpo;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Ciudad") ? cuerpo.Replace("@Ciudad", requisito.Ciudad.Nombre) : cuerpo;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Proceso") ? cuerpo.Replace("@Proceso", requisito.Proceso.Nombre) : cuerpo;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@FechaCumplimiento") ? cuerpo.Replace("@FechaCumplimiento", FechaCumplimiento) : cuerpo;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@FechaCaducidad") ? cuerpo.Replace("@FechaCaducidad", FechaCaducidad) : cuerpo;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Status") ? cuerpo.Replace("@Status", requisito.Status.Nombre) : cuerpo;
+            cuerpo = ConstantesCorreo.CuerpoNotificacion.Contains("@Observaciones") ? cuerpo.Replace("@Observaciones", requisito.Observaciones) : cuerpo;
 
             if (!string.IsNullOrEmpty(url))
             {
