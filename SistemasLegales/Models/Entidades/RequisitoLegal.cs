@@ -14,7 +14,7 @@ namespace SistemasLegales.Models.Entidades
         public int IdRequisitoLegal { get; set; }
 
         [Required(ErrorMessage = "Debe introducir el {0}.")]
-        [StringLength(200, MinimumLength = 1, ErrorMessage = "El {0} no puede tener más de {1} y menos de {2} caracteres.")]
+        [StringLength(1000, MinimumLength = 1, ErrorMessage = "El {0} no puede tener más de {1} y menos de {2} caracteres.")]
         [Display(Name = "Base legal")]
         public string Nombre { get; set; }
 
