@@ -207,7 +207,9 @@
                 <fieldset>
 
                     <legend>Acciones realizadas</legend>
-                    <div class="col-lg-12"> <a asp-action="Detalles" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Gestionar Acciones</a></div>
+                    @if (User.IsInRole(Perfiles.Administrador)) {
+                    <div class="col-lg-12"> <a asp-action="DetallesFinalizado" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Gestionar Acciones</a></div>
+                    }
                     <div class="table-responsive padding-15">
                         <table id="datatable-responsive" class="table" cellspacing="0">
                             <thead>
