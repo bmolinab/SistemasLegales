@@ -1,12 +1,10 @@
 @model IEnumerable<Requisito>
 
-<div class="table-responsive padding-15">
+<div class="table-responsive padding-10">
     <table id="datatable-responsive" data-page-length="50" class="table table-striped table-bordered dataTable" cellspacing="0">
         <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().FechaCaducidad)
-                </th>
+                
                 <th>
                     @Html.DisplayNameFor(model => model.FirstOrDefault().Documento.RequisitoLegal.IdOrganismoControl)
                 </th>
@@ -40,9 +38,7 @@
                     if (item.Habilitado || User.IsInRole(Perfiles.Administrador))
                     {
                         <tr>
-                            <td>
-                                <p class="font-12 text-left"> @string.Format("{0:dd/MM/yyyy}", item.FechaCaducidad)</p>
-                            </td>
+                            
                             <td>
                                 <p class="font-12 text-left">@item.Documento.RequisitoLegal.OrganismoControl.Nombre </p>
                             </td>
@@ -66,17 +62,17 @@
                             </td>
 
                             <td>
-                                <a asp-action="Detalles" class="font-12" asp-route-id="@item.IdRequisito">Acciones</a>
+                                <a asp-action="Detalles" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Acciones</a>
                                 @{
                                     if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
                                     {
-                                        <span> | </span><br />
-                                        <a asp-action="Gestionar" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><span> | </span><br />
+                                        <br />
+                                        <a asp-action="Gestionar" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><br />
 
                                     }
                                     if (User.IsInRole(Perfiles.Administrador))
                                     {
-                                        <a href="javascript:void(0);" class="btnCambiarHabilitar font-12" id="@item.IdRequisito" onclick="MiApp.Datatables.eventoBtnCambiarHabilitar(this)" data-descripcion="&#191;Desea cambiar el estado del Requisito... ?">
+                                        <a href="javascript:void(0);"  class="btnCambiarHabilitar font-12" id="@item.IdRequisito" onclick="MiApp.Datatables.eventoBtnCambiarHabilitar(this)" data-descripcion="&#191;Desea cambiar el estado del Requisito... ?">
                                             @if (item.Habilitado)
                                             {<text>Desabilitar</text> }
                                         else

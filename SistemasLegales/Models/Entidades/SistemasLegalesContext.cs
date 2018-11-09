@@ -19,7 +19,7 @@ namespace SistemasLegales.Models.Entidades
         public virtual DbSet<RequisitoLegal> RequisitoLegal { get; set; }
         public virtual DbSet<Status> Status { get; set; }
 
-        public SistemasLegalesContext(DbContextOptions<SistemasLegalesContext> options) 
+        public SistemasLegalesContext(DbContextOptions<SistemasLegalesContext> options)
             : base(options)
         { }
 
@@ -31,29 +31,117 @@ namespace SistemasLegales.Models.Entidades
                 entity.HasKey(e => e.IdAccion)
                     .HasName("PK_Accion");
 
-                entity.Property(e => e.Detalle).HasColumnType("varchar(1000)");
+                entity.Property(e => e.IdAccion).ValueGeneratedNever();
+
+                entity.Property(e => e.Detalle).HasColumnType("text");
 
                 entity.HasOne(d => d.IdRequisitoNavigation)
                     .WithMany(p => p.Accion)
                     .HasForeignKey(d => d.IdRequisito)
                     .HasConstraintName("FK_Accion_Requisito");
             });
+
             modelBuilder.Entity<Actor>(entity =>
             {
                 entity.HasKey(e => e.IdActor)
                     .HasName("PK_Actor");
 
-                entity.Property(e => e.Departamento)
-                    .IsRequired()
-                    .HasColumnType("varchar(200)");
+                entity.Property(e => e.IdActor).ValueGeneratedNever();
 
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnType("varchar(200)");
+                entity.Property(e => e.Departamento).HasColumnType("varchar(200)");
+
+                entity.Property(e => e.Email).HasColumnType("varchar(200)");
 
                 entity.Property(e => e.Nombres)
                     .IsRequired()
                     .HasColumnType("varchar(200)");
+            });
+
+
+            modelBuilder.Entity<Ciudad>(entity =>
+            {
+                entity.HasKey(e => e.IdCiudad)
+                    .HasName("PK_Ciudad");
+
+                entity.Property(e => e.IdCiudad).ValueGeneratedNever();
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasColumnType("varchar(200)");
+            });
+
+            modelBuilder.Entity<Documento>(entity =>
+            {
+                entity.HasKey(e => e.IdDocumento)
+                    .HasName("PK_Documento");
+
+                entity.Property(e => e.IdDocumento).ValueGeneratedNever();
+
+                entity.Property(e => e.Cantidad).HasDefaultValueSql("0");
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasColumnType("varchar(1000)");
+
+                entity.Property(e => e.Tipo).HasDefaultValueSql("1");
+
+                entity.HasOne(d => d.RequisitoLegal)
+                      .WithMany(p => p.Documento)
+                      .HasForeignKey(d => d.IdRequisitoLegal)
+                      .HasConstraintName("FK_Documento_RequisitoLegal");
+            });
+
+            modelBuilder.Entity<DocumentoRequisito>(entity =>
+            {
+                entity.HasKey(e => e.IdDocumentoRequisito)
+                    .HasName("PK_DocumentoRequisito");
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasColumnType("varchar(200)");
+
+                entity.Property(e => e.Url).HasColumnType("varchar(1024)");
+
+                entity.HasOne(d => d.Requisito)
+                     .WithMany(p => p.DocumentoRequisito)
+                     .HasForeignKey(d => d.IdRequisito)
+                     .OnDelete(DeleteBehavior.Cascade)
+                     .HasConstraintName("FK_DocumentoRequisito_Requisito");
+            });
+
+
+            modelBuilder.Entity<OrganismoControl>(entity =>
+            {
+                entity.HasKey(e => e.IdOrganismoControl)
+                    .HasName("PK_OrganismoControl");
+
+                entity.Property(e => e.IdOrganismoControl).ValueGeneratedNever();
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasColumnType("varchar(1000)");
+            });
+
+            modelBuilder.Entity<Proceso>(entity =>
+            {
+                entity.HasKey(e => e.IdProceso)
+                    .HasName("PK_Proceso");
+
+                entity.Property(e => e.IdProceso).ValueGeneratedNever();
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasColumnType("varchar(200)");
+            });
+
+            modelBuilder.Entity<Proyecto>(entity =>
+            {
+                entity.HasKey(e => e.IdProyecto)
+                    .HasName("PK_Proyecto");
+
+                entity.Property(e => e.IdProyecto).ValueGeneratedNever();
+
+                entity.Property(e => e.Nombre).HasColumnType("varchar(250)");
             });
 
             modelBuilder.Entity<Requisito>(entity =>
@@ -61,15 +149,19 @@ namespace SistemasLegales.Models.Entidades
                 entity.HasKey(e => e.IdRequisito)
                     .HasName("PK_AdminRequisitoLegal");
 
-                entity.Property(e => e.Criticidad)
-                .HasDefaultValueSql("0");
+                entity.Property(e => e.IdRequisito).ValueGeneratedNever();
 
+                entity.Property(e => e.Criticidad).HasDefaultValueSql("0");
 
-                entity.Property(e => e.EmailNotificacion1)
-                    .HasColumnType("varchar(100)");
+                entity.Property(e => e.EmailNotificacion1).HasColumnType("varchar(100)");
 
-                entity.Property(e => e.EmailNotificacion2)
-                    .HasColumnType("varchar(100)");
+                entity.Property(e => e.EmailNotificacion2).HasColumnType("varchar(100)");
+
+                entity.Property(e => e.Finalizado).HasDefaultValueSql("0");
+
+                entity.Property(e => e.Habilitado).HasDefaultValueSql("1");
+
+                entity.Property(e => e.NotificacionEnviadaUltima).HasDefaultValueSql("0");
 
                 entity.Property(e => e.Observaciones).HasColumnType("text");
 
@@ -117,96 +209,34 @@ namespace SistemasLegales.Models.Entidades
                     .HasConstraintName("FK_AdminRequisitoLegal_Status");
             });
 
-            modelBuilder.Entity<Ciudad>(entity =>
-            {
-                entity.HasKey(e => e.IdCiudad)
-                    .HasName("PK_Ciudad");
-
-                entity.Property(e => e.Nombre)
-                    .IsRequired()
-                    .HasColumnType("varchar(200)");
-            });
-
-            modelBuilder.Entity<Documento>(entity =>
-            {
-                entity.HasKey(e => e.IdDocumento)
-                    .HasName("PK_Documento");
-
-                entity.Property(e => e.Nombre)
-                    .IsRequired()
-                    .HasColumnType("varchar(200)");
-
-                entity.HasOne(d => d.RequisitoLegal)
-                    .WithMany(p => p.Documento)
-                    .HasForeignKey(d => d.IdRequisitoLegal)
-                    .HasConstraintName("FK_Documento_RequisitoLegal");
-            });
-
-            modelBuilder.Entity<DocumentoRequisito>(entity =>
-            {
-                entity.HasKey(e => e.IdDocumentoRequisito)
-                    .HasName("PK_DocumentoRequisito");
-
-                entity.Property(e => e.Nombre)
-                    .IsRequired()
-                    .HasColumnType("varchar(200)");
-
-                entity.Property(e => e.Url).HasColumnType("varchar(1024)");
-
-                entity.HasOne(d => d.Requisito)
-                    .WithMany(p => p.DocumentoRequisito)
-                    .HasForeignKey(d => d.IdRequisito)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_DocumentoRequisito_Requisito");
-            });
-
-            modelBuilder.Entity<OrganismoControl>(entity =>
-            {
-                entity.HasKey(e => e.IdOrganismoControl)
-                    .HasName("PK_OrganismoControl");
-
-                entity.Property(e => e.Nombre)
-                    .IsRequired()
-                    .HasColumnType("varchar(200)");
-            });
-
-            modelBuilder.Entity<Proceso>(entity =>
-            {
-                entity.HasKey(e => e.IdProceso)
-                    .HasName("PK_Proceso");
-
-                entity.Property(e => e.Nombre)
-                    .IsRequired()
-                    .HasColumnType("varchar(200)");
-            });
-
-            modelBuilder.Entity<Proyecto>(entity =>
-            {
-                entity.HasKey(e => e.IdProyecto)
-                    .HasName("PK_Proyecto");
-
-                entity.Property(e => e.Nombre).HasColumnType("varchar(250)");
-            });
-
             modelBuilder.Entity<RequisitoLegal>(entity =>
             {
                 entity.HasKey(e => e.IdRequisitoLegal)
                     .HasName("PK_RequisitoLegal");
 
+                entity.Property(e => e.IdRequisitoLegal).ValueGeneratedNever();
+
                 entity.Property(e => e.Nombre)
                     .IsRequired()
-                    .HasColumnType("varchar(200)");
+                    .HasColumnType("varchar(1000)");
 
                 entity.HasOne(d => d.OrganismoControl)
-                    .WithMany(p => p.RequisitoLegal)
-                    .HasForeignKey(d => d.IdOrganismoControl)
-                    .HasConstraintName("FK_RequisitoLegal_OrganismoControl");
+                   .WithMany(p => p.RequisitoLegal)
+                   .HasForeignKey(d => d.IdOrganismoControl)
+                   .HasConstraintName("FK_RequisitoLegal_OrganismoControl");
             });
+
+
+
+
+
 
             modelBuilder.Entity<Status>(entity =>
             {
                 entity.HasKey(e => e.IdStatus)
                     .HasName("PK_Status");
+
+                entity.Property(e => e.IdStatus).ValueGeneratedNever();
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()

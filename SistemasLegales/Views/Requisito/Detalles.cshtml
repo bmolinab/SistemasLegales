@@ -17,7 +17,8 @@
 <input type="hidden" id="idRequisito" asp-for="IdRequisito" />
 <input type="hidden" id="idAdministrador" value="@adm.ToString().ToLower()" />
 <fieldset>
-    <div class="col-lg-12"> <a asp-action="Gestionar" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Editar Requisito</a></div>
+    <div class="col-lg-6"> <a asp-action="Gestionar" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando el requisito legal...')" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Editar Requisito</a></div>
+    <div class="col-lg-6"> <a asp-action="Index" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="btn btn-primary pull-right">Ir a Listado de Requisitos</a></div>
     <div class="col-12 margin-top-5">
         <div class="col-md-12 col-sm-12 col col-xs-12 col-lg-12">
             <div class="product-deatil col-lg-12 text-align-left JustifyFull">

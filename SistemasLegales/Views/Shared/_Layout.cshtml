@@ -92,7 +92,20 @@
                             </a>
                         </li>
                         @{
-                            if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
+                            if (User.IsInRole(Perfiles.Gestor))
+                            {
+                                <li class="nav-heading ">
+                                    <span class="negrita">-ADMINISTRACIÓN</span>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Requisito" title="Gestión de requisitos">
+                                        <span>Gestión de requisitos</span>
+                                    </a>
+                                </li>
+
+                            }
+
+                            if (User.IsInRole(Perfiles.Administrador))
                             {
                                 <li class="nav-heading ">
                                     <span class="negrita">-ADMINISTRACIÓN</span>
