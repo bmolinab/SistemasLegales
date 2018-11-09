@@ -1,0 +1,290 @@
+@model Requisito
+@{
+    ViewData["Titulo"] = "GESTI\u00D3N DE REQUISITOS";
+    ViewData["Subtitulo"] = "Tr\u00e1mite legal";
+
+}
+@section Migas{
+    <li><a asp-action="IndexFinalizado">Requisitos Hist&oacute;ricos</a></li>
+    <li class="active">Acciones</li>
+}
+
+@section CSS{
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/lib/boootstrap-datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" />
+}
+@{var adm = User.IsInRole("Administrador"); }
+<input type="hidden" id="idRequisito" asp-for="IdRequisito" />
+<input type="hidden" id="idAdministrador" value="@adm.ToString().ToLower()" />
+<fieldset>
+    <div class="col-lg-6"> <a asp-action="GestionarFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando el requisito legal...')" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a @{if (User.IsInRole(Perfiles.Administrador)) { <text> Editar el </text> } else {<text>Detalle del</text> } } Requisito Hist&oacute;rico</a></div>
+    <div class="col-lg-6"> <a asp-action="IndexFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="btn btn-primary pull-right">Ir a Listado de Requisitos Hist&oacute;ricos</a></div>
+    <div class="col-12 margin-top-5">
+        <div class="col-md-12 col-sm-12 col col-xs-12 col-lg-12">
+            <div class="product-deatil col-lg-12 text-align-left JustifyFull">
+                <h4 class="name">
+                    <b>
+                        <a href="javascript:void (0)">
+                            @Model.Documento.RequisitoLegal.OrganismoControl.Nombre
+                        </a>
+                    </b>
+                </h4>
+                <h5 class="name">
+                    <a href="javascript:void (0)">
+                        @Model.Documento.RequisitoLegal.Nombre
+                    </a>
+                </h5>
+                <h6 class="name">
+                    <a href="javascript:void (0)">
+                        @Model.Documento.Nombre
+                    </a>
+                </h6>
+            </div>
+
+            <section class="col col-lg-12 text-align-center">
+                <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
+                    <span class="text-primary h6"><a>Ciudad:</a></span>
+                    <br />
+                    <span class="">@Model.Ciudad.Nombre</span>
+                </p>
+                <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
+                    <span class="text-primary h6"><a>Proyecto:</a></span>
+                    <br />
+                    <span class="">@Model.Proyecto.Nombre</span>
+                </p>
+
+                <p class="price-container col-lg-4 margin-top-10 margin-bottom-10">
+                    <span class="text-primary h6"><a>Due&ntilde;o del proceso:</a></span>
+                    <br />
+                    <span class="">@Model.ActorDuennoProceso.Nombres</span>
+                </p>
+            </section>
+        </div>
+    </div>
+</fieldset>
+
+
+<fieldset>
+    @{if (User.IsInRole(Perfiles.Administrador))
+        {
+            <section class="col col-lg-12">
+
+                <div class="col col-lg-12">
+                    <legend>Acciones</legend>
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <div class="input-group margin-bottom-0 focused">
+                            <input class="form-control datepicker" onfocus="OcultarMensaje()" id="fechaAccion" />
+                            <span class="input-group-addon bg btndatepicker"><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>Detalle</label>
+                        <div class="input-group margin-bottom-0">
+                            <textarea id="Observaciones" onfocus="OcultarMensaje()" name="Observaciones" class="form-control" rows="6"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <section id="mensajeObservaciones" hidden="hidden" class="col col-lg-12">
+                    <span class="text-danger">Debe completar el formulario</span>
+                </section>
+                <div class="col col-lg-12 center-block">
+                    <a class="btn btn-primary" onclick="adicionaraccion()">AGREGAR</a>
+                </div>
+
+            </section>
+        } 
+        
+        }
+    <div class="row col col-lg-12">
+        <div class="col col-lg-12">
+            <table id="tbAcciones" class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Fecha
+                        </th>
+                        <th>
+                            Detalle
+                        </th>
+                        @{
+                            if (User.IsInRole(Perfiles.Administrador))
+                            {
+                                <th>Opciones</th>
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Accion)
+                    {
+                        <tr>
+                            <td class="datepicker text-justify">
+                                <p class="font-12 text-left"> @string.Format("{0:dd/MM/yyyy}", item.Fecha)</p>
+
+                            </td>
+                            <td>
+                                <p class="font-12 text-left">@item.Detalle </p>
+
+                            </td>
+
+                            @{
+                                if (User.IsInRole(Perfiles.Administrador))
+                                {
+                                    <td>
+                                        <a href='../EditarFinalizado/@item.IdAccion' class="font-12" title='Editar'>Editar</a> |
+                                        <a href='javascript:void (0)' title='Eliminar' class="font-12" onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
+                                    </td>
+                                }
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</fieldset>
+
+@section Scripts{
+
+
+    @{ await Html.RenderPartialAsync("_DatepickerPartial"); }
+
+    <script type="text/javascript">
+        var perfilAdmin = $("#idAdministrador").val();
+       
+        function OcultarMensaje()
+        {
+            $("#mensajeObservaciones").hide();
+
+        }
+
+        function EliminarAccion(valor)
+        {
+          
+            var mensaje = confirm("\u00bf Desea eliminar el acci\u00f3n ?");
+            if (mensaje) {
+                MiApp.LoadingPanel.mostrarNotificacion("bodyTemplate", "Eliminando la acci\u00f3n...");
+             $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EliminarAccion","Requisito")',
+                 dataType: 'json',
+                 data: { idAccion: valor, idRequisito: $("#idRequisito").val()},
+                 success: function (data) {
+
+                     document.getElementById("tbAcciones").innerHTML = "";
+                     var newTable = " <table id='tbAcciones' class='table'>";
+                     newTable += "<thead>";
+
+                     newTable += "<tr>";
+                     newTable += "<th>Fecha</th>";
+                     newTable += "<th >Detalle</th>";
+                     if (perfilAdmin == "true") {
+                         newTable += "<th >Opciones</th>";
+                     }
+                     newTable += "</tr>";
+                     newTable += "</thead>";
+                     newTable += "<tbody>";
+                     for (var i = 0; i < data.length; i++) {
+                         newTable += "<tr >";
+                         newTable += "<td class='datepicker'> <p class='font-12 text-left'>"  + moment(data[i].fecha).format("DD/MM/YYYY") + "</p></td > ";
+                         newTable += "<td ><p class='font-12 text-left'>"  + data[i].detalle + "</p></td>";
+                        
+                         if (perfilAdmin=="true") {
+                             newTable += "<td>";
+                             newTable += "<a href='../EditarFinalizados/" + data[i].idAccion + "' class='font-12' title ='Editar'>Editar</a> |";
+                             newTable += "<a href='javascript:void (0)'  title ='Eliminar' class='font-12' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
+                             newTable += "</td>";
+                         }
+                         newTable += "</tr>";
+                     };
+                     newTable += "</tbody>";
+                     newTable += "</table>";
+                     document.getElementById("tbAcciones").innerHTML = newTable;
+                     MiApp.Mensajes.mostrarNotificacion("success", "La acci\u00f3n se ha realizado satisfactoriamente.");
+
+                    }, complete: function (data) {
+                     $("#bodyTemplate").waitMe("hide");
+                    },
+
+                    error: function (ex) {
+                        MiApp.Mensajes.mostrarNotificacion("error", "Ocurri\u00f3 un error al conectarse al servicio, inténtelo nuevamente.");
+                    }
+                });
+            }
+
+        }
+
+        function adicionaraccion() {
+
+            var pasaValidaciones = true;
+            var observaciones = $("#Observaciones").val();
+            var idRequisito = $("#idRequisito").val();
+            var fechaAccion = $("#fechaAccion").val();
+
+            if (observaciones == "" || idRequisito == null || fechaAccion == "") {
+
+                $("#mensajeObservaciones").show();
+                return;
+            }
+
+            MiApp.LoadingPanel.mostrarNotificacion("bodyTemplate", "Adicionando la acci\u00f3n...");
+
+             $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("InsertarAcciones","Requisito")',
+                    dataType: 'json',
+                 data: { observaciones: observaciones, idRequisito: idRequisito, fechaAccion: fechaAccion },
+                 success: function (data) {
+
+                     document.getElementById("tbAcciones").innerHTML = "";
+                     var newTable = " <table id='tbAcciones' class='table'>";
+                     newTable += "<thead>";
+
+                     newTable += "<tr>";
+                     newTable += "<th>Fecha</th>";
+                     newTable += "<th >Detalle</th>";
+                     if (perfilAdmin == "true") {
+                         newTable += "<th >Opciones</th>";
+                     }
+                    
+                     newTable += "</tr>";
+                     newTable += "</thead>";
+                     newTable += "<tbody>";
+                     for (var i = 0; i < data.length; i++) {
+                         newTable += "<tr >";
+                         newTable += "<td class='datepicker'> <p class='font-12 text-left'>" + moment(data[i].fecha).format("DD/MM/YYYY") + "</p></td > ";
+                         newTable += "<td ><p class='font-12 text-left'>" + data[i].detalle + "</p></td>";
+
+                         if (perfilAdmin=="true")
+                         {
+                             newTable += "<td>";
+                             newTable += "<a href='../EditarFinalizado/" + data[i].idAccion + "' class='font-12' title ='Editar'>Editar</a> |";
+                             newTable += "<a href='javascript:void (0)'  title ='Eliminar' class='font-12' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
+                             newTable += "</td>";
+                         }
+                         newTable += "</tr>";
+                     };
+                     newTable += "</tbody>";
+                     newTable += "</table>";
+                     document.getElementById("tbAcciones").innerHTML = newTable;
+                     MiApp.Mensajes.mostrarNotificacion("success", "La acci\u00f3n se ha realizado satisfactoriamente.");
+                    }, complete: function (data) {
+                     $("#bodyTemplate").waitMe("hide");
+                    },
+
+                    error: function (ex) {
+                        MiApp.Mensajes.mostrarNotificacion("error", "Ocurri\u00f3 un error al conectarse al servicio, inténtelo nuevamente.");
+                    }
+                });
+
+
+
+        }
+
+    </script>
+}

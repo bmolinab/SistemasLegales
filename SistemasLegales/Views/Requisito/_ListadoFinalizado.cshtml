@@ -1,0 +1,82 @@
+@model IEnumerable<Requisito>
+
+<div class="table-responsive padding-10">
+    <table id="datatable-responsive" data-page-length="50" class="table table-striped table-bordered dataTable" cellspacing="0">
+        <thead>
+            <tr>
+                
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Documento.RequisitoLegal.IdOrganismoControl)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Documento.IdRequisitoLegal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().IdDocumento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().IdCiudad)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().IdProceso)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().IdProyecto)
+                </th>
+               
+                <th>
+                    Opciones
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var item in Model)
+                {
+                    if ( User.IsInRole(Perfiles.Administrador)|| User.IsInRole(Perfiles.Gestor))
+                    {
+                        <tr>
+                            
+                            <td>
+                                <p class="font-12 text-left">@item.Documento.RequisitoLegal.OrganismoControl.Nombre </p>
+                            </td>
+                            <td>
+                                <p class="font-12 text-left">@item.Documento.RequisitoLegal.Nombre </p>
+                            </td>
+                            <td>
+                                <p class="font-12 text-left">@item.Documento.Nombre </p>
+                            </td>
+                            <td>
+                                <p class="font-12 text-left">@item.Ciudad.Nombre </p>
+                            </td>
+                            <td>
+                                <p class="font-12 text-left">@item.Proceso.Nombre </p>
+                            </td>
+                            <td>
+                                <p class="font-12 text-left" s>@item.Proyecto.Nombre </p>
+                            </td>
+                            <td>
+                                @{
+                                    if (User.IsInRole(Perfiles.Administrador) || User.IsInRole(Perfiles.Gestor))
+                                    {
+                                        <a asp-action="DetallesFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Acciones</a><br />
+                                        if (User.IsInRole(Perfiles.Gestor))
+                                        {
+                                            <a asp-action="GestionarFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Detalle</a><br />
+
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="GestionarFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><br />
+
+                                        }
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>

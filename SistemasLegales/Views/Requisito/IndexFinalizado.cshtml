@@ -1,0 +1,36 @@
+@model IEnumerable<Requisito>
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Titulo"] = User.IsInRole(Perfiles.Administrador) ? "REQUISITOS HIST\u00D3RICOS" : "REQUISITOS HIST\u00D3RICOS";
+    ViewData["Subtitulo"] = "LISTADO";
+
+}
+@section Migas{
+    <li><a asp-action="IndexFinalizado">Requisitos Hist&oacute;ricos</a></li>
+    <li class="active">Listado</li>
+}
+@section CSS{
+    @{await Html.RenderPartialAsync("_DatatablesCSSPartial");}
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/lib/boootstrap-datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" />
+}
+
+@{await Html.RenderPartialAsync("_VistaFiltradoRequisitoFinalizado", Model.FirstOrDefault());}
+
+<div id="divTablaListado">
+    @{await Html.RenderPartialAsync("_ListadoFinalizado", Model);}
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_DatatablesJSPartial");}
+    @{await Html.RenderPartialAsync("_BootboxPartial");}
+    @{ await Html.RenderPartialAsync("_DatepickerPartial"); }
+    @{ await Html.RenderPartialAsync("_SelectPartial"); }
+    <script src="~/js/jqueryDatatables/jqueryDatatables.min.js"></script>
+    <script>
+        var urlListadoResult = "@Url.Action("ListadoResultFinalizado")";
+    </script>
+    <script src="~/js/requisito/indexFinalizado.js"></script>
+}

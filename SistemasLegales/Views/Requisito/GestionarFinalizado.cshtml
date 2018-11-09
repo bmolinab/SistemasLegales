@@ -1,0 +1,374 @@
+@model Requisito
+@{
+    ViewData["Titulo"] = "GESTI\u00D3N DE REQUISITOS";
+    ViewData["Subtitulo"] = @User.IsInRole(Perfiles.Gestor) ? "Detalle" : ViewData["accion"];
+}
+@using SistemasLegales.Models.Utiles;
+@section Migas{
+    <li><a asp-action="IndexFinalizado">Requisitos Hist&oacute;ricos</a></li>
+    <li class="active">@ViewData["accion"]</li>
+}
+@section CSS{
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/lib/boootstrap-datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <link href="~/lib/jquery-spinner/css/bootstrap-spinner.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap-fileinput/css/fileinput.min.css">
+}
+
+@{var adm = User.IsInRole("Administrador"); }
+<input type="hidden" id="idAdministrador" value="@adm.ToString().ToLower()" />
+<form asp-action="GestionarFinalizado" novalidate="novalidate" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="IdStatusAnterior" />
+    @{
+        if (Model != null)
+        {
+            <input type="hidden" asp-for="IdRequisito" />
+        }
+    }
+    <div class="row">
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
+                <div class="demo margin-top-0">
+                    <select asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
+                </div>
+                <span asp-validation-for="Documento.RequisitoLegal.IdOrganismoControl" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div id="divRequisitoLegal">
+            @{await Html.RenderPartialAsync("_RequisitoLegalSelect", Model);}
+        </div>
+
+        <div id="divDocumento">
+            @{await Html.RenderPartialAsync("_DocumentoSelect", Model);}
+        </div>
+
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdCiudad"></label>
+                <div class="demo margin-top-0">
+                    <select asp-for="IdCiudad" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Ciudad"></select>
+                </div>
+                <span asp-validation-for="IdCiudad" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdProceso"></label>
+                <div class="demo margin-top-0">
+                    <select asp-for="IdProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proceso"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdProyecto"></label>
+                <div class="demo margin-top-0">
+                    <select asp-for="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdActorDuennoProceso"></label>
+                <div class="demo margin-top-0">
+                    <select asp-for="IdActorDuennoProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                </div>
+                <span asp-validation-for="IdActorDuennoProceso" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdActorResponsableGestSeg"></label>
+                <div class="demo margin-top-0">
+                    <select asp-for="IdActorResponsableGestSeg" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                </div>
+                <span asp-validation-for="IdActorResponsableGestSeg" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdActorCustodioDocumento"></label>
+                <div class="demo margin-top-0">
+                    <select asp-for="IdActorCustodioDocumento" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                </div>
+                <span asp-validation-for="IdActorCustodioDocumento" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <div class="form-group">
+
+                    <label>Criticidad</label>
+                    <div class="demo margin-top-0">
+                        <select asp-for="Criticidad" class="form-control show-tick" data-live-search="true">
+                            <option value="0">Bajo</option>
+                            <option value="1">Medio</option>
+                            <option value="2">Alto</option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="Criticidad" class="text-danger"></span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="form-group">
+                <label asp-for="FechaCumplimiento"></label>
+                <div class="input-group margin-bottom-0 focused">
+                    <input asp-for="FechaCumplimiento" class="form-control datepicker" />
+                    <span class="input-group-addon bg btndatepicker" data-picker="FechaCumplimiento"><i class="fa fa-calendar"></i></span>
+                </div>
+                <span asp-validation-for="FechaCumplimiento" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="form-group">
+                <label asp-for="FechaCaducidad"></label>
+                <div class="input-group margin-bottom-0 focused">
+                    <input asp-for="FechaCaducidad" class="form-control datepicker" />
+                    <span class="input-group-addon bg btndatepicker" data-picker="FechaCaducidad"><i class="fa fa-calendar"></i></span>
+                </div>
+                <span asp-validation-for="FechaCaducidad" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="card-inner padding-0 margin-bottom-0">
+                <label asp-for="IdStatus"></label>
+                <div class="demo margin-top-0">
+                    <select asp-for="IdStatus" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Status"></select>
+                </div>
+                <span asp-validation-for="IdStatus" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
+            <div class="form-group">
+                <label asp-for="DiasNotificacion"></label>
+                <div class="input-group spinner focused margin-bottom-0" data-trigger="spinner">
+                    <input type="text" asp-for="DiasNotificacion" class="form-control" data-rule="quantity" />
+                    <span class="input-group-addon">
+                        <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xs-12">
+            <div class="form-group">
+                <div class="input-group margin-bottom-0">
+                    <label asp-for="EmailNotificacion1"></label>
+                    <input asp-for="EmailNotificacion1" class="form-control" />
+                </div>
+                <span asp-validation-for="EmailNotificacion1" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xs-12">
+            <div class="form-group">
+                <div class="input-group margin-bottom-0">
+                    <label asp-for="EmailNotificacion2"></label>
+                    <input asp-for="EmailNotificacion2" class="form-control" />
+                </div>
+                <span asp-validation-for="EmailNotificacion2" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <div class="form-group">
+                <div class="input-group margin-bottom-0">
+                    <label asp-for="Observaciones"></label>
+                    <textarea asp-for="Observaciones" class="form-control" rows="4"></textarea>
+                </div>
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    @{ if (Model != null)
+        {
+            if (Model.Accion.Count != 0)
+            {
+                <fieldset>
+
+                    <legend>Acciones realizadas</legend>
+                    <div class="col-lg-12"> <a asp-action="Detalles" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Gestionar Acciones</a></div>
+                    <div class="table-responsive padding-15">
+                        <table id="datatable-responsive" class="table" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Fecha
+                                    </th>
+                                    <th>
+                                        Detalle
+                                    </th>
+                                    @{
+                                        if (User.IsInRole(Perfiles.Administrador))
+                                        {
+                                            <th>
+                                                Opciones
+                                            </th>
+                                        }
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Accion)
+                                {
+                                    <tr>
+                                        <td class="datepicker text-justify">
+                                            @string.Format("{0:dd/MM/yyyy}", item.Fecha)
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Detalle)
+                                        </td>
+                                        @{
+                                            if (User.IsInRole(Perfiles.Administrador))
+                                            {
+                                                <td>
+                                                    <a href='javascript:void (0)' title='Eliminar' onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
+                                                </td>
+                                            }
+                                        }
+                                    </tr>
+                                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                                                }
+                                            }
+    }
+    <fieldset>
+       
+        <legend>Documentaci&oacute;n adicional</legend>
+        <div class="row">
+            @{
+                if (User.IsInRole(Perfiles.Administrador))
+                {
+
+                    <div class="col-md-12 col-xs-12 col-sm-12">
+                        <input type="file" id="file" name="file" />
+                    </div>
+                }
+            }
+            @{
+                if (Model != null)
+                {
+                    <div class="col-md-12 col-xs-12 col-sm-12">
+                        @{await Html.RenderPartialAsync("_FileDownload", Model?.DocumentoRequisito);}
+                    </div>
+                }
+            }
+        </div>
+    </fieldset>
+
+    <div class="row">
+        
+        <div class="col-md-offset-5 col-xs-offset-6">
+            @{
+                if (User.IsInRole(Perfiles.Administrador))
+                {
+                    <button type="submit" class="btn btn-primary ladda-button" data-style="expand-left" id="btn-guardar">
+                        <span class="ladda-label" id="laddaSpanGuardar">ACEPTAR</span>
+                    </button>
+                }
+
+            }
+
+            <a asp-action="IndexFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="btn btn-default">CANCELAR</a>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts{
+
+    <script src="~/lib/jquery-spinner/js/jquery.spinner.js"></script>
+    <script src="~/js/moment/moment.js"></script>
+    <script src="~/js/moment/moment-with-locales.js"></script>
+    @{ await Html.RenderPartialAsync("_DatepickerPartial"); }
+    @{ await Html.RenderPartialAsync("_SelectPartial"); }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{await Html.RenderPartialAsync("_FileInputScriptsPartial");}
+    <script>
+        var urlRequisitoLegalSelectResult = "@Url.Action("RequisitoLegal_SelectResult")";
+        var urlDocumentoSelectResult = "@Url.Action("Documento_SelectResult")";
+    </script>
+    <script src="~/js/fileInput/fileInput.min.js"></script>
+    <script src="~/js/requisito/gestionar.min.js"></script>
+
+    <script type="text/javascript">
+
+        var perfilAdmin = $("#idAdministrador").val();
+        function EliminarAccion(valor)
+        {
+
+            var mensaje = confirm("\u00bf Desea eliminar el acci\u00f3n ?");
+            if (mensaje) {
+                MiApp.LoadingPanel.mostrarNotificacion("bodyTemplate", "Eliminando la acci\u00f3n...");
+             $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EliminarAccion","Requisito")',
+                 dataType: 'json',
+                 data: { idAccion: valor, idRequisito: $("#IdRequisito").val()},
+                 success: function (data) {
+
+                     document.getElementById("datatable-responsive").innerHTML = "";
+                     var newTable = " <table id=datatable-responsive class=table cellspacing=0";
+                     newTable += "<thead>";
+
+                     newTable += "<tr>";
+                     newTable += "<th>Fecha</th>";
+                     newTable += "<th >Detalle</th>";
+                     newTable += "<th >Opciones</th>";
+                     newTable += "</tr>";
+                     newTable += "</thead>";
+                     newTable += "<tbody>";
+                     for (var i = 0; i < data.length; i++) {
+
+                         newTable += "<tr >";
+                         newTable += "<td class='datepicker'>" + moment(data[i].fecha).format("DD/MM/YYYY") + "</td > ";
+                         newTable += "<td >" + data[i].detalle + "</td>";
+                         if (perfilAdmin == "true") {
+                             newTable += "<td>";
+                             newTable += "<a href='javascript:void (0)'  title ='Eliminar' onclick='EliminarAccion(" + data[i].idAccion + ")'>Eliminar</a>";
+                             newTable += "</td>";
+                             newTable += "</tr>";
+                         }
+                     };
+                     newTable += "</tbody>";
+                     newTable += "</table>";
+                     document.getElementById("datatable-responsive").innerHTML = newTable;
+                     MiApp.Mensajes.mostrarNotificacion("success", "La acci\u00f3n se ha realizado satisfactoriamente.");
+
+                    }, complete: function (data) {
+                     $("#bodyTemplate").waitMe("hide");
+                    },
+
+                    error: function (ex) {
+                        MiApp.Mensajes.mostrarNotificacion("error", "Ocurri\u00f3 un error al conectarse al servicio, int?ntelo nuevamente.");
+                    }
+                });
+            }
+
+        }
+    </script>
+}

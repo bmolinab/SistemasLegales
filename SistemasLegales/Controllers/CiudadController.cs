@@ -90,7 +90,7 @@ namespace SistemasLegales.Controllers
                 }
                 return this.VistaError(ciudad, $"{Mensaje.Error}|{Mensaje.ModeloInvalido}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return this.Redireccionar($"{Mensaje.Error}|{Mensaje.Excepcion}");
             }

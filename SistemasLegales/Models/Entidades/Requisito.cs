@@ -134,7 +134,7 @@ namespace SistemasLegales.Models.Entidades
 
         
 
-        public string ConformarMensaje(string url, Requisito requisito,TipoMensaje tipoMensaje)
+        public string ConformarMensaje(string url, Requisito requisito,TipoMensaje tipoMensaje,string usuario)
         {
             var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
             var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
@@ -166,6 +166,11 @@ namespace SistemasLegales.Models.Entidades
                 case TipoMensaje.CADUCAR:
                     cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeCADUCAR) : ConstantesCorreo.CabeceraNotificacion;
                     cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : cabecera;
+                    break;
+                case TipoMensaje.FINALIZADOMODIFICADO:
+                    var nombreUsuario = ConstantesCorreo.MensajeFINALIZADOMODIFICADO.Replace("@usuario", usuario);
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", nombreUsuario) : ConstantesCorreo.CabeceraNotificacion;
+                    cabecera = cabecera.Contains("@dias") ? "FINALIZADO" : "FINALIZADO";
                     break;
                 default:
                     break;
@@ -307,7 +312,7 @@ namespace SistemasLegales.Models.Entidades
                     if (!String.IsNullOrEmpty(EmailNotificacion2))
                         listadoEmails.Add(EmailNotificacion2);
 
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de creación de un requisito.",ConformarMensaje(url,requisito,TipoMensaje.CREATE));
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de creación de un requisito.",ConformarMensaje(url,requisito,TipoMensaje.CREATE,""));
                 }
                 return true;
             }
@@ -354,7 +359,7 @@ namespace SistemasLegales.Models.Entidades
                     {
                         listadoEmails.Add(item.Email);
                     }
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito creado automaticamete.", ConformarMensaje("", requisito, TipoMensaje.AUTOMATICO));
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito creado automaticamete.", ConformarMensaje("", requisito, TipoMensaje.AUTOMATICO,""));
                 }
                 return true;
             }
@@ -392,7 +397,7 @@ namespace SistemasLegales.Models.Entidades
                     if (!String.IsNullOrEmpty(EmailNotificacion2))
                         listadoEmails.Add(EmailNotificacion2);
 
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito finalizado.",ConformarMensaje("", requisito, TipoMensaje.FINALIZADO));
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito finalizado.",ConformarMensaje("", requisito, TipoMensaje.FINALIZADO,""));
                 }
                 return true;
             }
@@ -423,7 +428,7 @@ namespace SistemasLegales.Models.Entidades
                 }
                 if (listaAdministradores.Count>0)
                 {
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito terminado.", ConformarMensaje(url, requisito, TipoMensaje.TERMINADO));
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito terminado.", ConformarMensaje(url, requisito, TipoMensaje.TERMINADO,""));
                 }
             return true;
             }
@@ -431,6 +436,52 @@ namespace SistemasLegales.Models.Entidades
             { }
             return false;
         }
+
+
+        public async Task<bool> EnviarEmailNotificaionFinalizadoModificado(string nombreUsuario,UserManager<ApplicationUser> userManager, IEmailSender emailSender, SistemasLegalesContext db)
+        {
+            try
+            {
+                var requisito = await db.Requisito
+                                        .Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl)
+                                        .Include(c => c.Ciudad)
+                                        .Include(c => c.Proceso)
+                                        .Include(c => c.ActorDuennoProceso)
+                                        .Include(c => c.ActorResponsableGestSeg)
+                                        .Include(c => c.ActorCustodioDocumento)
+                                        .Include(c => c.Status)
+                                        .FirstOrDefaultAsync(c => c.IdRequisito == IdRequisito);
+                if (requisito != null)
+                {
+                    var listadoEmails = new List<string>()
+                        {
+                            ActorDuennoProceso.Email,
+                            ActorResponsableGestSeg.Email,
+                            ActorCustodioDocumento.Email
+                        };
+
+                    if (!String.IsNullOrEmpty(EmailNotificacion1))
+                        listadoEmails.Add(EmailNotificacion1);
+
+                    if (!String.IsNullOrEmpty(EmailNotificacion2))
+                        listadoEmails.Add(EmailNotificacion2);
+
+
+                    var listaAdministradores = await userManager.GetUsersInRoleAsync(Perfiles.Administrador);
+
+                    foreach (var item in listaAdministradores)
+                    {
+                        listadoEmails.Add(item.Email);
+                    }
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito finalizado ha sido modificado.", ConformarMensaje(null,requisito, TipoMensaje.FINALIZADOMODIFICADO,nombreUsuario));
+                }
+                return true;
+            }
+            catch (Exception)
+            { }
+            return false;
+        }
+
 
         public async Task<bool> EnviarEmailNotificaionNoFinalizado(string url, IEmailSender emailSender, SistemasLegalesContext db)
         {
@@ -449,7 +500,7 @@ namespace SistemasLegales.Models.Entidades
                 {
                     var listadoEmails = new List<string>();
                     listadoEmails.Add(requisito.ActorResponsableGestSeg.Email);
-                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito.", ConformarMensaje(url, requisito, TipoMensaje.NOACEPTADO));
+                    await emailSender.SendEmailAsync(listadoEmails, "Notificación de requisito.", ConformarMensaje(url, requisito, TipoMensaje.NOACEPTADO,""));
                 }
                 return true;
             }
@@ -481,7 +532,7 @@ namespace SistemasLegales.Models.Entidades
                         var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
 
 
-                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR));
+                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR,""));
                         return true;
             }
             catch (Exception)
@@ -525,7 +576,7 @@ namespace SistemasLegales.Models.Entidades
                         var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
 
 
-                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR));
+                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR,""));
                         NotificacionEnviada = true;
                         await db.SaveChangesAsync();
                         return true;
@@ -570,7 +621,7 @@ namespace SistemasLegales.Models.Entidades
                         var FechaCumplimiento = requisito.FechaCumplimiento != null ? requisito.FechaCumplimiento?.ToString("dd/MM/yyyy") : "No Definido";
                         var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
 
-                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR));
+                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR,""));
 
                         NotificacionEnviadaUltima = true;
                         await db.SaveChangesAsync();

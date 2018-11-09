@@ -31,8 +31,6 @@ namespace SistemasLegales.Models.Entidades
                 entity.HasKey(e => e.IdAccion)
                     .HasName("PK_Accion");
 
-                entity.Property(e => e.IdAccion).ValueGeneratedNever();
-
                 entity.Property(e => e.Detalle).HasColumnType("text");
 
                 entity.HasOne(d => d.IdRequisitoNavigation)
@@ -46,8 +44,6 @@ namespace SistemasLegales.Models.Entidades
                 entity.HasKey(e => e.IdActor)
                     .HasName("PK_Actor");
 
-                entity.Property(e => e.IdActor).ValueGeneratedNever();
-
                 entity.Property(e => e.Departamento).HasColumnType("varchar(200)");
 
                 entity.Property(e => e.Email).HasColumnType("varchar(200)");
@@ -57,25 +53,21 @@ namespace SistemasLegales.Models.Entidades
                     .HasColumnType("varchar(200)");
             });
 
-
             modelBuilder.Entity<Ciudad>(entity =>
             {
                 entity.HasKey(e => e.IdCiudad)
                     .HasName("PK_Ciudad");
-
-                entity.Property(e => e.IdCiudad).ValueGeneratedNever();
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasColumnType("varchar(200)");
             });
 
+
             modelBuilder.Entity<Documento>(entity =>
             {
                 entity.HasKey(e => e.IdDocumento)
                     .HasName("PK_Documento");
-
-                entity.Property(e => e.IdDocumento).ValueGeneratedNever();
 
                 entity.Property(e => e.Cantidad).HasDefaultValueSql("0");
 
@@ -86,9 +78,9 @@ namespace SistemasLegales.Models.Entidades
                 entity.Property(e => e.Tipo).HasDefaultValueSql("1");
 
                 entity.HasOne(d => d.RequisitoLegal)
-                      .WithMany(p => p.Documento)
-                      .HasForeignKey(d => d.IdRequisitoLegal)
-                      .HasConstraintName("FK_Documento_RequisitoLegal");
+                     .WithMany(p => p.Documento)
+                     .HasForeignKey(d => d.IdRequisitoLegal)
+                   .HasConstraintName("FK_Documento_RequisitoLegal");
             });
 
             modelBuilder.Entity<DocumentoRequisito>(entity =>
@@ -103,19 +95,16 @@ namespace SistemasLegales.Models.Entidades
                 entity.Property(e => e.Url).HasColumnType("varchar(1024)");
 
                 entity.HasOne(d => d.Requisito)
-                     .WithMany(p => p.DocumentoRequisito)
-                     .HasForeignKey(d => d.IdRequisito)
-                     .OnDelete(DeleteBehavior.Cascade)
-                     .HasConstraintName("FK_DocumentoRequisito_Requisito");
+                    .WithMany(p => p.DocumentoRequisito)
+                    .HasForeignKey(d => d.IdRequisito)
+                    .OnDelete(DeleteBehavior.Cascade)
+                   .HasConstraintName("FK_DocumentoRequisito_Requisito");
             });
-
 
             modelBuilder.Entity<OrganismoControl>(entity =>
             {
                 entity.HasKey(e => e.IdOrganismoControl)
                     .HasName("PK_OrganismoControl");
-
-                entity.Property(e => e.IdOrganismoControl).ValueGeneratedNever();
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()
@@ -127,8 +116,6 @@ namespace SistemasLegales.Models.Entidades
                 entity.HasKey(e => e.IdProceso)
                     .HasName("PK_Proceso");
 
-                entity.Property(e => e.IdProceso).ValueGeneratedNever();
-
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasColumnType("varchar(200)");
@@ -139,8 +126,6 @@ namespace SistemasLegales.Models.Entidades
                 entity.HasKey(e => e.IdProyecto)
                     .HasName("PK_Proyecto");
 
-                entity.Property(e => e.IdProyecto).ValueGeneratedNever();
-
                 entity.Property(e => e.Nombre).HasColumnType("varchar(250)");
             });
 
@@ -148,8 +133,6 @@ namespace SistemasLegales.Models.Entidades
             {
                 entity.HasKey(e => e.IdRequisito)
                     .HasName("PK_AdminRequisitoLegal");
-
-                entity.Property(e => e.IdRequisito).ValueGeneratedNever();
 
                 entity.Property(e => e.Criticidad).HasDefaultValueSql("0");
 
@@ -166,32 +149,32 @@ namespace SistemasLegales.Models.Entidades
                 entity.Property(e => e.Observaciones).HasColumnType("text");
 
                 entity.HasOne(d => d.ActorCustodioDocumento)
-                    .WithMany(p => p.AdminRequisitoLegalIdActorCustodioDocumento)
-                    .HasForeignKey(d => d.IdActorCustodioDocumento)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_AdminRequisitoLegal_Actor2");
+                      .WithMany(p => p.AdminRequisitoLegalIdActorCustodioDocumento)
+                      .HasForeignKey(d => d.IdActorCustodioDocumento)
+                      .OnDelete(DeleteBehavior.Restrict)
+                      .HasConstraintName("FK_AdminRequisitoLegal_Actor2");
 
                 entity.HasOne(d => d.ActorDuennoProceso)
-                    .WithMany(p => p.AdminRequisitoLegalIdActorDuennoProceso)
-                    .HasForeignKey(d => d.IdActorDuennoProceso)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_AdminRequisitoLegal_Actor");
+                   .WithMany(p => p.AdminRequisitoLegalIdActorDuennoProceso)
+                   .HasForeignKey(d => d.IdActorDuennoProceso)
+                   .OnDelete(DeleteBehavior.Restrict)
+                   .HasConstraintName("FK_AdminRequisitoLegal_Actor");
 
                 entity.HasOne(d => d.ActorResponsableGestSeg)
-                    .WithMany(p => p.AdminRequisitoLegalIdActorResponsableGestSeg)
-                    .HasForeignKey(d => d.IdActorResponsableGestSeg)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_AdminRequisitoLegal_Actor1");
+                     .WithMany(p => p.AdminRequisitoLegalIdActorResponsableGestSeg)
+                     .HasForeignKey(d => d.IdActorResponsableGestSeg)
+                     .OnDelete(DeleteBehavior.Restrict)
+                     .HasConstraintName("FK_AdminRequisitoLegal_Actor1");
 
                 entity.HasOne(d => d.Ciudad)
-                    .WithMany(p => p.AdminRequisitoLegal)
-                    .HasForeignKey(d => d.IdCiudad)
-                    .HasConstraintName("FK_AdminRequisitoLegal_Ciudad");
+                   .WithMany(p => p.AdminRequisitoLegal)
+                   .HasForeignKey(d => d.IdCiudad)
+                   .HasConstraintName("FK_AdminRequisitoLegal_Ciudad");
 
                 entity.HasOne(d => d.Documento)
-                    .WithMany(p => p.Requisito)
-                    .HasForeignKey(d => d.IdDocumento)
-                    .HasConstraintName("FK_Requisito_Documento");
+                     .WithMany(p => p.Requisito)
+                     .HasForeignKey(d => d.IdDocumento)
+                     .HasConstraintName("FK_Requisito_Documento");
 
                 entity.HasOne(d => d.Proceso)
                     .WithMany(p => p.AdminRequisitoLegal)
@@ -199,9 +182,9 @@ namespace SistemasLegales.Models.Entidades
                     .HasConstraintName("FK_AdminRequisitoLegal_Proceso");
 
                 entity.HasOne(d => d.Proyecto)
-                  .WithMany(p => p.Requisito)
-                  .HasForeignKey(d => d.IdProyecto)
-                    .HasConstraintName("FK_Requisito_Proyecto");
+                .WithMany(p => p.Requisito)
+                .HasForeignKey(d => d.IdProyecto)
+                  .HasConstraintName("FK_Requisito_Proyecto");
 
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.AdminRequisitoLegal)
@@ -214,29 +197,20 @@ namespace SistemasLegales.Models.Entidades
                 entity.HasKey(e => e.IdRequisitoLegal)
                     .HasName("PK_RequisitoLegal");
 
-                entity.Property(e => e.IdRequisitoLegal).ValueGeneratedNever();
-
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasColumnType("varchar(1000)");
 
                 entity.HasOne(d => d.OrganismoControl)
-                   .WithMany(p => p.RequisitoLegal)
-                   .HasForeignKey(d => d.IdOrganismoControl)
-                   .HasConstraintName("FK_RequisitoLegal_OrganismoControl");
+                    .WithMany(p => p.RequisitoLegal)
+                    .HasForeignKey(d => d.IdOrganismoControl)
+                     .HasConstraintName("FK_RequisitoLegal_OrganismoControl");
             });
-
-
-
-
-
-
+           
             modelBuilder.Entity<Status>(entity =>
             {
                 entity.HasKey(e => e.IdStatus)
                     .HasName("PK_Status");
-
-                entity.Property(e => e.IdStatus).ValueGeneratedNever();
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()

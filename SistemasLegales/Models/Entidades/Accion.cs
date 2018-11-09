@@ -9,6 +9,7 @@ namespace SistemasLegales.Models.Entidades
     public partial class Accion
     {
         public int IdAccion { get; set; }
+
         [Required(ErrorMessage = "Debe introducir el {0}.")]
         [DataType(DataType.Text)]
         [Display(Name = "Detalle")]

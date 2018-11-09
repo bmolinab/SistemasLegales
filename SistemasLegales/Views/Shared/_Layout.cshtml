@@ -102,6 +102,14 @@
                                         <span>Gestión de requisitos</span>
                                     </a>
                                 </li>
+                                <li class="nav-heading ">
+                                    <span class="negrita">-HIST&Oacute;RICOS</span>
+                                </li>
+                                <li>
+                                    <a asp-action="IndexFinalizado" asp-controller="Requisito" title="Requisitos finalizados">
+                                        <span>Requisitos finalizados</span>
+                                    </a>
+                                </li>
 
                             }
 
@@ -154,6 +162,7 @@
                                         <span>Requisitos</span>
                                     </a>
                                 </li>
+
                             }
 
                             if (User.IsInRole(Perfiles.Gerencia))
@@ -178,7 +187,16 @@
                                         <span>Gestión de usuarios</span>
                                     </a>
                                 </li>
+                                <li class="nav-heading ">
+                                    <span class="negrita">-HIST&Oacute;RICOS</span>
+                                </li>
+                                <li>
+                                    <a asp-action="IndexFinalizado" asp-controller="Requisito" title="Requisitos finalizados">
+                                        <span>Requisitos finalizados</span>
+                                    </a>
+                                </li>
                             }
+
                         }
                     </ul>
                 </nav>

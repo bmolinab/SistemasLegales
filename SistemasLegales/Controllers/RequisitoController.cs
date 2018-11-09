@@ -51,10 +51,183 @@ namespace SistemasLegales.Controllers
                     .ThenBy(c=> c.IdProyecto).OrderBy(x=>x.FechaCaducidad).ToListAsync();
         }
 
+        private async Task<List<Requisito>> ListarRequisitosFinalizado()
+        {
+            return await db.Requisito
+                .Where(x => x.Finalizado == true)
+                    .Include(c => c.Documento)
+                    .ThenInclude(c => c.RequisitoLegal.OrganismoControl)
+                    .Include(c => c.Documento)
+                    .Include(c => c.Ciudad)
+                    .Include(c => c.Proceso)
+                    .Include(c => c.Proyecto)
+                    .OrderBy(c => c.IdDocumento)
+                    .ThenBy(c => c.Documento.IdRequisitoLegal)
+                    .ThenBy(c => c.Documento.RequisitoLegal.IdOrganismoControl)
+                    .ThenBy(c => c.IdCiudad)
+                    .ThenBy(c => c.IdProceso)
+                    .ThenBy(c => c.IdProyecto).OrderBy(x => x.FechaCaducidad).ToListAsync();
+        }
+
         private async Task<List<Accion>> ListarAcciones(int IdRequisito)
         {
             return await db.Accion.Where(c => c.IdRequisito == IdRequisito).ToListAsync();                                     
         }
+
+        [HttpPost]
+        [Authorize(Policy = "GerenciaGestion")]
+        public async Task<IActionResult> ListadoResultFinalizado(Requisito requisito)
+        {
+            var listaRequisitos = new List<Requisito>();
+            try
+            {
+                var lista = await ListarRequisitosFinalizado();
+
+                if (requisito?.Documento?.RequisitoLegal?.IdOrganismoControl != -1)
+                    lista = lista.Where(c => c.Documento.RequisitoLegal.IdOrganismoControl == requisito.Documento.RequisitoLegal.IdOrganismoControl).ToList();
+
+                if (requisito.IdActorResponsableGestSeg != -1)
+                    lista = lista.Where(c => c.IdActorResponsableGestSeg == requisito.IdActorResponsableGestSeg).ToList();
+
+                if (requisito.IdProyecto != -1)
+                    lista = lista.Where(c => c.IdProyecto == requisito.IdProyecto).ToList();
+
+                if (requisito.Anno != null)
+                    lista = lista.Where(c => c.FechaCumplimiento?.Year == requisito.Anno).ToList();
+
+                return PartialView("_ListadoFinalizado", lista);
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+
+        [Authorize(Policy = "GerenciaGestion")]
+        public async Task<IActionResult> GestionarFinalizado(int? id)
+        {
+            try
+            {
+                ViewBag.accion ="Editar";
+                if (id != null)
+                {
+                    var requisito = await db.Requisito.Include(c => c.DocumentoRequisito).Include(x => x.Accion).Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl).FirstOrDefaultAsync(c => c.IdRequisito == id);
+                    if (requisito == null)
+                        return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
+                    ViewData["Ciudad"] = new SelectList(await db.Ciudad.OrderBy(c => c.Nombre).ToListAsync(), "IdCiudad", "Nombre");
+                    ViewData["Proceso"] = new SelectList(await db.Proceso.OrderBy(c => c.Nombre).ToListAsync(), "IdProceso", "Nombre");
+                    ViewData["Proyecto"] = new SelectList(await db.Proyecto.OrderBy(c => c.Nombre).ToListAsync(), "IdProyecto", "Nombre");
+                    ViewData["Actor"] = new SelectList(await db.Actor.OrderBy(c => c.Nombres).ToListAsync(), "IdActor", "Nombres");
+                    ViewData["Status"] = new SelectList(await db.Status.ToListAsync(), "IdStatus", "Nombre");
+                    ViewData["OrganismoControl"] = new SelectList(await db.OrganismoControl.OrderBy(c => c.Nombre).ToListAsync(), "IdOrganismoControl", "Nombre", requisito.Documento.RequisitoLegal.IdOrganismoControl);
+                    ViewData["RequisitoLegal"] = await ObtenerSelectListRequisitoLegal(requisito?.Documento?.RequisitoLegal?.IdOrganismoControl ?? -1);
+                    ViewData["Documento"] = await ObtenerSelectListDocumento(requisito?.Documento?.IdRequisitoLegal ?? -1);
+                    requisito.IdStatusAnterior = requisito.IdStatus;
+                    return View(requisito);
+                }
+                return this.Redireccionar("Requisito","IndexFinalizado",$"{Mensaje.Error}|{Mensaje.ErrorCargarDatos}");
+            }
+            catch (Exception)
+            {
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.ErrorCargarDatos}");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administracion")]
+        public async Task<IActionResult> GestionarFinalizado(Requisito requisito, IFormFile file)
+        {
+            try
+            {
+                Requisito miRequisito = new Requisito();
+                ViewBag.accion = requisito.IdRequisito == 0 ? "Crear" : "Editar"; var tt = Request.Form;
+                ModelState.Remove("Documento.Nombre");
+                ModelState.Remove("Documento.Tipo");
+                ModelState.Remove("Documento.Cantidad");
+                ModelState.Remove("Documento.RequisitoLegal.Nombre");
+                if (ModelState.IsValid)
+                {
+                        miRequisito = await db.Requisito.FirstOrDefaultAsync(c => c.IdRequisito == requisito.IdRequisito);
+                        miRequisito.IdDocumento = requisito.IdDocumento;
+                        miRequisito.IdCiudad = requisito.IdCiudad;
+                        miRequisito.Criticidad = requisito.Criticidad;
+                        miRequisito.IdProceso = requisito.IdProceso;
+                        miRequisito.IdProyecto = requisito.IdProyecto;
+                        miRequisito.IdActorDuennoProceso = requisito.IdActorDuennoProceso;
+                        miRequisito.IdActorResponsableGestSeg = requisito.IdActorResponsableGestSeg;
+                        miRequisito.IdActorCustodioDocumento = requisito.IdActorCustodioDocumento;
+                        miRequisito.FechaCumplimiento = requisito.FechaCumplimiento;
+                        miRequisito.FechaCaducidad = requisito.FechaCaducidad;
+                        miRequisito.IdStatus = requisito.IdStatus;
+                        miRequisito.DuracionTramite = requisito.DuracionTramite;
+                        miRequisito.DiasNotificacion = requisito.DiasNotificacion;
+                        miRequisito.EmailNotificacion1 = requisito.EmailNotificacion1;
+                        miRequisito.EmailNotificacion2 = requisito.EmailNotificacion2;
+                        miRequisito.Observaciones = requisito.Observaciones;
+                    await db.SaveChangesAsync();
+
+                    var responseFile = true;
+                    if (file != null)
+                    {
+                        byte[] data;
+                        using (var br = new BinaryReader(file.OpenReadStream()))
+                            data = br.ReadBytes((int)file.OpenReadStream().Length);
+
+                        if (data.Length > 0)
+                        {
+                            var activoFijoDocumentoTransfer = new DocumentoRequisitoTransfer { Nombre = file.FileName, Fichero = data, IdRequisito = miRequisito.IdRequisito };
+                            responseFile = await uploadFileService.UploadFiles(activoFijoDocumentoTransfer);
+                        }
+                    }
+                    await miRequisito.EnviarEmailNotificaionFinalizadoModificado(User.Identity.Name,userManager, emailSender, db);
+                    if (responseFile)
+                    {
+                       
+                        return this.Redireccionar(  $"{Mensaje.Informacion}|{Mensaje.Satisfactorio}", "IndexFinalizado");
+                    }
+                    return this.Redireccionar( $"{Mensaje.Aviso}|{Mensaje.ErrorUploadFiles}", "IndexFinalizado");
+                }
+                return this.VistaError(requisito, $"{Mensaje.Error}|{Mensaje.ModeloInvalido}");
+            }
+            catch (Exception)
+            {
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.Excepcion}");
+            }
+        }
+
+        [Authorize(Policy = "GerenciaGestion")]
+        public async Task<IActionResult> IndexFinalizado()
+        {
+            var lista = new List<Requisito>();
+            try
+            {
+                lista =await ListarRequisitosFinalizado();
+                var listadoOrganismoControl = await db.OrganismoControl.OrderBy(c => c.Nombre).ToListAsync();
+                listadoOrganismoControl.Insert(0, new OrganismoControl { IdOrganismoControl = -1, Nombre = "Todos" });
+                ViewData["OrganismoControl"] = new SelectList(listadoOrganismoControl, "IdOrganismoControl", "Nombre");
+
+                var listadoActores = await db.Actor.OrderBy(c => c.Nombres).ToListAsync();
+                listadoActores.Insert(0, new Actor { IdActor = -1, Nombres = "Todos" });
+                ViewData["Actor"] = new SelectList(listadoActores, "IdActor", "Nombres");
+
+                var listadoProyectos = await db.Proyecto.OrderBy(c => c.Nombre).ToListAsync();
+                listadoProyectos.Insert(0, new Proyecto { IdProyecto = -1, Nombre = "Todos" });
+                ViewData["Proyecto"] = new SelectList(listadoProyectos, "IdProyecto", "Nombre");
+
+
+            }
+            catch (Exception)
+            {
+                TempData["Mensaje"] = $"{Mensaje.Error}|{Mensaje.ErrorListado}";
+            }
+            return View(lista);
+        }
+
+
+
 
         [Authorize(Policy = "GerenciaGestion")]
         public async Task<IActionResult> Index()
@@ -81,6 +254,49 @@ namespace SistemasLegales.Controllers
                 TempData["Mensaje"] = $"{Mensaje.Error}|{Mensaje.ErrorListado}";
             }
             return View(lista);
+        }
+
+
+        [Authorize(Policy = "Administracion")]
+        public async Task<IActionResult> EditarFinalizado(int? id)
+        {
+            try
+            {
+                var accion = await db.Accion.Where(x => x.IdAccion == id).Select(x => new Accion { Detalle = x.Detalle, Fecha = x.Fecha, IdRequisito = x.IdRequisito, IdAccion = x.IdAccion }).FirstOrDefaultAsync();
+                if (accion != null)
+                {
+                    return View(accion);
+                }
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
+            }
+            catch (Exception)
+            {
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.ErrorCargarDatos}");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "Gestion")]
+        public async Task<IActionResult> EditarFinalizado(Accion accion)
+        {
+            try
+            {
+                var accionActualizar = await db.Accion.Where(x => x.IdAccion == accion.IdAccion).FirstOrDefaultAsync();
+                if (accionActualizar != null)
+                {
+                    accionActualizar.Fecha = accion.Fecha;
+                    accionActualizar.Detalle = accion.Detalle;
+                    await db.SaveChangesAsync();
+
+                    TempData["Mensaje"] = $"{Mensaje.Informacion}|{Mensaje.Satisfactorio}";
+                    return RedirectToAction("DetallesFinalizado", new { id = accionActualizar.IdRequisito });
+                }
+                return this.Redireccionar("Requisito","IndexFinalizado",$"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
+            }
+            catch (Exception)
+            {
+                return this.Redireccionar("Requisito","IndexFinalizado",$"{Mensaje.Error}|{Mensaje.ErrorCargarDatos}");
+            }
         }
 
         [Authorize(Policy = "Administracion")]
@@ -240,6 +456,7 @@ namespace SistemasLegales.Controllers
 
 
         
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "Gestion")]
@@ -434,6 +651,39 @@ namespace SistemasLegales.Controllers
             }
         }
 
+        [Authorize(Policy = "GerenciaGestion")]
+        public async Task<IActionResult> DetallesFinalizado(int? id)
+        {
+            try
+            {
+                if (id != null)
+                {
+                    var requisito = await db.Requisito
+                        .Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl)
+                            .Include(c => c.Documento)
+                            .Include(c => c.Ciudad)
+                            .Include(c => c.Proceso)
+                            .Include(c => c.Proyecto)
+                            .Include(c => c.ActorDuennoProceso)
+                            .Include(c => c.ActorResponsableGestSeg)
+                            .Include(c => c.ActorCustodioDocumento)
+                            .Include(c => c.Status)
+                            .Include(c => c.DocumentoRequisito)
+                            .Include(c => c.Accion)
+                        .FirstOrDefaultAsync(c => c.IdRequisito == id);
+                    if (requisito == null)
+                        return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
+
+                    return View(requisito);
+                }
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.RegistroNoEncontrado}");
+            }
+            catch (Exception)
+            {
+                return this.Redireccionar($"{Mensaje.Error}|{Mensaje.ErrorCargarDatos}");
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "Gestion")]
@@ -484,6 +734,8 @@ namespace SistemasLegales.Controllers
                 return this.Redireccionar($"{Mensaje.Error}|{Mensaje.BorradoNoSatisfactorio}");
             }
         }
+
+       
 
         [HttpPost]
         [Authorize(Policy = "GerenciaGestion")]
@@ -544,13 +796,21 @@ namespace SistemasLegales.Controllers
         [Authorize(Policy = "Gestion")]
         public async Task<JsonResult> InsertarAcciones(string observaciones, int idRequisito, DateTime fechaAccion)
         {
-            var accion = new Accion { Detalle = observaciones, IdRequisito = idRequisito, Fecha = fechaAccion };
-            await db.AddAsync(accion);
-            await db.SaveChangesAsync();
+            try
+            {
+                var accion = new Accion {Detalle = observaciones, IdRequisito = idRequisito, Fecha = fechaAccion };
+                await db.Accion.AddAsync(accion);
+                await db.SaveChangesAsync();
 
-           var listaAcciones= await db.Accion.Where(x => x.IdRequisito == idRequisito).Select(x => new Accion {IdAccion=x.IdAccion, Detalle = x.Detalle, Fecha = x.Fecha }).ToListAsync();
+                var listaAcciones = await db.Accion.Where(x => x.IdRequisito == idRequisito).Select(x => new Accion { IdAccion = x.IdAccion, Detalle = x.Detalle, Fecha = x.Fecha }).ToListAsync();
 
-            return Json(listaAcciones);
+                return Json(listaAcciones);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         [HttpPost]
@@ -609,6 +869,14 @@ namespace SistemasLegales.Controllers
         [HttpPost]
         [Authorize(Policy = "GerenciaGestion")]
         public async Task<IActionResult> RequisitoLegal_SelectResult(int idOrganismoControl)
+        {
+            ViewBag.RequisitoLegal = await ObtenerSelectListRequisitoLegal(idOrganismoControl);
+            return PartialView("_RequisitoLegalSelect", new Requisito());
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "Administracion")]
+        public async Task<IActionResult> RequisitoLegal_SelectResult_Finalizar(int idOrganismoControl)
         {
             ViewBag.RequisitoLegal = await ObtenerSelectListRequisitoLegal(idOrganismoControl);
             return PartialView("_RequisitoLegalSelect", new Requisito());
