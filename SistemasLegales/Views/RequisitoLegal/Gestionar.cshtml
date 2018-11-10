@@ -1,11 +1,11 @@
 @model RequisitoLegal
 @{
-    ViewData["Titulo"] = "REQUISITOS LEGALES";
+    ViewData["Titulo"] = "BASES LEGALES";
     ViewData["Subtitulo"] = ViewData["accion"];
 
 }
 @section Migas{
-    <li><a asp-action="Index">Requisitos legales</a></li>
+    <li><a asp-action="Index" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')">Bases legales</a></li>
     <li class="active">@ViewData["accion"]</li>
 }
 @section CSS{
@@ -21,10 +21,10 @@
         }
     }
     <div class="row">
-        <div class="col-md-3 col-xs-4 form-control-label">
+        <div class="col-md-2 col-xs-2 form-control-label">
             <label asp-for="IdOrganismoControl"></label>
         </div>
-        <div class="col-md-5 col-xs-8 padding-left-0 padding-right-0">
+        <div class="col-md-10 col-xs-10 padding-left-5 padding-right-5">
             <div class="card-inner padding-0 margin-bottom-0">
                 <div class="demo margin-top-0">
                     <select asp-for="IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
@@ -35,10 +35,10 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3 col-xs-4 form-control-label">
+        <div class="col-md-2 col-xs-2 form-control-label">
             <label asp-for="Nombre"></label>
         </div>
-        <div class="col-md-5 col-xs-8 padding-left-0 padding-right-0">
+        <div class="col-md-10 col-xs-10 padding-left-5 padding-right-5">
             <div class="card-inner padding-0 margin-bottom-0">
                 <div class="demo margin-top-0">
                     <input asp-for="Nombre" class="form-control" />
@@ -53,7 +53,7 @@
             <button type="submit" class="btn btn-primary ladda-button" data-style="expand-left" id="btn-guardar">
                 <span class="ladda-label" id="laddaSpanGuardar">ACEPTAR</span>
             </button>
-            <a asp-action="Index" class="btn btn-default">CANCELAR</a>
+            <a asp-action="Index"  onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="btn btn-default">CANCELAR</a>
         </div>
     </div>
 </form>

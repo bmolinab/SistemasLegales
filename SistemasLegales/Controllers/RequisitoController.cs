@@ -475,9 +475,10 @@ namespace SistemasLegales.Controllers
                     ViewData["Proyecto"] = new SelectList(await db.Proyecto.OrderBy(c => c.Nombre).ToListAsync(), "IdProyecto", "Nombre");
                     ViewData["Actor"] = new SelectList(await db.Actor.OrderBy(c => c.Nombres).ToListAsync(), "IdActor", "Nombres");
                     ViewData["Status"] = new SelectList(await db.Status.ToListAsync(), "IdStatus", "Nombre");
+                    var requisitoSalida = await db.Requisito.Include(c => c.DocumentoRequisito).Include(x => x.Accion).Include(c => c.Documento).ThenInclude(c => c.RequisitoLegal.OrganismoControl).FirstOrDefaultAsync(c => c.IdRequisito == requisito.IdRequisito);
                     var acciones =await db.Accion.Where(x => x.IdRequisito == requisito.IdRequisito).ToListAsync();
-                    requisito.Accion = acciones;
-                    return this.VistaError(requisito, $"{Mensaje.Error}|{Mensaje.CargarArchivoEstadoTerminado}");
+                    requisitoSalida.Accion = acciones;
+                    return this.VistaError(requisitoSalida, $"{Mensaje.Error}|{Mensaje.CargarArchivoEstadoTerminado}");
                 }
 
                 

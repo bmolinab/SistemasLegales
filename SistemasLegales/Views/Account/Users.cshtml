@@ -6,7 +6,7 @@
 
 }
 @section Migas{
-    <li><a asp-action="Users">Usuarios</a></li>
+    <li><a asp-action="Users" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')">Usuarios</a></li>
     <li class="active">Listado</li>
 }
 @section CSS{
@@ -18,7 +18,7 @@
     {
         <div class="row">
             <div class="col-lg-2 col-sm-4 col-xs-12">
-                <a asp-action="Register" class="btn btn-primary waves-effect">NUEVO</a>
+                <a asp-action="Register" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="btn btn-primary waves-effect">NUEVO</a>
             </div>
         </div>
     }
@@ -60,7 +60,7 @@
                             if (User.IsInRole(Perfiles.Administrador))
                             {
                                 <td>
-                                    <a asp-action="Register" asp-route-id="@item.Id">Editar</a> |
+                                    <a asp-action="Register" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" asp-route-id="@item.Id">Editar</a> |
                                     <a href="javascript:void(0);" class="btnEliminar" id="@item.Id" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Usuario... ?">Eliminar</a>
                                 </td>
                             }

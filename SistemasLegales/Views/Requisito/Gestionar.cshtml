@@ -5,7 +5,7 @@
 }
 @using SistemasLegales.Models.Utiles;
 @section Migas{
-    <li><a asp-action="Index">Requisitos</a></li>
+    <li><a asp-action="Index" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')">Requisitos</a></li>
     <li class="active">@ViewData["accion"]</li>
 }
 @section CSS{
@@ -234,7 +234,7 @@
                 <fieldset>
 
                     <legend>Acciones realizadas</legend>
-                    <div class="col-lg-12"> <a asp-action="Detalles" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Gestionar Acciones</a></div>
+                    <div class="col-lg-12"> <a asp-action="Detalles" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a Gestionar Acciones</a></div>
                     <div class="table-responsive padding-15">
                         <table id="datatable-responsive" class="table" cellspacing="0">
                             <thead>
@@ -308,7 +308,7 @@
             <button type="submit" class="btn btn-primary ladda-button" data-style="expand-left" id="btn-guardar">
                 <span class="ladda-label" id="laddaSpanGuardar">ACEPTAR</span>
             </button>
-            <a asp-action="Index" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="btn btn-default">CANCELAR</a>
+            <a asp-action="Index" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="btn btn-default">CANCELAR</a>
         </div>
     </div>
 

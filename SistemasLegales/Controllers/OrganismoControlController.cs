@@ -11,7 +11,7 @@ using SistemasLegales.Models.Utiles;
 
 namespace SistemasLegales.Controllers
 {
-    [Authorize(Policy = "Gestion")]
+    [Authorize(Policy = "Administracion")]
     public class OrganismoControlController : Controller
     {
         private readonly SistemasLegalesContext db;

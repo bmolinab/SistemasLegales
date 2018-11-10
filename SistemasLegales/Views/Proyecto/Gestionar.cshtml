@@ -4,7 +4,7 @@
     ViewData["Subtitulo"] = ViewData["accion"];
 }
 @section Migas{
-    <li><a asp-action="Index">Proyectos</a></li>
+    <li><a asp-action="Index" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')">Proyectos</a></li>
     <li class="active">@ViewData["accion"]</li>
 }
 <form asp-action="Gestionar" class="form-horizontal" novalidate="novalidate">
@@ -16,10 +16,10 @@
         }
     }
     <div class="row">
-        <div class="col-md-3 col-xs-4 form-control-label">
+        <div class="col-md-2 col-xs-2 form-control-label">
             <label asp-for="Nombre"></label>
         </div>
-        <div class="col-md-5 col-xs-8">
+        <div class="col-md-10 col-xs-10">
             <div class="form-group">
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
@@ -31,7 +31,7 @@
             <button type="submit" class="btn btn-primary ladda-button" data-style="expand-left" id="btn-guardar">
                 <span class="ladda-label" id="laddaSpanGuardar">ACEPTAR</span>
             </button>
-            <a asp-action="Index" class="btn btn-default">CANCELAR</a>
+            <a asp-action="Index" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="btn btn-default">CANCELAR</a>
         </div>
     </div>
 </form>

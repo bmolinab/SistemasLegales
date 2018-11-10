@@ -62,13 +62,13 @@
 
                                         if (User.IsInRole(Perfiles.Gestor))
                                         {
-                                            <a asp-action="GestionarFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Detalle</a><br />
+                                            <a asp-action="GestionarFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="font-12" asp-route-id="@item.IdRequisito">Detalle</a><br />
 
                                         }
                                         else
                                         {
-                                            <a asp-action="DetallesFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Acciones</a><br />
-                                            <a asp-action="GestionarFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><br />
+                                            <a asp-action="DetallesFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="font-12" asp-route-id="@item.IdRequisito">Acciones</a><br />
+                                            <a asp-action="GestionarFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><br />
 
                                         }
                                     }

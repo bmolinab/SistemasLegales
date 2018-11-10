@@ -4,7 +4,7 @@
     ViewData["Subtitulo"] = "Registro de usuarios";
 }
 @section Migas{
-    <li><a asp-action="Users">Usuarios</a></li>
+    <li><a asp-action="Users" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')">Usuarios</a></li>
     <li class="active">Registro de usuarios</li>
 }
 @section CSS{
@@ -20,10 +20,10 @@
         }
     }
     <div class="row">
-        <div class="col-md-3 col-xs-4 form-control-label">
+        <div class="col-md-2 col-xs-2 form-control-label">
             <label asp-for="UserName"></label>
         </div>
-        <div class="col-md-5 col-xs-8">
+        <div class="col-md-10 col-xs-10">
             <div class="form-group">
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
@@ -32,10 +32,10 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3 col-xs-4 form-control-label">
+        <div class="col-md-2 col-xs-2 form-control-label">
             <label asp-for="Role"></label>
         </div>
-        <div class="col-md-5 col-xs-8">
+        <div class="col-md-10 col-xs-10">
             <div class="form-group">
                 <select asp-for="Role" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Roles"></select>
                 <span asp-validation-for="Role" class="text-danger"></span>
@@ -44,10 +44,10 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3 col-xs-4 form-control-label">
+        <div class="col-md-2 col-xs-2 form-control-label">
             <label asp-for="Password"></label>
         </div>
-        <div class="col-md-5 col-xs-8">
+        <div class="col-md-10 col-xs-10">
             <div class="form-group">
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
@@ -56,10 +56,10 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3 col-xs-4 form-control-label">
+        <div class="col-md-2 col-xs-2 form-control-label">
             <label asp-for="ConfirmPassword"></label>
         </div>
-        <div class="col-md-5 col-xs-8">
+        <div class="col-md-10 col-xs-10">
             <div class="form-group">
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
@@ -72,7 +72,7 @@
             <button type="submit" class="btn btn-primary ladda-button" data-style="expand-left" id="btn-guardar">
                 <span class="ladda-label" id="laddaSpanGuardar">ACEPTAR</span>
             </button>
-            <a asp-action="Users" class="btn btn-default">CANCELAR</a>
+            <a asp-action="Users" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="btn btn-default">CANCELAR</a>
         </div>
     </div>
 </form>

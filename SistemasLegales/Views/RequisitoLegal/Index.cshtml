@@ -1,11 +1,11 @@
 @model IEnumerable<RequisitoLegal>
 @{
-    ViewData["Titulo"] = "REQUISITOS LEGALES";
+    ViewData["Titulo"] = "BASES LEGALES";
     ViewData["Subtitulo"] = "LISTADO";
 
 }
 @section Migas{
-    <li><a asp-action="Index">Requisitos legales</a></li>
+    <li><a asp-action="Index" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')">Bases legales</a></li>
     <li class="active">Listado</li>
 }
 @section CSS{
@@ -17,7 +17,7 @@
     {
         <div class="row">
             <div class="col-lg-2 col-sm-4 col-xs-12">
-                <a asp-action="Gestionar" class="btn btn-primary waves-effect">NUEVO</a>
+                <a asp-action="Gestionar" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="btn btn-primary waves-effect">NUEVO</a>
             </div>
         </div>
     }
@@ -61,7 +61,7 @@
                             if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
                             {
                                 <td>
-                                    <a asp-action="Gestionar" asp-route-id="@item.IdRequisitoLegal" class="font-12 text-left">Editar</a> |
+                                    <a asp-action="Gestionar" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" asp-route-id="@item.IdRequisitoLegal" class="font-12 text-left">Editar</a> |
                                     <a href="javascript:void(0);" class="btnEliminar font-12 text-left"  id="@item.IdRequisitoLegal" onclick="MiApp.Datatables.eventoBtnEliminar(this)" data-descripcion="&#191;Desea eliminar el Requisito legal... ?">Eliminar</a>
                                 </td>
                             }

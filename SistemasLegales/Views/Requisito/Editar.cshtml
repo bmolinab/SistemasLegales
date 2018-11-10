@@ -6,8 +6,8 @@
 
 }
 @section Migas{
-    <li><a asp-action="Index">Requisitos</a></li>
-    <li><a asp-action="Detalles" asp-route-id="@Model.IdRequisito">Detalles</a></li>
+    <li><a asp-action="Index" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')">Requisitos</a></li>
+    <li><a asp-action="Detalles" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" asp-route-id="@Model.IdRequisito">Detalles</a></li>
     <li class="active">Editar Acci&oacute;n</li>
 }
 
@@ -46,7 +46,7 @@
             <button type="submit" class="btn btn-primary ladda-button" data-style="expand-left" id="btn-guardar">
                 <span class="ladda-label" id="laddaSpanGuardar">ACEPTAR</span>
             </button>
-            <a asp-action="Detalles" asp-route-id="@Model.IdRequisito" class="btn btn-default">CANCELAR</a>
+            <a asp-action="Detalles"  onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" asp-route-id="@Model.IdRequisito" class="btn btn-default">CANCELAR</a>
         </div>
     </div>
 

@@ -5,7 +5,7 @@
 
 }
 @section Migas{
-    <li><a asp-action="IndexFinalizado">Requisitos Hist&oacute;ricos</a></li>
+    <li><a asp-action="IndexFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')">Requisitos Hist&oacute;ricos</a></li>
     <li class="active">Acciones</li>
 }
 
@@ -17,8 +17,8 @@
 <input type="hidden" id="idRequisito" asp-for="IdRequisito" />
 <input type="hidden" id="idAdministrador" value="@adm.ToString().ToLower()" />
 <fieldset>
-    <div class="col-lg-6"> <a asp-action="GestionarFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando el requisito legal...')" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a @{if (User.IsInRole(Perfiles.Administrador)) { <text> Editar el </text> } else {<text>Detalle del</text> } } Requisito Hist&oacute;rico</a></div>
-    <div class="col-lg-6"> <a asp-action="IndexFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="btn btn-primary pull-right">Ir a Listado de Requisitos Hist&oacute;ricos</a></div>
+    <div class="col-lg-6"> <a asp-action="GestionarFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" asp-route-id="@Model.IdRequisito" class="btn btn-primary">Ir a @{if (User.IsInRole(Perfiles.Administrador)) { <text> Editar el </text> } else {<text>Detalle del</text> } } Requisito Hist&oacute;rico</a></div>
+    <div class="col-lg-6"> <a asp-action="IndexFinalizado" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="btn btn-primary pull-right">Ir a Listado de Requisitos Hist&oacute;ricos</a></div>
     <div class="col-12 margin-top-5">
         <div class="col-md-12 col-sm-12 col col-xs-12 col-lg-12">
             <div class="product-deatil col-lg-12 text-align-left JustifyFull">
@@ -134,7 +134,7 @@
                                 if (User.IsInRole(Perfiles.Administrador))
                                 {
                                     <td>
-                                        <a href='../EditarFinalizado/@item.IdAccion' class="font-12" title='Editar'>Editar</a> |
+                                        <a href='../EditarFinalizado/@item.IdAccion' onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="font-12" title='Editar'>Editar</a> |
                                         <a href='javascript:void (0)' title='Eliminar' class="font-12" onclick="EliminarAccion(@item.IdAccion)">Eliminar</a>
                                     </td>
                                 }

@@ -62,12 +62,12 @@
                             </td>
 
                             <td>
-                                <a asp-action="Detalles" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Acciones</a>
+                                <a asp-action="Detalles" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="font-12" asp-route-id="@item.IdRequisito">Acciones</a>
                                 @{
                                     if (User.IsInRole(Perfiles.Gestor) || User.IsInRole(Perfiles.Administrador))
                                     {
                                         <br />
-                                        <a asp-action="Gestionar" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', 'Cargando Datos...')" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><br />
+                                        <a asp-action="Gestionar" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="font-12" asp-route-id="@item.IdRequisito">Editar</a><br />
 
                                     }
                                     if (User.IsInRole(Perfiles.Administrador))
