@@ -20,6 +20,7 @@
     <title>Sistemas legales</title>
 
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/css/font-awesome.css" />
     <link href="~/lib/node-waves/waves.min.css" rel="stylesheet" />
     <link href="~/lib/animate-css/animate.min.css" rel="stylesheet" />
     <link href="~/lib/assets/css/style.min.css" rel="stylesheet" />
@@ -43,7 +44,7 @@
                     <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
                     <div class="input-group addon-line">
                         <span class="input-group-addon">
-                            <i class="material-icons">person</i>
+                            <i class="fa fa-user"></i>
                         </span>
                         <div class="form-line">
                             <input asp-for="UserName" class="form-control" placeholder="Usuario" />
@@ -52,7 +53,7 @@
                     </div>
                     <div class="input-group addon-line">
                         <span class="input-group-addon">
-                            <i class="material-icons">lock</i>
+                            <i class="fa fa-lock"></i>
                         </span>
                         <div class="form-line">
                             <input asp-for="Password" class="form-control" placeholder="Contraseña" />
