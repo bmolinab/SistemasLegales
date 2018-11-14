@@ -16,7 +16,7 @@
                 <select id="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
             </div>
         </div>
-    </div>  
+    </div>
     <div class="col-sm-12 col-md-4 col-xs-12 col-lg-4">
         <div class="card-inner padding-0">
             <label asp-for="IdActorResponsableGestSeg"></label>
@@ -42,30 +42,30 @@
         <div class="form-group">
             <a href="javascript: void(0);" class="label label-success margin-right-10 semaforo" data-semaforo="1" style="padding:0.80em .6em !important;">
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <em class="material-icons" id="semaforo1" style="position:relative;top:8px;"></em>
+                <em class="" id="semaforo1" style="position:center;top:2px;"></em>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </a>
             <a href="javascript: void(0);" class="label bg-yellow margin-right-10 semaforo" data-semaforo="2" style="padding:0.80em .6em !important;">
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <em class="material-icons" id="semaforo2" style="position:relative;top:8px;"></em>
+                <em class="" id="semaforo2" style="position:center;top:2px;"></em>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </a>
             <a href="javascript: void(0);" class="label label-danger margin-right-10 semaforo" data-semaforo="3" style="padding:0.80em .6em !important;">
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <em class="material-icons" id="semaforo3" style="position:relative;top:8px;">check</em>
+                <em class="fa fa-lg fa-check" id="semaforo3" style="position:center;top:2px;"></em>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </a>
         </div>
     </div>
 
-      @{
+    @{
         if (User.IsInRole(Perfiles.Administrador))
         {
             <div class="col-sm-3 col-md-2 col-xs-12 col-lg-2">
                 <label>&nbsp;</label>
                 <div class="form-group">
                     <a asp-controller="Report" asp-action="RepTramites" target="_blank" class="btn btn-success waves-effect pull-right">
-                        <i class="material-icons">description</i> REPORTE
+                        <i class="fa fa-lg fa-file-o"></i>&nbsp;&nbsp;&nbsp; REPORTE
                     </a>
                 </div>
             </div>

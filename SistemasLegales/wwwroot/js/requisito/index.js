@@ -29,10 +29,15 @@
 
     this.checkUnCheckSemaforo = function (idSemaforo, checkUncheck) {
         if (checkUncheck == true) {
-            $("#semaforo" + idSemaforo).html("check");
+
+            $("#semaforo" + idSemaforo).addClass("fa");
+            $("#semaforo" + idSemaforo).addClass("fa-lg");
+            $("#semaforo" + idSemaforo).addClass("fa-check");
         }
         else {
-            $("#semaforo" + idSemaforo).html("");
+            $("#semaforo" + idSemaforo).removeClass("fa");
+            $("#semaforo" + idSemaforo).removeClass("fa-lg");
+            $("#semaforo" + idSemaforo).removeClass("fa-check");
         }
     }
 

@@ -3,18 +3,18 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
     <title>Sistemas legales</title>
 
-    <link rel="stylesheet" type="text/css" href="~/css/font-awesome.css" />
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/node-waves/waves.min.css" rel="stylesheet" />
     <link href="~/lib/animate-css/animate.min.css" rel="stylesheet" />
     <link href="~/lib/spinkit/spinkit.min.css" rel="stylesheet" />
 
     <link href="~/lib/toastr-notification/toastr.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" type="text/css" href="~/css/font-awesome.css" />
     @RenderSection("CSS", required: false)
 
     <link href="~/lib/assets/css/style.min.css" rel="stylesheet" />
@@ -54,23 +54,23 @@
                     <ul class="nav navbar-nav">
                         <li>
                             <a href="#" data-trigger-resize="" data-toggle-state="aside-collapsed" class="hidden-xs">
-                                <em class="fa fa-lg fa-list"></em>
+                                <em class="material-icons">menu</em>
                             </a>
                             <a href="#" data-toggle-state="aside-toggled" data-no-persist="true" class="visible-xs sidebar-toggle">
-                                <em class="fa fa-search"></em>
+                                <em class="material-icons">menu</em>
                             </a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a asp-action="ChangePassword" asp-controller="Manage">
-                                <em class="fa fa-lg fa-lock "></em>
+                                <em class="material-icons">lock_open</em>
                                 <span style="position:relative;bottom:5px;">Cambiar contrase&ntilde;a</span>
                             </a>
                         </li>
                         <li>
                             <a asp-action="Logout" asp-controller="Account">
-                                <em class="fa fa-lg fa-sign-out"></em>
+                                <em class="material-icons">exit_to_app</em>
                                 <span style="position:relative;bottom:5px;">Salir</span>
                             </a>
                         </li>
@@ -87,7 +87,7 @@
                         </li>
                         <li class="">
                             <a asp-action="Index" asp-controller="Principal" title="Principal">
-                                <em class="fa fa-home"></em>
+                                <em class="material-icons">dashboard</em>
                                 <span>Principal</span>
                             </a>
                         </li>
