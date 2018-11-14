@@ -858,7 +858,8 @@ namespace SistemasLegales.Controllers
         {
             try
             {
-                var listaRequisitoLegal = idOrganismoControl != -1 ? await db.RequisitoLegal.Where(c => c.IdOrganismoControl == idOrganismoControl).ToListAsync() : new List<RequisitoLegal>();
+                var listaRequisitoLegal = idOrganismoControl != -1 ? await db.RequisitoLegal.Where(c => c.IdOrganismoControl == idOrganismoControl).Select(y=>new RequisitoLegal
+                { IdRequisitoLegal=y.IdRequisitoLegal,Nombre=y.Nombre.Length>100? y.Nombre.Substring(0,100).ToString()+" ...":y.Nombre}).ToListAsync() : new List<RequisitoLegal>();
                 return new SelectList(listaRequisitoLegal, "IdRequisitoLegal", "Nombre");
             }
             catch (Exception)
@@ -889,7 +890,9 @@ namespace SistemasLegales.Controllers
         {
             try
             {
-                var listaDocumento = idRequisitoLegal != -1 ? await db.Documento.Where(c=> c.IdRequisitoLegal == idRequisitoLegal).ToListAsync() : new List<Documento>();
+                var listaDocumento = idRequisitoLegal != -1 ? await db.Documento.Where(c=> c.IdRequisitoLegal == idRequisitoLegal)
+                                                                      .Select(y=> new Documento {IdDocumento=y.IdDocumento,Nombre=y.Nombre.Length>100 ? y.Nombre.Substring(0,100).ToString()+" ...":y.Nombre })  
+                                                                      .ToListAsync() : new List<Documento>();
                 return new SelectList(listaDocumento, "IdDocumento", "Nombre");
             }
             catch (Exception)

@@ -40,7 +40,7 @@ namespace SistemasLegales.Controllers
             try
             {
                 ViewBag.accion = id == null ? "Crear" : "Editar";
-                ViewData["RequisitoLegal"] = new SelectList(await db.RequisitoLegal.OrderBy(c => c.Nombre).ToListAsync(), "IdRequisitoLegal", "Nombre");
+                ViewData["RequisitoLegal"] = new SelectList(await db.RequisitoLegal.OrderBy(c => c.Nombre).Select(y=> new RequisitoLegal {IdRequisitoLegal=y.IdRequisitoLegal,Nombre=y.Nombre.Length>100?y.Nombre.Substring(0,100).ToString() + " ...":y.Nombre }).ToListAsync(), "IdRequisitoLegal", "Nombre");
                 if (id != null)
                 {
                     var documento = await db.Documento.Include(c => c.RequisitoLegal).ThenInclude(c => c.OrganismoControl).FirstOrDefaultAsync(c => c.IdDocumento == id);
@@ -66,7 +66,7 @@ namespace SistemasLegales.Controllers
                 ViewBag.accion = documento.IdDocumento == 0 ? "Crear" : "Editar";
                 Action accion = async () =>
                 {
-                    ViewData["RequisitoLegal"] = new SelectList(await db.RequisitoLegal.OrderBy(c => c.Nombre).ToListAsync(), "IdRequisitoLegal", "Nombre");
+                    ViewData["RequisitoLegal"] = new SelectList(await db.RequisitoLegal.OrderBy(c => c.Nombre).Select(y => new RequisitoLegal { IdRequisitoLegal = y.IdRequisitoLegal, Nombre = y.Nombre.Length > 100 ? y.Nombre.Substring(0, 100).ToString() + " ..." : y.Nombre }).ToListAsync(), "IdRequisitoLegal", "Nombre");
                 };
                 if (ModelState.IsValid)
                 {
