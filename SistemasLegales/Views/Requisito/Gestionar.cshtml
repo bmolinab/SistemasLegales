@@ -15,7 +15,9 @@
     <link rel="stylesheet" type="text/css" href="~/lib/bootstrap-fileinput/css/fileinput.min.css">
 }
 
-@{var adm = User.IsInRole("Administrador"); }
+@{var adm = User.IsInRole("Administrador");
+    
+    }
 <input type="hidden" id="idAdministrador" value="@adm.ToString().ToLower()" />
 <form asp-action="Gestionar" novalidate="novalidate" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -52,7 +54,16 @@
             <div class="card-inner padding-0 margin-bottom-0">
                 <label asp-for="Documento.RequisitoLegal.IdOrganismoControl"></label>
                 <div class="demo margin-top-0">
-                    <select asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
+                    @if (adm)
+                    {
+                        <select asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
+
+                    }
+                    else
+                    {
+                        <select disabled asp-for="Documento.RequisitoLegal.IdOrganismoControl" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.OrganismoControl"></select>
+                        <input type="hidden" asp-for="Documento.RequisitoLegal.IdOrganismoControl" />
+                    }
                 </div>
                 <span asp-validation-for="Documento.RequisitoLegal.IdOrganismoControl" class="text-danger"></span>
             </div>
@@ -68,21 +79,39 @@
 
         <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
             <div class="card-inner padding-0 margin-bottom-0">
-                <label asp-for="IdCiudad"></label>
+                <label  asp-for="IdCiudad"></label>
                 <div class="demo margin-top-0">
-                    <select asp-for="IdCiudad" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Ciudad"></select>
+                    @if (adm)
+                    {
+                        <select asp-for="IdCiudad" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Ciudad"></select>
+
+                    }
+                    else
+                    {
+                        <select disabled asp-for="IdCiudad" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Ciudad"></select>
+                        <input type="hidden"  asp-for="IdCiudad"/>
+                    }
                 </div>
                 <span asp-validation-for="IdCiudad" class="text-danger"></span>
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-sm-12 col-md-3 col-lg-3 col-xs-12">
             <div class="card-inner padding-0 margin-bottom-0">
                 <label asp-for="IdProceso"></label>
                 <div class="demo margin-top-0">
-                    <select asp-for="IdProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proceso"></select>
+                    @if (adm)
+                    {
+                        <select asp-for="IdProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proceso"></select>
+
+
+                    }
+                    else
+                    {
+                        <select disabled asp-for="IdProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proceso"></select>
+                        <input type="hidden" asp-for="IdProceso" />
+                    }
                 </div>
             </div>
         </div>
@@ -90,7 +119,18 @@
             <div class="card-inner padding-0 margin-bottom-0">
                 <label asp-for="IdProyecto"></label>
                 <div class="demo margin-top-0">
-                    <select asp-for="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
+                    @if (adm)
+                    {
+                        <select asp-for="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
+
+
+                    }
+                    else
+                    {
+                        <select disabled asp-for="IdProyecto" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Proyecto"></select>
+                        <input type="hidden" asp-for="IdProyecto" />
+                    }
+
                 </div>
             </div>
         </div>
@@ -98,7 +138,16 @@
             <div class="card-inner padding-0 margin-bottom-0">
                 <label asp-for="IdActorDuennoProceso"></label>
                 <div class="demo margin-top-0">
-                    <select asp-for="IdActorDuennoProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                    @if (adm)
+                    {
+                        <select asp-for="IdActorDuennoProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                    }
+                    else
+                    {
+                        <select disabled asp-for="IdActorDuennoProceso" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                        <input type="hidden" asp-for="IdActorDuennoProceso" />
+                    }
+
                 </div>
                 <span asp-validation-for="IdActorDuennoProceso" class="text-danger"></span>
             </div>
@@ -107,7 +156,16 @@
             <div class="card-inner padding-0 margin-bottom-0">
                 <label asp-for="IdActorResponsableGestSeg"></label>
                 <div class="demo margin-top-0">
-                    <select asp-for="IdActorResponsableGestSeg" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                    @if (adm)
+                    {
+                        <select asp-for="IdActorResponsableGestSeg" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                    }
+                    else
+                    {
+                        <select disabled asp-for="IdActorResponsableGestSeg" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                        <input type="hidden" asp-for="IdActorResponsableGestSeg" />
+                    }
+
                 </div>
                 <span asp-validation-for="IdActorResponsableGestSeg" class="text-danger"></span>
             </div>
@@ -116,7 +174,16 @@
             <div class="card-inner padding-0 margin-bottom-0">
                 <label asp-for="IdActorCustodioDocumento"></label>
                 <div class="demo margin-top-0">
-                    <select asp-for="IdActorCustodioDocumento" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                    @if (adm)
+                    {
+                        <select asp-for="IdActorCustodioDocumento" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                    }
+                    else
+                    {
+                        <select disabled asp-for="IdActorCustodioDocumento" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.Actor"></select>
+                        <input type="hidden" asp-for="IdActorCustodioDocumento" />
+                    }
+
                 </div>
                 <span asp-validation-for="IdActorCustodioDocumento" class="text-danger"></span>
             </div>
@@ -128,23 +195,30 @@
 
                     <label>Criticidad</label>
                     <div class="demo margin-top-0">
-                        <select asp-for="Criticidad" class="form-control show-tick" data-live-search="true">
-                            <option value="0">Bajo</option>
-                            <option value="1">Medio</option>
-                            <option value="2">Alto</option>
-                        </select>
+                        @if (adm)
+                        {
+                            <select asp-for="Criticidad" class="form-control show-tick" data-live-search="true">
+                                <option value="0">Bajo</option>
+                                <option value="1">Medio</option>
+                                <option value="2">Alto</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select disabled asp-for="Criticidad" class="form-control show-tick" data-live-search="true">
+                                <option value="0">Bajo</option>
+                                <option value="1">Medio</option>
+                                <option value="2">Alto</option>
+                            </select>
+                            <input type="hidden" asp-for="Criticidad" />
+                        }
+
                     </div>
                     <span asp-validation-for="Criticidad" class="text-danger"></span>
 
                 </div>
             </div>
         </div>
-
-
-
-
-
-
     </div>
 
     <div class="row">
@@ -152,7 +226,16 @@
             <div class="form-group">
                 <label asp-for="FechaCumplimiento"></label>
                 <div class="input-group margin-bottom-0 focused">
-                    <input asp-for="FechaCumplimiento" class="form-control datepicker" />
+                    @if (adm)
+                    {
+                        <input asp-for="FechaCumplimiento" class="form-control datepicker" />
+                    }
+                    else
+                    {
+                        <input disabled asp-for="FechaCumplimiento" class="form-control datepicker" />
+                        <input type="hidden" asp-for="FechaCumplimiento" />
+                    }
+
                     <span class="input-group-addon bg btndatepicker" data-picker="FechaCumplimiento"><i class="fa fa-calendar"></i></span>
                 </div>
                 <span asp-validation-for="FechaCumplimiento" class="text-danger"></span>
@@ -163,7 +246,17 @@
             <div class="form-group">
                 <label asp-for="FechaCaducidad"></label>
                 <div class="input-group margin-bottom-0 focused">
-                    <input asp-for="FechaCaducidad" class="form-control datepicker" />
+                    @if (adm)
+                    {
+                        <input asp-for="FechaCaducidad" class="form-control datepicker" />
+
+                    }
+                    else
+                    {
+                        <input disabled asp-for="FechaCaducidad" class="form-control datepicker" />
+                        <input type="hidden" asp-for="FechaCaducidad" />
+
+                    }
                     <span class="input-group-addon bg btndatepicker" data-picker="FechaCaducidad"><i class="fa fa-calendar"></i></span>
                 </div>
                 <span asp-validation-for="FechaCaducidad" class="text-danger"></span>
@@ -184,7 +277,18 @@
             <div class="form-group">
                 <label asp-for="DiasNotificacion"></label>
                 <div class="input-group spinner focused margin-bottom-0" data-trigger="spinner">
-                    <input type="text" asp-for="DiasNotificacion" class="form-control" data-rule="quantity" />
+                    @if (adm)
+                    {
+                        <input type="text" asp-for="DiasNotificacion" class="form-control" data-rule="quantity" />
+
+                    }
+                    else
+                    {
+                        <input disabled type="text" asp-for="DiasNotificacion" class="form-control" data-rule="quantity" />
+                        <input type="hidden" asp-for="DiasNotificacion" />
+
+                    }
+
                     <span class="input-group-addon">
                         <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
                         <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
@@ -199,7 +303,18 @@
             <div class="form-group">
                 <div class="input-group margin-bottom-0">
                     <label asp-for="EmailNotificacion1"></label>
-                    <input asp-for="EmailNotificacion1" class="form-control" />
+                    @if (adm)
+                    {
+                        <input asp-for="EmailNotificacion1" class="form-control" />
+
+
+                    }
+                    else
+                    {
+
+                        <input disabled asp-for="EmailNotificacion1" class="form-control" />
+                        <input type="hidden" asp-for="EmailNotificacion1" />
+                    }
                 </div>
                 <span asp-validation-for="EmailNotificacion1" class="text-danger"></span>
             </div>
@@ -209,7 +324,19 @@
             <div class="form-group">
                 <div class="input-group margin-bottom-0">
                     <label asp-for="EmailNotificacion2"></label>
-                    <input asp-for="EmailNotificacion2" class="form-control" />
+                    @if (adm)
+                    {
+                        <input asp-for="EmailNotificacion2" class="form-control" />
+
+
+                    }
+                    else
+                    {
+
+                        <input disabled asp-for="EmailNotificacion2" class="form-control" />
+                        <input type="hidden" asp-for="EmailNotificacion2" />
+                    }
+
                 </div>
                 <span asp-validation-for="EmailNotificacion2" class="text-danger"></span>
             </div>

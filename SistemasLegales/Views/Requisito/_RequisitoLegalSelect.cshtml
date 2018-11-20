@@ -3,8 +3,17 @@
     <div class="card-inner padding-0 margin-bottom-0">
         <label asp-for="Documento.IdRequisitoLegal"></label>
         <div class="demo margin-top-0">
-            <select asp-for="Documento.IdRequisitoLegal" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.RequisitoLegal">
-            </select>
+            @if (User.IsInRole("Administrador"))
+            {
+                <select asp-for="Documento.IdRequisitoLegal" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.RequisitoLegal"></select>
+
+
+            }
+            else
+            {
+                <select disabled asp-for="Documento.IdRequisitoLegal" class="form-control show-tick" data-live-search="true" asp-items="ViewBag.RequisitoLegal"></select>
+                <input type="hidden" asp-for="Documento.IdRequisitoLegal" />
+            }
         </div>
         <span asp-validation-for="Documento.IdRequisitoLegal" class="text-danger"></span>
     </div>
