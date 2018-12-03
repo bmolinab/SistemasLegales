@@ -563,11 +563,11 @@ namespace SistemasLegales.Controllers
                         var url = "";
                         if (requisito.IdRequisito == 0)
                         {
-                            url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}/{miRequisito.IdRequisito}";
+                            url = $"{this.Request.Scheme}://{this.Request.Host}/{Mensaje.CarpertaHost}{this.Request.Path}/{miRequisito.IdRequisito}";
                         }
                         else
                         {
-                            url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}";
+                            url = $"{this.Request.Scheme}://{this.Request.Host}/{Mensaje.CarpertaHost}{this.Request.Path}";
                         }
                         await miRequisito.EnviarEmailNotificaionNoFinalizado( url, emailSender, db);
                     }
@@ -577,11 +577,11 @@ namespace SistemasLegales.Controllers
                         var url = "";
                         if (requisito.IdRequisito == 0)
                         {
-                             url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}/{miRequisito.IdRequisito}";
+                             url = $"{this.Request.Scheme}://{this.Request.Host}/{Mensaje.CarpertaHost}{this.Request.Path}/{miRequisito.IdRequisito}";
                         }
                         else
                         {
-                            url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}";
+                            url = $"{this.Request.Scheme}://{this.Request.Host}/{Mensaje.CarpertaHost}{this.Request.Path}";
                         }
                         await miRequisito.EnviarEmailNotificaionRequisitoTerminado( userManager, url,emailSender, db);
                     }
@@ -591,11 +591,11 @@ namespace SistemasLegales.Controllers
                         var url = "";
                         if (requisito.IdRequisito == 0)
                         {
-                            url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}/{miRequisito.IdRequisito}";
+                            url = $"{this.Request.Scheme}://{this.Request.Host}/{Mensaje.CarpertaHost}{this.Request.Path}/{miRequisito.IdRequisito}";
                         }
                         else
                         {
-                            url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.Path}";
+                            url = $"{this.Request.Scheme}://{this.Request.Host}/{Mensaje.CarpertaHost}{this.Request.Path}";
                         }
                         await miRequisito.EnviarEmailNotificaionRequisitoCreacion(url, emailSender, db);
                     }
@@ -852,6 +852,26 @@ namespace SistemasLegales.Controllers
             {
                 return StatusCode(400, "El archivo solicitado no está disponible, por favor comuníquese con el administrador para obtener  más información.");
                
+            }
+        }
+
+        [Authorize(Policy = "Administracion")]
+        public async Task<IActionResult> EliminarArchivo(int id)
+        {
+            try
+            {
+                var requisitoDocumeto =await db.DocumentoRequisito.Where(x => x.IdDocumentoRequisito == id).FirstOrDefaultAsync();
+                var URL = requisitoDocumeto.Url;
+                var Eliminado= uploadFileService.DeleteFile(URL);
+                var idRequisitoActual = requisitoDocumeto.IdRequisito;
+                db.DocumentoRequisito.Remove(requisitoDocumeto);
+                await db.SaveChangesAsync();
+                return this.Redireccionar( $"{Mensaje.Informacion}|{Mensaje.Satisfactorio}", "Gestionar", new { id = idRequisitoActual });
+            }
+            catch (Exception)
+            {
+                return StatusCode(400, "El archivo solicitado no está disponible, por favor comuníquese con el administrador para obtener  más información.");
+
             }
         }
 

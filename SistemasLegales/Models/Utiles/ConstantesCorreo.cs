@@ -26,6 +26,7 @@ namespace SistemasLegales.Models.Utiles
         public static string MensajeAUTOMATICO { get; set; }
         public static string MensajeNOACEPTADO { get; set; }
         public static string MensajeCADUCAR { get; set; }
+        public static string MensajePORCADUCAR { get; set; }
         public static string MensajeFINALIZADOMODIFICADO { get; set; }
     }
 }

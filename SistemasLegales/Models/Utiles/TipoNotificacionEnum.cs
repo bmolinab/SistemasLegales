@@ -5,5 +5,5 @@ using System.Threading.Tasks;
 
 namespace SistemasLegales.Models.Utiles
 {
-   public enum TipoMensaje { CREATE, TERMINADO, FINALIZADO, AUTOMATICO, NOACEPTADO, CADUCAR, FINALIZADOMODIFICADO };
+   public enum TipoMensaje { CREATE, TERMINADO, FINALIZADO, AUTOMATICO, NOACEPTADO,PORCADUCAR, CADUCAR, FINALIZADOMODIFICADO };
 }

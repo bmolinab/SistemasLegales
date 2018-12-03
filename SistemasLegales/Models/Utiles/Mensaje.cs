@@ -12,6 +12,8 @@ namespace SistemasLegales.Models.Utiles
         public static string Excepcion { get { return "Ha ocurrido una excepción."; } }
         public static string ErrorCargarDatos { get { return "Ha ocurrido un error al cargar los datos."; } }
         public static string ErrorUploadFiles { get { return "Ha ocurrido un error al subir la documentación adicional."; } }
+
+        public static string ErrorDeleteFiles { get { return "Ha ocurrido un error al eliminar archivo."; } }
         public static string ErrorReporte { get { return "Ha ocurrido un error al generar el reporte."; } }
         public static string ErrorPassword { get { return "Ha ocurrido un error al cambiar la contraseña."; } }
         public static string CredencialesInvalidas { get { return "Credenciales inválidas."; } }
@@ -28,5 +30,7 @@ namespace SistemasLegales.Models.Utiles
         public static string CargarArchivoEstadoTerminado { get { return "Para dar por finalizado el requisito al menos debe existir un archivo adjunto."; } }
         public static string RequisitoFinalizado { get { return "El requisito ya está finalizado."; } }
         public static string CarpetaDocumento { get { return "Requisitos"; } }
+
+        public static string CarpertaHost { get ; set ; }
     }
 }

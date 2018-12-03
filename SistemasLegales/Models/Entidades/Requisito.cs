@@ -167,6 +167,10 @@ namespace SistemasLegales.Models.Entidades
                     cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajeCADUCAR) : ConstantesCorreo.CabeceraNotificacion;
                     cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : cabecera;
                     break;
+                case TipoMensaje.PORCADUCAR:
+                    cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", ConstantesCorreo.MensajePORCADUCAR) : ConstantesCorreo.CabeceraNotificacion;
+                    cabecera = cabecera.Contains("@dias") ? cabecera.Replace("@dias", ObtenerDiasRestantes()) : cabecera;
+                    break;
                 case TipoMensaje.FINALIZADOMODIFICADO:
                     var nombreUsuario = ConstantesCorreo.MensajeFINALIZADOMODIFICADO.Replace("@usuario", usuario);
                     cabecera = ConstantesCorreo.CabeceraNotificacion.Contains("@TipoMensaje") ? ConstantesCorreo.CabeceraNotificacion.Replace("@TipoMensaje", nombreUsuario) : ConstantesCorreo.CabeceraNotificacion;
@@ -279,7 +283,6 @@ namespace SistemasLegales.Models.Entidades
             int days = ts.Days;
             return days.ToString();
         }
-
        
 
         public async Task<bool> EnviarEmailNotificaionRequisitoCreacion(string url, IEmailSender emailSender, SistemasLegalesContext db)
@@ -437,7 +440,6 @@ namespace SistemasLegales.Models.Entidades
             return false;
         }
 
-
         public async Task<bool> EnviarEmailNotificaionFinalizadoModificado(string nombreUsuario,UserManager<ApplicationUser> userManager, IEmailSender emailSender, SistemasLegalesContext db)
         {
             try
@@ -576,7 +578,7 @@ namespace SistemasLegales.Models.Entidades
                         var FechaCaducidad = requisito.FechaCaducidad != null ? requisito.FechaCaducidad?.ToString("dd/MM/yyyy") : "No Definido";
 
 
-                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.CADUCAR,""));
+                        await emailSender.SendEmailAsync(listadoEmails, "Notificación de caducidad de requisito.", ConformarMensaje("", requisito, TipoMensaje.PORCADUCAR,""));
                         NotificacionEnviada = true;
                         await db.SaveChangesAsync();
                         return true;

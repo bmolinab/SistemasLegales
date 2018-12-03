@@ -1,4 +1,5 @@
 @model ICollection<DocumentoRequisito>
+@inject  SistemasLegales.Services.IUploadFileService uploadFileServer
 <table class="table table-hover">
     <thead>
         <tr>
@@ -22,8 +23,13 @@
                         </td>
                         <td>
                             <a asp-controller="Requisito" class="font-12 text-left" asp-action="DescargarArchivo" asp-route-id="@item.IdDocumentoRequisito">Descargar</a>
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <a asp-controller="Requisito" onclick="MiApp.LoadingPanel.mostrarNotificacion('bodyTemplate', '')" class="font-12 text-left" asp-action="EliminarArchivo" asp-route-id="@item.IdDocumentoRequisito">| Eliminar</a>
+                            }
                         </td>
                     </tr>
+
                 }
             }
             else

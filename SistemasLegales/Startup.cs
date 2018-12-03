@@ -114,7 +114,7 @@ namespace SistemasLegales
             ConstantesCorreo.MensajeCorreoSuperior = Configuration.GetSection("MensajeCorreoSuperior").Value;
             ConstantesCorreo.DominioCorreo = Configuration.GetSection("DominioCorreo").Value;
 
-
+            Mensaje.CarpertaHost= Configuration.GetSection("CarpetaHost").Value;
             ///mensaje correo
             ///
             ConstantesCorreo.CabeceraNotificacion = Configuration.GetSection("CabeceraNotificacion").Value;
@@ -130,6 +130,7 @@ namespace SistemasLegales
             ConstantesCorreo.MensajeAUTOMATICO = Configuration.GetSection("TipoMensaje.AUTOMATICO").Value;
             ConstantesCorreo.MensajeNOACEPTADO = Configuration.GetSection("TipoMensaje.NOACEPTADO").Value;
             ConstantesCorreo.MensajeCADUCAR = Configuration.GetSection("TipoMensaje.CADUCAR").Value;
+            ConstantesCorreo.MensajePORCADUCAR = Configuration.GetSection("TipoMensaje.PORCADUCAR").Value;
             ConstantesCorreo.MensajeFINALIZADOMODIFICADO = Configuration.GetSection("TipoMensaje.FINALIZADOMODIFICADO").Value;
 
             //Constantes de envio de notificación por email
